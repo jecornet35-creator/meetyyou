@@ -51,6 +51,7 @@ import Home from './pages/Home';
 import ProfileDetail from './pages/ProfileDetail';
 import Messages from './pages/Messages';
 import Activities from './pages/Activities';
+import Notifications from './pages/Notifications';
 
 
 export const PAGES = {
@@ -58,6 +59,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "Messages": Messages,
     "Activities": Activities,
+    "Notifications": Notifications,
 }
 
 export const pagesConfig = {

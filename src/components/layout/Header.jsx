@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MessageCircle, Bell, Settings, Heart, Users, Zap } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function Header({ user }) {
+  const queryClient = useQueryClient();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    base44.auth.me().then(setCurrentUser).catch(() => {});
+  }, []);
+
+  const { data: unreadCount = 0 } = useQuery({
+    queryKey: ['unreadNotifications'],
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      const notifications = await base44.entities.Notification.filter(
+        { user_email: user.email, is_read: false }
+      );
+      return notifications.length;
+    },
+    enabled: !!currentUser,
+    initialData: 0,
+  });
+
+  // Real-time subscription for notifications
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const unsubscribe = base44.entities.Notification.subscribe((event) => {
+      if (event.data.user_email === currentUser.email) {
+        queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
+      }
+    });
+
+    return unsubscribe;
+  }, [currentUser, queryClient]);
   const stats = [
     { value: '41%', label: 'Compatibilité', color: 'bg-amber-500' },
     { value: '56', label: 'Vues', color: 'bg-gray-400' },
@@ -79,9 +113,16 @@ export default function Header({ user }) {
               <Zap className="w-4 h-4" />
               Premium
             </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <Bell className="w-5 h-5" />
-            </Button>
+            <Link to={createPageUrl('Notifications')}>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 min-w-[20px] h-5">
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
               <Settings className="w-5 h-5" />
             </Button>
