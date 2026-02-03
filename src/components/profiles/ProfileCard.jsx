@@ -3,9 +3,7 @@ import { Heart, MessageCircle, Star, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function ProfileCard({ profile, size = 'medium' }) {
-  const isLarge = size === 'large';
-  
+export default function ProfileCard({ profile }) {
   const formatLastSeen = (lastSeen) => {
     if (!lastSeen) return '';
     const diff = Math.floor((Date.now() - new Date(lastSeen).getTime()) / 60000);
@@ -15,9 +13,9 @@ export default function ProfileCard({ profile, size = 'medium' }) {
   };
 
   return (
-    <div className={`relative group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 ${isLarge ? 'row-span-2' : ''}`}>
+    <div className="relative group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
       <Link to={createPageUrl('ProfileDetail') + `?id=${profile.id}`}>
-        <div className={`relative overflow-hidden ${isLarge ? 'h-80' : 'h-48'}`}>
+        <div className="relative overflow-hidden h-64">
           <img
             src={profile.main_photo || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'}
             alt={profile.display_name}
@@ -66,18 +64,18 @@ export default function ProfileCard({ profile, size = 'medium' }) {
       </Link>
       
       {/* Action buttons */}
-      <div className="flex items-center justify-between px-3 py-2 bg-white border-t">
-        <button className="p-2 hover:bg-amber-50 rounded-full transition-colors group/btn">
-          <Heart className="w-5 h-5 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
+      <div className="flex items-center justify-between px-2 py-1.5 bg-white border-t">
+        <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
+          <Heart className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
-        <button className="p-2 hover:bg-amber-50 rounded-full transition-colors group/btn">
-          <MessageCircle className="w-5 h-5 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
+        <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
+          <MessageCircle className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
-        <button className="p-2 hover:bg-amber-50 rounded-full transition-colors group/btn">
-          <Star className="w-5 h-5 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
+        <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
+          <Star className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
-        <div className="flex items-center gap-1 text-gray-400 text-sm">
-          <Camera className="w-4 h-4" />
+        <div className="flex items-center gap-1 text-gray-400 text-xs">
+          <Camera className="w-3.5 h-3.5" />
           <span>{profile.photos?.length || 1}</span>
         </div>
       </div>

@@ -15,12 +15,6 @@ export default function Home() {
     initialData: [],
   });
 
-  // Generate card sizes for masonry effect
-  const getCardSize = (index) => {
-    const pattern = [0, 3, 5, 8, 11, 14];
-    return pattern.includes(index % 15) ? 'large' : 'medium';
-  };
-
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
@@ -30,7 +24,7 @@ export default function Home() {
         {isLoading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {Array(15).fill(0).map((_, i) => (
-              <Skeleton key={i} className={`rounded-lg ${getCardSize(i) === 'large' ? 'row-span-2 h-96' : 'h-64'}`} />
+              <Skeleton key={i} className="rounded-lg h-80" />
             ))}
           </div>
         ) : profiles.length === 0 ? (
@@ -38,12 +32,11 @@ export default function Home() {
             <p className="text-gray-500 text-lg">Aucun profil disponible pour le moment.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 auto-rows-max">
-            {profiles.map((profile, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {profiles.map((profile) => (
               <ProfileCard 
                 key={profile.id} 
-                profile={profile} 
-                size={getCardSize(index)}
+                profile={profile}
               />
             ))}
           </div>
