@@ -5,7 +5,38 @@ import { Heart, MessageCircle, Star, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function ProfileCard({ profile }) {
+export default function ProfileCard({ profile, currentUser }) {
+  const queryClient = useQueryClient();
+
+  const startConversationMutation = useMutation({
+    mutationFn: async () => {
+      const user = await base44.auth.me();
+      // Check if conversation already exists
+      const existingConvs = await base44.entities.Conversation.list();
+      const existing = existingConvs.find(c => 
+        c.participants?.includes(user.email) && c.participants?.includes(profile.created_by)
+      );
+      
+      if (existing) {
+        window.location.href = createPageUrl('Messages') + `?conv=${existing.id}`;
+        return existing;
+      }
+
+      // Create new conversation
+      const conv = await base44.entities.Conversation.create({
+        participants: [user.email, profile.created_by],
+        participant_profiles: [
+          { email: user.email, display_name: user.full_name, photo: user.main_photo },
+          { email: profile.created_by, display_name: profile.display_name, photo: profile.main_photo }
+        ],
+        unread_count: { [user.email]: 0, [profile.created_by]: 0 }
+      });
+
+      window.location.href = createPageUrl('Messages') + `?conv=${conv.id}`;
+      return conv;
+    }
+  });
+
   const formatLastSeen = (lastSeen) => {
     if (!lastSeen) return '';
     const diff = Math.floor((Date.now() - new Date(lastSeen).getTime()) / 60000);
@@ -70,7 +101,11 @@ export default function ProfileCard({ profile }) {
         <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
           <Heart className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
-        <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
+        <button 
+          onClick={() => startConversationMutation.mutate()}
+          disabled={startConversationMutation.isPending}
+          className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
+        >
           <MessageCircle className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
         <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
