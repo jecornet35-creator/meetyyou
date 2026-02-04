@@ -47,19 +47,21 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Home from './pages/Home';
-import ProfileDetail from './pages/ProfileDetail';
-import Messages from './pages/Messages';
 import Activities from './pages/Activities';
+import Home from './pages/Home';
+import Messages from './pages/Messages';
 import Notifications from './pages/Notifications';
+import ProfileDetail from './pages/ProfileDetail';
+import EditProfile from './pages/EditProfile';
 
 
 export const PAGES = {
-    "Home": Home,
-    "ProfileDetail": ProfileDetail,
-    "Messages": Messages,
     "Activities": Activities,
+    "Home": Home,
+    "Messages": Messages,
     "Notifications": Notifications,
+    "ProfileDetail": ProfileDetail,
+    "EditProfile": EditProfile,
 }
 
 export const pagesConfig = {
