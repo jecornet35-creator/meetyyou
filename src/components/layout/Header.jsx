@@ -3,9 +3,15 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Bell, Settings, Heart, Users, Zap } from 'lucide-react';
+import { MessageCircle, Bell, Settings, Heart, Users, Zap, User, Camera, Mail, Sparkles, HelpCircle, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export default function Header({ user }) {
   const queryClient = useQueryClient();
@@ -60,13 +66,55 @@ export default function Header({ user }) {
             </Link>
             
             <div className="flex items-center gap-3 ml-4">
-              <div className="w-10 h-10 rounded-full bg-white/20 overflow-hidden border-2 border-white/50">
-                <img 
-                  src={user?.main_photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'}
-                  alt="Mon profil"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="w-10 h-10 rounded-full bg-white/20 overflow-hidden border-2 border-white/50 cursor-pointer hover:border-white transition-colors">
+                    <img 
+                      src={user?.main_photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'}
+                      alt="Mon profil"
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-64 bg-white p-2 shadow-xl rounded-lg border-0">
+                  <Link to={createPageUrl('ProfileDetail') + '?id=' + user?.id}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <User className="w-4 h-4 mr-3 text-gray-400" />
+                      Voir le profil
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to={createPageUrl('EditProfile')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <Settings className="w-4 h-4 mr-3 text-gray-400" />
+                      Modifier Mon Profil
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to={createPageUrl('EditProfile') + '?tab=photos'}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <Camera className="w-4 h-4 mr-3 text-gray-400" />
+                      Photos
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to={createPageUrl('Messages')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <Mail className="w-4 h-4 mr-3 text-gray-400" />
+                      Correspondances
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    <Sparkles className="w-4 h-4 mr-3 text-gray-400" />
+                    Loisirs et Intérêts
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    <HelpCircle className="w-4 h-4 mr-3 text-gray-400" />
+                    Questions Sur Votre Personnalité
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    <CheckCircle className="w-4 h-4 mr-3 text-gray-400" />
+                    Vérifiez profil
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <div className="hidden md:block">
                 <p className="text-sm font-medium">Bienvenue</p>
                 <p className="text-xs text-white/80">Complétez vos critères</p>
