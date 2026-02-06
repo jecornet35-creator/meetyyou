@@ -55,6 +55,7 @@ import Messages from './pages/Messages';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import Correspondances from './pages/Correspondances';
+import NotificationSettings from './pages/NotificationSettings';
 
 
 export const PAGES = {
@@ -66,6 +67,7 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "Correspondances": Correspondances,
+    "NotificationSettings": NotificationSettings,
 }
 
 export const pagesConfig = {

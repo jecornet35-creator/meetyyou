@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import FilterBar from '@/components/profiles/FilterBar';
 import ProfileCard from '@/components/profiles/ProfileCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import NotificationToast from '@/components/notifications/NotificationToast';
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('correspondences');
@@ -18,6 +19,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
+      <NotificationToast />
       <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       
       <main className="max-w-7xl mx-auto px-4 py-6">

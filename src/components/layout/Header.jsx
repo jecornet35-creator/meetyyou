@@ -113,6 +113,12 @@ export default function Header({ user }) {
                     <CheckCircle className="w-4 h-4 mr-3 text-gray-400" />
                     Vérifiez profil
                   </DropdownMenuItem>
+                  <Link to={createPageUrl('NotificationSettings')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <Bell className="w-4 h-4 mr-3 text-gray-400" />
+                      Préférences notifications
+                    </DropdownMenuItem>
+                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
               <div className="hidden md:block">
