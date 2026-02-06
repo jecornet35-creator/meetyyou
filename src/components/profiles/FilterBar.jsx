@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { SlidersHorizontal, Heart, RefreshCcw, Wifi, Flame, Sparkles, Camera, MapPin } from 'lucide-react';
+import { SlidersHorizontal, Heart, Wifi, Flame, Sparkles, Camera, MapPin, ChevronDown } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 const filters = [
-  { id: 'correspondences', label: 'Correspondances', icon: Heart, active: true },
-  { id: 'mutual', label: 'Mutuelles', icon: RefreshCcw },
-  { id: 'reverse', label: 'Inverses', icon: RefreshCcw },
+  { id: 'correspondences', label: 'Correspondances', icon: Heart, active: true, hasDropdown: true },
   { id: 'online', label: 'En ligne', icon: Wifi },
   { id: 'popular', label: 'Populaire', icon: Flame },
   { id: 'new', label: 'Nouveau', icon: Sparkles },
@@ -28,6 +34,37 @@ export default function FilterBar({ activeFilter, onFilterChange }) {
           {filters.map((filter) => {
             const Icon = filter.icon;
             const isActive = activeFilter === filter.id;
+            
+            if (filter.hasDropdown) {
+              return (
+                <DropdownMenu key={filter.id}>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant={isActive ? 'default' : 'outline'}
+                      size="sm"
+                      className={`shrink-0 gap-2 ${isActive ? 'bg-amber-500 hover:bg-amber-600 border-amber-500' : 'hover:border-amber-300'}`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {filter.label}
+                      <ChevronDown className="w-3 h-3 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-48">
+                    <Link to={createPageUrl('Correspondances') + '?type=simple'}>
+                      <DropdownMenuItem className="cursor-pointer py-3">
+                        Filtres simples
+                      </DropdownMenuItem>
+                    </Link>
+                    <Link to={createPageUrl('Correspondances') + '?type=advanced'}>
+                      <DropdownMenuItem className="cursor-pointer py-3">
+                        Filtres avancés
+                      </DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              );
+            }
+            
             return (
               <Button
                 key={filter.id}

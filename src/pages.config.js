@@ -50,20 +50,22 @@
 import Activities from './pages/Activities';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
+import Landing from './pages/Landing';
 import Messages from './pages/Messages';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
-import Landing from './pages/Landing';
+import Correspondances from './pages/Correspondances';
 
 
 export const PAGES = {
     "Activities": Activities,
     "EditProfile": EditProfile,
     "Home": Home,
+    "Landing": Landing,
     "Messages": Messages,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
-    "Landing": Landing,
+    "Correspondances": Correspondances,
 }
 
 export const pagesConfig = {
