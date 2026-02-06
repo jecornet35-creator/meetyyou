@@ -62,7 +62,7 @@ export default function Header({ user }) {
           <div className="flex items-center gap-4">
             <Link to={createPageUrl('Home')} className="flex items-center gap-2">
               <Heart className="w-8 h-8 fill-white" />
-              <span className="font-bold text-xl hidden sm:block">AfroIntroductions</span>
+              <span className="font-bold text-xl hidden sm:block">Meetyyou</span>
             </Link>
             
             <div className="flex items-center gap-3 ml-4">
