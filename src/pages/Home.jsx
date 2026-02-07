@@ -37,7 +37,7 @@ export default function Home() {
 
   const blockedEmails = blockedUsers.map(b => b.blocked_email);
   const filteredProfiles = profiles.filter(profile => 
-    !blockedEmails.includes(profile.created_by) && profile.created_by !== currentUser?.email
+    !blockedEmails.includes(profile.created_by)
   );
 
   return (
