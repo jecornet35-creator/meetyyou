@@ -46,7 +46,8 @@ const menuItems = [
     label: 'Abonnements & paiements',
     icon: CreditCard,
     subItems: [
-      { label: 'Abonnements', page: 'AdminSubscriptions' },
+      { label: 'Plans d\'abonnement', page: 'AdminSubscriptionPlans' },
+      { label: 'Abonnements actifs', page: 'AdminSubscriptions' },
       { label: 'Transactions', page: 'AdminTransactions' },
       { label: 'Codes promo', page: 'AdminPromoCodes' },
     ]
@@ -103,7 +104,7 @@ const menuItems = [
 ];
 
 export default function AdminSidebar({ currentPage }) {
-  const [expandedItems, setExpandedItems] = useState(['users', 'moderation', 'analytics']);
+  const [expandedItems, setExpandedItems] = useState(['users', 'moderation', 'subscriptions', 'analytics']);
 
   const toggleExpand = (id) => {
     setExpandedItems(prev => 
