@@ -12,17 +12,25 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState('correspondences');
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
     const handleOpenQuickSearch = () => setIsQuickSearchOpen(true);
     window.addEventListener('openQuickSearch', handleOpenQuickSearch);
-    base44.auth.me().then(setCurrentUser);
+    base44.auth.me().then(async (user) => {
+      setCurrentUser(user);
+      // Récupérer le profil de l'utilisateur
+      const profiles = await base44.entities.Profile.filter({ created_by: user.email });
+      if (profiles[0]) {
+        setUserProfile(profiles[0]);
+      }
+    });
     return () => window.removeEventListener('openQuickSearch', handleOpenQuickSearch);
   }, []);
 
   const { data: profiles, isLoading } = useQuery({
     queryKey: ['profiles'],
-    queryFn: () => base44.entities.Profile.list('-created_date', 50),
+    queryFn: () => base44.entities.Profile.list('-created_date', 100),
     initialData: [],
   });
 
@@ -36,9 +44,29 @@ export default function Home() {
   });
 
   const blockedEmails = blockedUsers.map(b => b.blocked_email);
-  const filteredProfiles = profiles.filter(profile => 
-    !blockedEmails.includes(profile.created_by)
-  );
+  
+  // Filtrage par défaut basé sur le profil de l'utilisateur
+  const filteredProfiles = profiles.filter(profile => {
+    // Exclure les profils bloqués
+    if (blockedEmails.includes(profile.created_by)) return false;
+    
+    // Exclure son propre profil
+    if (currentUser && profile.created_by === currentUser.email) return false;
+    
+    // Si on a le profil utilisateur, appliquer les filtres par défaut
+    if (userProfile) {
+      // Filtrer par genre recherché
+      if (userProfile.seeking_gender) {
+        if (profile.i_am !== userProfile.seeking_gender) return false;
+      }
+      
+      // Filtrer par âge (age_min et age_max du profil utilisateur)
+      if (userProfile.age_min && profile.age && profile.age < userProfile.age_min) return false;
+      if (userProfile.age_max && profile.age && profile.age > userProfile.age_max) return false;
+    }
+    
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-gray-100">
