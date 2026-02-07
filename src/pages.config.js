@@ -60,6 +60,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminReports from './pages/AdminReports';
 import AdminTickets from './pages/AdminTickets';
+import AdminSubscriptions from './pages/AdminSubscriptions';
 
 
 export const PAGES = {
@@ -76,6 +77,7 @@ export const PAGES = {
     "AdminUsers": AdminUsers,
     "AdminReports": AdminReports,
     "AdminTickets": AdminTickets,
+    "AdminSubscriptions": AdminSubscriptions,
 }
 
 export const pagesConfig = {

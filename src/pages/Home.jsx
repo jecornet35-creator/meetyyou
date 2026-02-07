@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import Header from '@/components/layout/Header';
@@ -6,9 +6,17 @@ import FilterBar from '@/components/profiles/FilterBar';
 import ProfileCard from '@/components/profiles/ProfileCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import NotificationToast from '@/components/notifications/NotificationToast';
+import QuickSearchModal from '@/components/search/QuickSearchModal';
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('correspondences');
+  const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenQuickSearch = () => setIsQuickSearchOpen(true);
+    window.addEventListener('openQuickSearch', handleOpenQuickSearch);
+    return () => window.removeEventListener('openQuickSearch', handleOpenQuickSearch);
+  }, []);
 
   const { data: profiles, isLoading } = useQuery({
     queryKey: ['profiles'],
@@ -20,6 +28,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100">
       <Header />
       <NotificationToast />
+      <QuickSearchModal isOpen={isQuickSearchOpen} onClose={() => setIsQuickSearchOpen(false)} />
       <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       
       <main className="max-w-7xl mx-auto px-4 py-6">
