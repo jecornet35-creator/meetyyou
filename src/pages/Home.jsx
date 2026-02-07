@@ -11,10 +11,12 @@ import QuickSearchModal from '@/components/search/QuickSearchModal';
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('correspondences');
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const handleOpenQuickSearch = () => setIsQuickSearchOpen(true);
     window.addEventListener('openQuickSearch', handleOpenQuickSearch);
+    base44.auth.me().then(setCurrentUser);
     return () => window.removeEventListener('openQuickSearch', handleOpenQuickSearch);
   }, []);
 
@@ -23,6 +25,20 @@ export default function Home() {
     queryFn: () => base44.entities.Profile.list('-created_date', 50),
     initialData: [],
   });
+
+  const { data: blockedUsers = [] } = useQuery({
+    queryKey: ['blockedUsers', currentUser?.email],
+    queryFn: async () => {
+      if (!currentUser) return [];
+      return base44.entities.BlockedUser.filter({ blocker_email: currentUser.email });
+    },
+    enabled: !!currentUser,
+  });
+
+  const blockedEmails = blockedUsers.map(b => b.blocked_email);
+  const filteredProfiles = profiles.filter(profile => 
+    !blockedEmails.includes(profile.created_by) && profile.created_by !== currentUser?.email
+  );
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -38,13 +54,13 @@ export default function Home() {
               <Skeleton key={i} className="rounded-lg h-80" />
             ))}
           </div>
-        ) : profiles.length === 0 ? (
+        ) : filteredProfiles.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-gray-500 text-lg">Aucun profil disponible pour le moment.</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {profiles.map((profile) => (
+            {filteredProfiles.map((profile) => (
               <ProfileCard 
                 key={profile.id} 
                 profile={profile}

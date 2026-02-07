@@ -1,12 +1,23 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Heart, MessageCircle, Star, MapPin, CheckCircle, Flag } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Star, MapPin, CheckCircle, Flag, Ban } from 'lucide-react';
 import Header from '@/components/layout/Header';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 const translateValue = (value, field) => {
   const translations = {
@@ -56,6 +67,13 @@ const translateValue = (value, field) => {
 export default function ProfileDetail() {
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get('id');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [showBlockDialog, setShowBlockDialog] = useState(false);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    base44.auth.me().then(setCurrentUser);
+  }, []);
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile', profileId],
@@ -73,6 +91,36 @@ export default function ProfileDetail() {
       return corrs[0] || null;
     },
     enabled: !!profile,
+  });
+
+  const { data: isBlocked } = useQuery({
+    queryKey: ['isBlocked', currentUser?.email, profile?.created_by],
+    queryFn: async () => {
+      if (!currentUser || !profile) return false;
+      const blocks = await base44.entities.BlockedUser.filter({
+        blocker_email: currentUser.email,
+        blocked_email: profile.created_by,
+      });
+      return blocks.length > 0;
+    },
+    enabled: !!currentUser && !!profile,
+  });
+
+  const blockMutation = useMutation({
+    mutationFn: async () => {
+      await base44.entities.BlockedUser.create({
+        blocker_email: currentUser.email,
+        blocked_email: profile.created_by,
+        blocked_profile_id: profile.id,
+        blocked_user_name: profile.display_name,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['isBlocked'] });
+      toast.success('Utilisateur bloqué');
+      setShowBlockDialog(false);
+      window.location.href = createPageUrl('Home');
+    },
   });
 
   if (isLoading) {
@@ -214,6 +262,16 @@ export default function ProfileDetail() {
                       <Flag className="w-4 h-4" />
                     </Button>
                   </div>
+                  {!isBlocked && (
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => setShowBlockDialog(true)}
+                    >
+                      <Ban className="w-4 h-4 mr-2" />
+                      Bloquer cet utilisateur
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -484,6 +542,28 @@ export default function ProfileDetail() {
           </div>
         </div>
       </main>
+
+      {/* Block confirmation dialog */}
+      <AlertDialog open={showBlockDialog} onOpenChange={setShowBlockDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Bloquer cet utilisateur ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir bloquer <strong>{profile?.display_name}</strong> ?
+              Cette personne ne pourra plus vous contacter ni voir votre profil.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => blockMutation.mutate()}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Bloquer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
