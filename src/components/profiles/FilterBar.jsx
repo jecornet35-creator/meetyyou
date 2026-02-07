@@ -50,12 +50,10 @@ export default function FilterBar({ activeFilter, onFilterChange }) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-48">
-                    <Link to={createPageUrl('Correspondances') + '?type=simple'}>
-                      <DropdownMenuItem className="cursor-pointer py-3">
-                        Filtres simples
-                      </DropdownMenuItem>
-                    </Link>
-                    <Link to={createPageUrl('Correspondances') + '?type=advanced'}>
+                    <DropdownMenuItem className="cursor-pointer py-3" onClick={() => window.dispatchEvent(new CustomEvent('openQuickSearch'))}>
+                      Filtres simples
+                    </DropdownMenuItem>
+                    <Link to={createPageUrl('Correspondances')}>
                       <DropdownMenuItem className="cursor-pointer py-3">
                         Filtres avancés
                       </DropdownMenuItem>

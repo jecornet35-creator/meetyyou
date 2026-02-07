@@ -48,26 +48,34 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import Activities from './pages/Activities';
+import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
 import Messages from './pages/Messages';
+import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
-import Correspondances from './pages/Correspondances';
-import NotificationSettings from './pages/NotificationSettings';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminUsers from './pages/AdminUsers';
+import AdminReports from './pages/AdminReports';
+import AdminTickets from './pages/AdminTickets';
 
 
 export const PAGES = {
     "Activities": Activities,
+    "Correspondances": Correspondances,
     "EditProfile": EditProfile,
     "Home": Home,
     "Landing": Landing,
     "Messages": Messages,
+    "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
-    "Correspondances": Correspondances,
-    "NotificationSettings": NotificationSettings,
+    "AdminDashboard": AdminDashboard,
+    "AdminUsers": AdminUsers,
+    "AdminReports": AdminReports,
+    "AdminTickets": AdminTickets,
 }
 
 export const pagesConfig = {

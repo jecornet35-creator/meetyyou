@@ -48,7 +48,7 @@ export default function Landing() {
       <header className="relative z-10 flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2 text-white">
           <Heart className="w-8 h-8 fill-amber-500 text-amber-500" />
-          <span className="font-bold text-xl">AfroIntroductions</span>
+          <span className="font-bold text-xl">Meetyyou</span>
         </div>
         <Button variant="outline" className="bg-gray-800/80 border-gray-600 text-white hover:bg-gray-700">
           🌐 Français ▾
@@ -266,7 +266,7 @@ export default function Landing() {
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Votre Mot de Passe pour AfroIntroductions"
+                      placeholder="Votre Mot de Passe pour Meetyyou"
                       className="border-gray-300 h-11 pr-12"
                     />
                     <button
@@ -329,7 +329,7 @@ export default function Landing() {
           {!isSignup && (
             <div className="text-center pt-6">
               <p className="text-gray-300 text-sm mb-3">
-                Faites passer le mot à propos de AfroIntroductions !
+                Faites passer le mot à propos de Meetyyou !
               </p>
               <div className="flex justify-center gap-4">
                 <a href="#" className="text-white hover:text-amber-400 transition-colors">
