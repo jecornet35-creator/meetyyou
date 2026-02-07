@@ -138,11 +138,6 @@ export default function Header({ user }) {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
-            <Link to={createPageUrl('Home')}>
-              <Button variant="ghost" className="text-white hover:bg-white/10">
-                Accueil
-              </Button>
-            </Link>
             <Link to={createPageUrl('Messages')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
                 Messages
@@ -151,10 +146,14 @@ export default function Header({ user }) {
             </Link>
             <Link to={createPageUrl('Activities')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
-                Activités
+                Profil Vu
                 <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">42</Badge>
               </Button>
             </Link>
+            <Button variant="ghost" className="text-white hover:bg-white/10 relative">
+              Like
+              <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">36</Badge>
+            </Button>
           </nav>
 
           {/* Stats circles */}
