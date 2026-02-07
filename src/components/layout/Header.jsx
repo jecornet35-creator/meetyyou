@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Bell, Settings, Heart, Users, Zap, User, Camera, Mail, Sparkles, HelpCircle, CheckCircle } from 'lucide-react';
+import { MessageCircle, Bell, Settings, Heart, Users, Zap, User, Camera, Mail, Sparkles, HelpCircle, CheckCircle, Ban } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
