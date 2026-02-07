@@ -57,6 +57,7 @@ import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
 import AdminTransactions from './pages/AdminTransactions';
 import AdminUsers from './pages/AdminUsers';
+import AdminVerification from './pages/AdminVerification';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
@@ -66,7 +67,6 @@ import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
-import AdminVerification from './pages/AdminVerification';
 
 
 export const PAGES = {
@@ -80,6 +80,7 @@ export const PAGES = {
     "AdminTickets": AdminTickets,
     "AdminTransactions": AdminTransactions,
     "AdminUsers": AdminUsers,
+    "AdminVerification": AdminVerification,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
     "Home": Home,
@@ -89,7 +90,6 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
-    "AdminVerification": AdminVerification,
 }
 
 export const pagesConfig = {
