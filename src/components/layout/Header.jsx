@@ -109,10 +109,12 @@ export default function Header({ user }) {
                     <HelpCircle className="w-4 h-4 mr-3 text-gray-400" />
                     Questions Sur Votre Personnalité
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                    <CheckCircle className="w-4 h-4 mr-3 text-gray-400" />
-                    Vérifiez profil
-                  </DropdownMenuItem>
+                  <Link to={createPageUrl('VerifyProfile')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <CheckCircle className="w-4 h-4 mr-3 text-gray-400" />
+                      Vérifiez profil
+                    </DropdownMenuItem>
+                  </Link>
                   <Link to={createPageUrl('NotificationSettings')}>
                     <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                       <Bell className="w-4 h-4 mr-3 text-gray-400" />
