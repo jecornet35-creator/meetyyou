@@ -377,10 +377,33 @@ export default function Correspondances() {
             </div>
           </Section>
 
-          {filterType === 'advanced' && (
-            <>
-              {/* Their lifestyle */}
-              <Section title="Their lifestyle" showMore>
+          {/* Body art */}
+          <Section title="Body art" defaultOpen={false}>
+            <div className="grid grid-cols-5 gap-3">
+              <CheckboxField label="No preference" checked={isChecked('body_art', 'no_preference')} onChange={() => handleCheckboxArray('body_art', 'no_preference')} />
+              <CheckboxField label="Brand" checked={isChecked('body_art', 'brand')} onChange={() => handleCheckboxArray('body_art', 'brand')} />
+              <CheckboxField label="Earrings" checked={isChecked('body_art', 'earrings')} onChange={() => handleCheckboxArray('body_art', 'earrings')} />
+              <CheckboxField label="Piercing" checked={isChecked('body_art', 'piercing')} onChange={() => handleCheckboxArray('body_art', 'piercing')} />
+              <CheckboxField label="Tattoo" checked={isChecked('body_art', 'tattoo')} onChange={() => handleCheckboxArray('body_art', 'tattoo')} />
+              <CheckboxField label="None" checked={isChecked('body_art', 'none')} onChange={() => handleCheckboxArray('body_art', 'none')} />
+              <CheckboxField label="Other" checked={isChecked('body_art', 'other')} onChange={() => handleCheckboxArray('body_art', 'other')} />
+              <CheckboxField label="I prefer not to comment." checked={isChecked('body_art', 'prefer_not_comment')} onChange={() => handleCheckboxArray('body_art', 'prefer_not_comment')} />
+            </div>
+          </Section>
+
+          {/* Appearance */}
+          <Section title="Appearance" defaultOpen={false}>
+            <div className="grid grid-cols-4 gap-3">
+              <CheckboxField label="No preference" checked={isChecked('appearance', 'no_preference')} onChange={() => handleCheckboxArray('appearance', 'no_preference')} />
+              <CheckboxField label="Below average" checked={isChecked('appearance', 'below_average')} onChange={() => handleCheckboxArray('appearance', 'below_average')} />
+              <CheckboxField label="Average" checked={isChecked('appearance', 'average')} onChange={() => handleCheckboxArray('appearance', 'average')} />
+              <CheckboxField label="Attractive" checked={isChecked('appearance', 'attractive')} onChange={() => handleCheckboxArray('appearance', 'attractive')} />
+              <CheckboxField label="Very attractive" checked={isChecked('appearance', 'very_attractive')} onChange={() => handleCheckboxArray('appearance', 'very_attractive')} />
+            </div>
+          </Section>
+
+          {/* Their lifestyle */}
+          <Section title="Their lifestyle" showMore defaultOpen={false}>
                 <div className="space-y-4">
                   <div>
                     <label className="text-amber-700 text-sm mb-2 block">Do they smoke?</label>
@@ -403,6 +426,17 @@ export default function Correspondances() {
                   </div>
 
                   <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Ready to move:</label>
+                    <div className="grid grid-cols-4 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('ready_to_move', 'no_preference')} onChange={() => handleCheckboxArray('ready_to_move', 'no_preference')} />
+                      <CheckboxField label="I would only move within my own country." checked={isChecked('ready_to_move', 'only_within_country')} onChange={() => handleCheckboxArray('ready_to_move', 'only_within_country')} />
+                      <CheckboxField label="I would move to another country" checked={isChecked('ready_to_move', 'to_another_country')} onChange={() => handleCheckboxArray('ready_to_move', 'to_another_country')} />
+                      <CheckboxField label="I do not wish to move" checked={isChecked('ready_to_move', 'do_not_wish_to_move')} onChange={() => handleCheckboxArray('ready_to_move', 'do_not_wish_to_move')} />
+                      <CheckboxField label="I'm not sure about moving" checked={isChecked('ready_to_move', 'not_sure')} onChange={() => handleCheckboxArray('ready_to_move', 'not_sure')} />
+                    </div>
+                  </div>
+
+                  <div>
                     <label className="text-amber-700 text-sm mb-2 block">Family situation:</label>
                     <div className="grid grid-cols-5 gap-3">
                       <CheckboxField label="No preference" checked={isChecked('family_situation', 'no_preference')} onChange={() => handleCheckboxArray('family_situation', 'no_preference')} />
@@ -414,6 +448,149 @@ export default function Correspondances() {
                       <CheckboxField label="I prefer not to comment." checked={isChecked('family_situation', 'prefer_not_comment')} onChange={() => handleCheckboxArray('family_situation', 'prefer_not_comment')} />
                     </div>
                   </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Do they have children?</label>
+                    <Select value={criteria.has_children} onValueChange={(v) => setCriteria(prev => ({ ...prev, has_children: v }))}>
+                      <SelectTrigger><SelectValue placeholder="Yes, and they live at home." /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="yes_live_home">Yes, and they live at home.</SelectItem>
+                        <SelectItem value="yes_not_home">Yes, they don't live at home.</SelectItem>
+                        <SelectItem value="no">No</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Number of children (or fewer):</label>
+                    <Select value={criteria.number_of_children_max} onValueChange={(v) => setCriteria(prev => ({ ...prev, number_of_children_max: v }))}>
+                      <SelectTrigger><SelectValue placeholder="2" /></SelectTrigger>
+                      <SelectContent>
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <SelectItem key={n} value={n.toString()}>{n}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Youngest child (or above):</label>
+                    <Select value={criteria.youngest_child_age} onValueChange={(v) => setCriteria(prev => ({ ...prev, youngest_child_age: v }))}>
+                      <SelectTrigger><SelectValue placeholder="No preference" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="no_preference">No preference</SelectItem>
+                        <SelectItem value="0-5">0-5 years</SelectItem>
+                        <SelectItem value="6-10">6-10 years</SelectItem>
+                        <SelectItem value="11-15">11-15 years</SelectItem>
+                        <SelectItem value="16+">16+ years</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Oldest child (or younger):</label>
+                    <Select value={criteria.oldest_child_age} onValueChange={(v) => setCriteria(prev => ({ ...prev, oldest_child_age: v }))}>
+                      <SelectTrigger><SelectValue placeholder="No preference" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="no_preference">No preference</SelectItem>
+                        <SelectItem value="0-5">0-5 years</SelectItem>
+                        <SelectItem value="6-10">6-10 years</SelectItem>
+                        <SelectItem value="11-15">11-15 years</SelectItem>
+                        <SelectItem value="16+">16+ years</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Do they want children (more children)?</label>
+                    <div className="grid grid-cols-4 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('want_children', 'no_preference')} onChange={() => handleCheckboxArray('want_children', 'no_preference')} />
+                      <CheckboxField label="Yes" checked={isChecked('want_children', 'yes')} onChange={() => handleCheckboxArray('want_children', 'yes')} />
+                      <CheckboxField label="I'm not sure" checked={isChecked('want_children', 'not_sure')} onChange={() => handleCheckboxArray('want_children', 'not_sure')} />
+                      <CheckboxField label="No" checked={isChecked('want_children', 'no')} onChange={() => handleCheckboxArray('want_children', 'no')} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Occupation:</label>
+                    <div className="grid grid-cols-5 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('occupation', 'no_preference')} onChange={() => handleCheckboxArray('occupation', 'no_preference')} />
+                      <CheckboxField label="Entertainment / Media" checked={isChecked('occupation', 'entertainment_media')} onChange={() => handleCheckboxArray('occupation', 'entertainment_media')} />
+                      <CheckboxField label="Hairdresser / Personal beauty treatments" checked={isChecked('occupation', 'hairdresser_beauty')} onChange={() => handleCheckboxArray('occupation', 'hairdresser_beauty')} />
+                      <CheckboxField label="Independent" checked={isChecked('occupation', 'independent')} onChange={() => handleCheckboxArray('occupation', 'independent')} />
+                      <CheckboxField label="Transportation" checked={isChecked('occupation', 'transportation')} onChange={() => handleCheckboxArray('occupation', 'transportation')} />
+                      <CheckboxField label="Administrative/Secretarial/Office Job" checked={isChecked('occupation', 'administrative_office')} onChange={() => handleCheckboxArray('occupation', 'administrative_office')} />
+                      <CheckboxField label="Advertising / Media" checked={isChecked('occupation', 'advertising_media')} onChange={() => handleCheckboxArray('occupation', 'advertising_media')} />
+                      <CheckboxField label="Artistic/creative/performance jobs" checked={isChecked('occupation', 'artistic_creative')} onChange={() => handleCheckboxArray('occupation', 'artistic_creative')} />
+                      <CheckboxField label="Building / Commerce" checked={isChecked('occupation', 'building_commerce')} onChange={() => handleCheckboxArray('occupation', 'building_commerce')} />
+                      <CheckboxField label="Home help" checked={isChecked('occupation', 'home_help')} onChange={() => handleCheckboxArray('occupation', 'home_help')} />
+                      <CheckboxField label="Teaching / University" checked={isChecked('occupation', 'teaching_university')} onChange={() => handleCheckboxArray('occupation', 'teaching_university')} />
+                      <CheckboxField label="Executive / Management / HR" checked={isChecked('occupation', 'executive_management')} onChange={() => handleCheckboxArray('occupation', 'executive_management')} />
+                      <CheckboxField label="Livestock farming / Agriculture" checked={isChecked('occupation', 'livestock_farming')} onChange={() => handleCheckboxArray('occupation', 'livestock_farming')} />
+                      <CheckboxField label="Finance / Banking / Real Estate" checked={isChecked('occupation', 'finance_banking')} onChange={() => handleCheckboxArray('occupation', 'finance_banking')} />
+                      <CheckboxField label="Firefighters / Police / Security" checked={isChecked('occupation', 'firefighters_police')} onChange={() => handleCheckboxArray('occupation', 'firefighters_police')} />
+                      <CheckboxField label="Information Technology / Communications" checked={isChecked('occupation', 'information_technology')} onChange={() => handleCheckboxArray('occupation', 'information_technology')} />
+                      <CheckboxField label="Farm worker / Industrial worker" checked={isChecked('occupation', 'farm_worker')} onChange={() => handleCheckboxArray('occupation', 'farm_worker')} />
+                      <CheckboxField label="Legal" checked={isChecked('occupation', 'legal')} onChange={() => handleCheckboxArray('occupation', 'legal')} />
+                      <CheckboxField label="Medical / Dental / Veterinary" checked={isChecked('occupation', 'medical_dental')} onChange={() => handleCheckboxArray('occupation', 'medical_dental')} />
+                      <CheckboxField label="Military" checked={isChecked('occupation', 'military')} onChange={() => handleCheckboxArray('occupation', 'military')} />
+                      <CheckboxField label="Nanny / Babysitter" checked={isChecked('occupation', 'nanny_babysitter')} onChange={() => handleCheckboxArray('occupation', 'nanny_babysitter')} />
+                      <CheckboxField label="Unemployed / Homemaker" checked={isChecked('occupation', 'unemployed_homemaker')} onChange={() => handleCheckboxArray('occupation', 'unemployed_homemaker')} />
+                      <CheckboxField label="Non-profit / Clergy / Social Services" checked={isChecked('occupation', 'nonprofit_clergy')} onChange={() => handleCheckboxArray('occupation', 'nonprofit_clergy')} />
+                      <CheckboxField label="Politics / Government / Civil Service" checked={isChecked('occupation', 'politics_government')} onChange={() => handleCheckboxArray('occupation', 'politics_government')} />
+                      <CheckboxField label="Retail / Food Services" checked={isChecked('occupation', 'retail_food')} onChange={() => handleCheckboxArray('occupation', 'retail_food')} />
+                      <CheckboxField label="Retirement" checked={isChecked('occupation', 'retirement')} onChange={() => handleCheckboxArray('occupation', 'retirement')} />
+                      <CheckboxField label="Sales / Marketing" checked={isChecked('occupation', 'sales_marketing')} onChange={() => handleCheckboxArray('occupation', 'sales_marketing')} />
+                      <CheckboxField label="Sports / Leisure" checked={isChecked('occupation', 'sports_leisure')} onChange={() => handleCheckboxArray('occupation', 'sports_leisure')} />
+                      <CheckboxField label="Student" checked={isChecked('occupation', 'student')} onChange={() => handleCheckboxArray('occupation', 'student')} />
+                      <CheckboxField label="Technology / Science / Engineering" checked={isChecked('occupation', 'technology_science')} onChange={() => handleCheckboxArray('occupation', 'technology_science')} />
+                      <CheckboxField label="Tourism / Hospitality" checked={isChecked('occupation', 'tourism_hospitality')} onChange={() => handleCheckboxArray('occupation', 'tourism_hospitality')} />
+                      <CheckboxField label="Unemployed" checked={isChecked('occupation', 'unemployed')} onChange={() => handleCheckboxArray('occupation', 'unemployed')} />
+                      <CheckboxField label="Other" checked={isChecked('occupation', 'other')} onChange={() => handleCheckboxArray('occupation', 'other')} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Professional status:</label>
+                    <div className="grid grid-cols-5 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('professional_status', 'no_preference')} onChange={() => handleCheckboxArray('professional_status', 'no_preference')} />
+                      <CheckboxField label="Student" checked={isChecked('professional_status', 'student')} onChange={() => handleCheckboxArray('professional_status', 'student')} />
+                      <CheckboxField label="Part-time work" checked={isChecked('professional_status', 'part_time')} onChange={() => handleCheckboxArray('professional_status', 'part_time')} />
+                      <CheckboxField label="Full time" checked={isChecked('professional_status', 'full_time')} onChange={() => handleCheckboxArray('professional_status', 'full_time')} />
+                      <CheckboxField label="Homemaker" checked={isChecked('professional_status', 'homemaker')} onChange={() => handleCheckboxArray('professional_status', 'homemaker')} />
+                      <CheckboxField label="Retirement" checked={isChecked('professional_status', 'retirement')} onChange={() => handleCheckboxArray('professional_status', 'retirement')} />
+                      <CheckboxField label="Unemployed" checked={isChecked('professional_status', 'unemployed')} onChange={() => handleCheckboxArray('professional_status', 'unemployed')} />
+                      <CheckboxField label="Other" checked={isChecked('professional_status', 'other')} onChange={() => handleCheckboxArray('professional_status', 'other')} />
+                      <CheckboxField label="I prefer not to comment." checked={isChecked('professional_status', 'prefer_not_comment')} onChange={() => handleCheckboxArray('professional_status', 'prefer_not_comment')} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Income (or above):</label>
+                    <Select value={criteria.annual_income_min} onValueChange={(v) => setCriteria(prev => ({ ...prev, annual_income_min: v }))}>
+                      <SelectTrigger><SelectValue placeholder="No preference" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="no_preference">No preference</SelectItem>
+                        <SelectItem value="0-25k">0-25k</SelectItem>
+                        <SelectItem value="25-50k">25-50k</SelectItem>
+                        <SelectItem value="50-75k">50-75k</SelectItem>
+                        <SelectItem value="75-100k">75-100k</SelectItem>
+                        <SelectItem value="100k+">100k+</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Living situation:</label>
+                    <div className="grid grid-cols-5 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('living_situation', 'no_preference')} onChange={() => handleCheckboxArray('living_situation', 'no_preference')} />
+                      <CheckboxField label="I live alone" checked={isChecked('living_situation', 'live_alone')} onChange={() => handleCheckboxArray('living_situation', 'live_alone')} />
+                      <CheckboxField label="I live with friends" checked={isChecked('living_situation', 'live_with_friends')} onChange={() => handleCheckboxArray('living_situation', 'live_with_friends')} />
+                      <CheckboxField label="I live with my family" checked={isChecked('living_situation', 'live_with_family')} onChange={() => handleCheckboxArray('living_situation', 'live_with_family')} />
+                      <CheckboxField label="I live with my children" checked={isChecked('living_situation', 'live_with_children')} onChange={() => handleCheckboxArray('living_situation', 'live_with_children')} />
+                      <CheckboxField label="I live with my partner." checked={isChecked('living_situation', 'live_with_partner')} onChange={() => handleCheckboxArray('living_situation', 'live_with_partner')} />
+                      <CheckboxField label="Other" checked={isChecked('living_situation', 'other')} onChange={() => handleCheckboxArray('living_situation', 'other')} />
+                      <CheckboxField label="I prefer not to comment." checked={isChecked('living_situation', 'prefer_not_comment')} onChange={() => handleCheckboxArray('living_situation', 'prefer_not_comment')} />
+                    </div>
+                  </div>
                 </div>
               </Section>
 
@@ -421,18 +598,133 @@ export default function Correspondances() {
               <Section title="Their cultural origins/values" showMore>
                 <div className="space-y-4">
                   <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Nationality:</label>
+                    <Input placeholder="No preference" value={criteria.nationality.join(', ')} onChange={(e) => setCriteria(prev => ({ ...prev, nationality: e.target.value.split(',').map(v => v.trim()) }))} />
+                    <p className="text-xs text-gray-500 mt-1">* Use the Ctrl key for multiple selections</p>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Studies (or above):</label>
+                    <div className="flex flex-wrap gap-2">
+                      {['no_preference', 'primary_elementary', 'college', 'high_school', 'vocational_education', 'license', 'mastery', 'doctorate'].map((level) => (
+                        <label key={level} className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="education"
+                            checked={criteria.education_level === level}
+                            onChange={() => setCriteria(prev => ({ ...prev, education_level: level }))}
+                            className="text-amber-500"
+                          />
+                          <span className="text-sm">
+                            {level === 'no_preference' && 'No preference'}
+                            {level === 'primary_elementary' && 'Primary (elementary) school'}
+                            {level === 'college' && 'College'}
+                            {level === 'high_school' && 'High school'}
+                            {level === 'vocational_education' && 'College of general and vocational education'}
+                            {level === 'license' && 'License'}
+                            {level === 'mastery' && 'Mastery'}
+                            {level === 'doctorate' && 'Doctorate'}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">English language proficiency (or mastery):</label>
+                    <div className="flex flex-wrap gap-2">
+                      {['no_preference', 'dont_speak', 'average', 'good', 'very_good', 'good_command'].map((level) => (
+                        <label key={level} className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="english"
+                            checked={criteria.english_proficiency === level}
+                            onChange={() => setCriteria(prev => ({ ...prev, english_proficiency: level }))}
+                            className="text-amber-500"
+                          />
+                          <span className="text-sm">
+                            {level === 'no_preference' && 'No preference'}
+                            {level === 'dont_speak' && "Don't speak"}
+                            {level === 'average' && 'AVERAGE'}
+                            {level === 'good' && 'Good'}
+                            {level === 'very_good' && 'Very good'}
+                            {level === 'good_command' && 'Good command'}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">French language proficiency (or mastery):</label>
+                    <div className="flex flex-wrap gap-2">
+                      {['no_preference', 'dont_speak', 'average', 'good', 'very_good', 'good_command'].map((level) => (
+                        <label key={level} className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            name="french"
+                            checked={criteria.french_proficiency === level}
+                            onChange={() => setCriteria(prev => ({ ...prev, french_proficiency: level }))}
+                            className="text-amber-500"
+                          />
+                          <span className="text-sm">
+                            {level === 'no_preference' && 'No preference'}
+                            {level === 'dont_speak' && "Don't speak"}
+                            {level === 'average' && 'AVERAGE'}
+                            {level === 'good' && 'Good'}
+                            {level === 'very_good' && 'Very good'}
+                            {level === 'good_command' && 'Good command'}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Languages spoken:</label>
+                    <Input placeholder="Any language" value={criteria.languages_spoken.join(', ')} onChange={(e) => setCriteria(prev => ({ ...prev, languages_spoken: e.target.value.split(',').map(v => v.trim()) }))} />
+                    <p className="text-xs text-gray-500 mt-1">* Use the Ctrl key for multiple selections</p>
+                  </div>
+
+                  <div>
                     <label className="text-amber-700 text-sm mb-2 block">Religion:</label>
                     <div className="grid grid-cols-5 gap-3">
                       <CheckboxField label="No preference" checked={isChecked('religion', 'no_preference')} onChange={() => handleCheckboxArray('religion', 'no_preference')} />
-                      <CheckboxField label="Baptist" checked={isChecked('religion', 'baptist')} onChange={() => handleCheckboxArray('religion', 'baptist')} />
+                      <CheckboxField label="Basiste" checked={isChecked('religion', 'baptist')} onChange={() => handleCheckboxArray('religion', 'baptist')} />
                       <CheckboxField label="Buddhist" checked={isChecked('religion', 'buddhist')} onChange={() => handleCheckboxArray('religion', 'buddhist')} />
                       <CheckboxField label="Christian" checked={isChecked('religion', 'christian')} onChange={() => handleCheckboxArray('religion', 'christian')} />
                       <CheckboxField label="Hindu" checked={isChecked('religion', 'hindu')} onChange={() => handleCheckboxArray('religion', 'hindu')} />
                       <CheckboxField label="Islam" checked={isChecked('religion', 'islam')} onChange={() => handleCheckboxArray('religion', 'islam')} />
+                      <CheckboxField label="Jainism" checked={isChecked('religion', 'jainism')} onChange={() => handleCheckboxArray('religion', 'jainism')} />
                       <CheckboxField label="Jewish" checked={isChecked('religion', 'jewish')} onChange={() => handleCheckboxArray('religion', 'jewish')} />
+                      <CheckboxField label="Parsi" checked={isChecked('religion', 'parsi')} onChange={() => handleCheckboxArray('religion', 'parsi')} />
+                      <CheckboxField label="Shintoism" checked={isChecked('religion', 'shintoism')} onChange={() => handleCheckboxArray('religion', 'shintoism')} />
+                      <CheckboxField label="Sikhism" checked={isChecked('religion', 'sikhism')} onChange={() => handleCheckboxArray('religion', 'sikhism')} />
+                      <CheckboxField label="Taoism" checked={isChecked('religion', 'taoism')} onChange={() => handleCheckboxArray('religion', 'taoism')} />
                       <CheckboxField label="Other" checked={isChecked('religion', 'other')} onChange={() => handleCheckboxArray('religion', 'other')} />
                       <CheckboxField label="Atheist" checked={isChecked('religion', 'atheist')} onChange={() => handleCheckboxArray('religion', 'atheist')} />
                       <CheckboxField label="I prefer not to comment." checked={isChecked('religion', 'prefer_not_comment')} onChange={() => handleCheckboxArray('religion', 'prefer_not_comment')} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Religious values:</label>
+                    <div className="grid grid-cols-4 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('religious_values', 'no_preference')} onChange={() => handleCheckboxArray('religious_values', 'no_preference')} />
+                      <CheckboxField label="I'm not that religious." checked={isChecked('religious_values', 'not_religious')} onChange={() => handleCheckboxArray('religious_values', 'not_religious')} />
+                      <CheckboxField label="Average" checked={isChecked('religious_values', 'average')} onChange={() => handleCheckboxArray('religious_values', 'average')} />
+                      <CheckboxField label="Very religious" checked={isChecked('religious_values', 'very_religious')} onChange={() => handleCheckboxArray('religious_values', 'very_religious')} />
+                      <CheckboxField label="I prefer not to comment." checked={isChecked('religious_values', 'prefer_not_comment')} onChange={() => handleCheckboxArray('religious_values', 'prefer_not_comment')} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-amber-700 text-sm mb-2 block">Polygamy:</label>
+                    <div className="grid grid-cols-4 gap-3">
+                      <CheckboxField label="No preference" checked={isChecked('polygamy', 'no_preference')} onChange={() => handleCheckboxArray('polygamy', 'no_preference')} />
+                      <CheckboxField label="I accept polygamy" checked={isChecked('polygamy', 'accept')} onChange={() => handleCheckboxArray('polygamy', 'accept')} />
+                      <CheckboxField label="I am against polygamy" checked={isChecked('polygamy', 'against')} onChange={() => handleCheckboxArray('polygamy', 'against')} />
+                      <CheckboxField label="I might accept polygamy" checked={isChecked('polygamy', 'might_accept')} onChange={() => handleCheckboxArray('polygamy', 'might_accept')} />
                     </div>
                   </div>
 
@@ -441,24 +733,22 @@ export default function Correspondances() {
                     <div className="grid grid-cols-5 gap-3">
                       <CheckboxField label="No preference" checked={isChecked('astrological_sign', 'no_preference')} onChange={() => handleCheckboxArray('astrological_sign', 'no_preference')} />
                       <CheckboxField label="Aquarius" checked={isChecked('astrological_sign', 'aquarius')} onChange={() => handleCheckboxArray('astrological_sign', 'aquarius')} />
-                      <CheckboxField label="Aries" checked={isChecked('astrological_sign', 'aries')} onChange={() => handleCheckboxArray('astrological_sign', 'aries')} />
-                      <CheckboxField label="Cancer" checked={isChecked('astrological_sign', 'cancer')} onChange={() => handleCheckboxArray('astrological_sign', 'cancer')} />
-                      <CheckboxField label="Capricorn" checked={isChecked('astrological_sign', 'capricorn')} onChange={() => handleCheckboxArray('astrological_sign', 'capricorn')} />
                       <CheckboxField label="Gemini" checked={isChecked('astrological_sign', 'gemini')} onChange={() => handleCheckboxArray('astrological_sign', 'gemini')} />
-                      <CheckboxField label="Leo" checked={isChecked('astrological_sign', 'leo')} onChange={() => handleCheckboxArray('astrological_sign', 'leo')} />
-                      <CheckboxField label="Libra" checked={isChecked('astrological_sign', 'libra')} onChange={() => handleCheckboxArray('astrological_sign', 'libra')} />
+                      <CheckboxField label="Scorpio" checked={isChecked('astrological_sign', 'scorpio')} onChange={() => handleCheckboxArray('astrological_sign', 'scorpio')} />
+                      <CheckboxField label="Ram" checked={isChecked('astrological_sign', 'aries')} onChange={() => handleCheckboxArray('astrological_sign', 'aries')} />
+                      <CheckboxField label="Lion" checked={isChecked('astrological_sign', 'leo')} onChange={() => handleCheckboxArray('astrological_sign', 'leo')} />
+                      <CheckboxField label="Bull" checked={isChecked('astrological_sign', 'taurus')} onChange={() => handleCheckboxArray('astrological_sign', 'taurus')} />
+                      <CheckboxField label="Cancer" checked={isChecked('astrological_sign', 'cancer')} onChange={() => handleCheckboxArray('astrological_sign', 'cancer')} />
+                      <CheckboxField label="Balance" checked={isChecked('astrological_sign', 'libra')} onChange={() => handleCheckboxArray('astrological_sign', 'libra')} />
+                      <CheckboxField label="Virgin" checked={isChecked('astrological_sign', 'virgo')} onChange={() => handleCheckboxArray('astrological_sign', 'virgo')} />
+                      <CheckboxField label="Capricorn" checked={isChecked('astrological_sign', 'capricorn')} onChange={() => handleCheckboxArray('astrological_sign', 'capricorn')} />
                       <CheckboxField label="Pisces" checked={isChecked('astrological_sign', 'pisces')} onChange={() => handleCheckboxArray('astrological_sign', 'pisces')} />
                       <CheckboxField label="Sagittarius" checked={isChecked('astrological_sign', 'sagittarius')} onChange={() => handleCheckboxArray('astrological_sign', 'sagittarius')} />
-                      <CheckboxField label="Scorpio" checked={isChecked('astrological_sign', 'scorpio')} onChange={() => handleCheckboxArray('astrological_sign', 'scorpio')} />
-                      <CheckboxField label="Taurus" checked={isChecked('astrological_sign', 'taurus')} onChange={() => handleCheckboxArray('astrological_sign', 'taurus')} />
-                      <CheckboxField label="Virgo" checked={isChecked('astrological_sign', 'virgo')} onChange={() => handleCheckboxArray('astrological_sign', 'virgo')} />
                       <CheckboxField label="I don't know" checked={isChecked('astrological_sign', 'dont_know')} onChange={() => handleCheckboxArray('astrological_sign', 'dont_know')} />
                     </div>
                   </div>
                 </div>
               </Section>
-            </>
-          )}
 
           {/* Submit button */}
           <div className="flex justify-center mt-8">
