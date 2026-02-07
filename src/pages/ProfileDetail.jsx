@@ -149,6 +149,22 @@ export default function ProfileDetail() {
                 )}
               </div>
 
+              {/* Photo gallery thumbnails */}
+              {profile.photos && profile.photos.length > 0 && (
+                <div className="px-4 py-3 border-t border-gray-100">
+                  <div className="flex gap-2 overflow-x-auto">
+                    {profile.photos.map((photo, index) => (
+                      <img
+                        key={index}
+                        src={photo}
+                        alt={`Photo ${index + 1}`}
+                        className="w-16 h-16 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity flex-shrink-0"
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Quick info */}
               <div className="p-6">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1">
