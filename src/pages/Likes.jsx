@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 export default function Likes() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [dateFilter, setDateFilter] = useState('all'); // 'all', 'today', 'week'
+  const [dateFilter, setDateFilter] = useState('today'); // 'all', 'today', 'week'
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const queryClient = useQueryClient();
 
