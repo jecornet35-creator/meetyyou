@@ -61,6 +61,9 @@ import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
+import AdminSubscriptionPlans from './pages/AdminSubscriptionPlans';
+import AdminTransactions from './pages/AdminTransactions';
+import AdminPromoCodes from './pages/AdminPromoCodes';
 
 
 export const PAGES = {
@@ -78,6 +81,9 @@ export const PAGES = {
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
+    "AdminSubscriptionPlans": AdminSubscriptionPlans,
+    "AdminTransactions": AdminTransactions,
+    "AdminPromoCodes": AdminPromoCodes,
 }
 
 export const pagesConfig = {
