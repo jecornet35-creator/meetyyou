@@ -49,9 +49,12 @@
  */
 import Activities from './pages/Activities';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminPromoCodes from './pages/AdminPromoCodes';
 import AdminReports from './pages/AdminReports';
+import AdminSubscriptionPlans from './pages/AdminSubscriptionPlans';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
+import AdminTransactions from './pages/AdminTransactions';
 import AdminUsers from './pages/AdminUsers';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
@@ -61,17 +64,18 @@ import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
-import AdminSubscriptionPlans from './pages/AdminSubscriptionPlans';
-import AdminTransactions from './pages/AdminTransactions';
-import AdminPromoCodes from './pages/AdminPromoCodes';
+import AdminEmails from './pages/AdminEmails';
 
 
 export const PAGES = {
     "Activities": Activities,
     "AdminDashboard": AdminDashboard,
+    "AdminPromoCodes": AdminPromoCodes,
     "AdminReports": AdminReports,
+    "AdminSubscriptionPlans": AdminSubscriptionPlans,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminTickets": AdminTickets,
+    "AdminTransactions": AdminTransactions,
     "AdminUsers": AdminUsers,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
@@ -81,9 +85,7 @@ export const PAGES = {
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
-    "AdminSubscriptionPlans": AdminSubscriptionPlans,
-    "AdminTransactions": AdminTransactions,
-    "AdminPromoCodes": AdminPromoCodes,
+    "AdminEmails": AdminEmails,
 }
 
 export const pagesConfig = {
