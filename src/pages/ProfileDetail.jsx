@@ -43,6 +43,11 @@ const translateValue = (value, field) => {
       to_another_country: 'Vers un autre pays',
       do_not_wish_to_move: 'Ne souhaite pas déménager',
       not_sure: 'Pas sûr'
+    },
+    polygamy: {
+      accept: 'J\'accepte la polygamie',
+      against: 'Je suis contre la polygamie',
+      might_accept: 'Je pourrais accepter'
     }
   };
   return translations[field]?.[value] || value;
@@ -321,29 +326,118 @@ export default function ProfileDetail() {
               </div>
               <div className="p-6">
                 <InfoRow 
-                  label="Prêt à déménager" 
-                  userValue={translateValue(profile.ready_to_move, 'ready_to_move')}
-                  searchValue={correspondance?.ready_to_move?.[0] || 'Pas de préférence'}
+                  label="Alcool" 
+                  userValue={translateValue(profile.drinking, 'drinking')}
+                  searchValue={correspondance?.drinking?.[0] ? translateValue(correspondance.drinking[0], 'drinking') : 'Pas de préférence'}
                 />
                 <InfoRow 
-                  label="Situation familiale" 
+                  label="Tabac" 
+                  userValue={translateValue(profile.smoking, 'smoking')}
+                  searchValue={correspondance?.smoking?.[0] ? translateValue(correspondance.smoking[0], 'smoking') : 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Statut matrimonial" 
                   userValue={translateValue(profile.family_situation, 'family_situation')}
-                  searchValue={correspondance?.family_situation?.[0] || 'Pas de préférence'}
+                  searchValue={correspondance?.family_situation?.[0] ? translateValue(correspondance.family_situation[0], 'family_situation') : 'Pas de préférence'}
                 />
                 <InfoRow 
-                  label="Veut des enfants" 
+                  label="A des enfants" 
+                  userValue={profile.has_children || 'Non renseigné'}
+                  searchValue={correspondance?.has_children || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Nombre d'enfants" 
+                  userValue={profile.number_of_children || 'Non renseigné'}
+                  searchValue={correspondance?.number_of_children_max || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="L'aîné" 
+                  userValue={profile.eldest_child_age || 'Non renseigné'}
+                  searchValue={correspondance?.oldest_child_age || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Le plus jeune enfant" 
+                  userValue={profile.youngest_child_age || 'Non renseigné'}
+                  searchValue={correspondance?.youngest_child_age || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Souhaite plus d'enfants" 
                   userValue={translateValue(profile.want_children, 'want_children')}
-                  searchValue={correspondance?.want_children?.[0] || 'Pas de préférence'}
+                  searchValue={correspondance?.want_children?.[0] ? translateValue(correspondance.want_children[0], 'want_children') : 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Profession" 
+                  userValue={profile.occupation || 'Non renseigné'}
+                  searchValue={correspondance?.occupation?.[0] || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Statut professionnel" 
+                  userValue={profile.professional_status || 'Non renseigné'}
+                  searchValue={correspondance?.professional_status?.[0] || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Revenu" 
+                  userValue={profile.annual_income || 'Non renseigné'}
+                  searchValue={correspondance?.annual_income_min || 'Pas de préférence'}
                 />
                 <InfoRow 
                   label="Situation de vie" 
-                  userValue={profile.living_situation}
+                  userValue={profile.living_situation || 'Non renseigné'}
                   searchValue={correspondance?.living_situation?.[0] || 'Pas de préférence'}
                 />
+              </div>
+            </div>
+
+            {/* Origins / Cultural Values */}
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3">
+                <h2 className="text-white font-semibold">Origines / Valeurs culturelles</h2>
+              </div>
+              <div className="p-6">
                 <InfoRow 
-                  label="Revenu annuel" 
-                  userValue={profile.annual_income}
-                  searchValue={correspondance?.annual_income_min || 'Pas de préférence'}
+                  label="Nationalité" 
+                  userValue={profile.nationality || 'Non renseigné'}
+                  searchValue={correspondance?.nationality?.[0] || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Niveau d'éducation" 
+                  userValue={profile.education_level || 'Non renseigné'}
+                  searchValue={correspondance?.education_level || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Langues parlées" 
+                  userValue={profile.languages_spoken?.join(', ') || 'Non renseigné'}
+                  searchValue={correspondance?.languages_spoken?.join(', ') || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Niveau d'anglais" 
+                  userValue={profile.english_proficiency || 'Non renseigné'}
+                  searchValue={correspondance?.english_proficiency || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Niveau de français" 
+                  userValue={profile.french_proficiency || 'Non renseigné'}
+                  searchValue={correspondance?.french_proficiency || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Religion" 
+                  userValue={profile.religion || 'Non renseigné'}
+                  searchValue={correspondance?.religion?.[0] || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Valeurs religieuses" 
+                  userValue={profile.religious_values || 'Non renseigné'}
+                  searchValue={correspondance?.religious_values?.[0] || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Polygamie" 
+                  userValue={translateValue(profile.polygamy, 'polygamy') || 'Non renseigné'}
+                  searchValue={correspondance?.polygamy?.[0] || 'Pas de préférence'}
+                />
+                <InfoRow 
+                  label="Signe astrologique" 
+                  userValue={profile.astrological_sign || 'Non renseigné'}
+                  searchValue={correspondance?.astrological_sign?.[0] || 'Pas de préférence'}
                 />
               </div>
             </div>
