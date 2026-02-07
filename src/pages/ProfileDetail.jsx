@@ -69,6 +69,7 @@ export default function ProfileDetail() {
   const profileId = urlParams.get('id');
   const [currentUser, setCurrentUser] = useState(null);
   const [showBlockDialog, setShowBlockDialog] = useState(false);
+  const [currentPhoto, setCurrentPhoto] = useState(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -179,7 +180,7 @@ export default function ProfileDetail() {
               {/* Main photo */}
               <div className="relative h-80">
                 <img
-                  src={profile.main_photo || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'}
+                  src={currentPhoto || profile.main_photo || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'}
                   alt={profile.display_name}
                   className="w-full h-full object-cover"
                 />
@@ -206,7 +207,10 @@ export default function ProfileDetail() {
                         key={index}
                         src={photo}
                         alt={`Photo ${index + 1}`}
-                        className="w-16 h-16 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity flex-shrink-0"
+                        onClick={() => setCurrentPhoto(photo)}
+                        className={`w-16 h-16 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-all flex-shrink-0 ${
+                          (currentPhoto || profile.main_photo) === photo ? 'ring-2 ring-amber-500' : ''
+                        }`}
                       />
                     ))}
                   </div>
