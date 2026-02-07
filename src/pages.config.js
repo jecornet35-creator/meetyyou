@@ -69,6 +69,7 @@ import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
+import Likes from './pages/Likes';
 
 
 export const PAGES = {
@@ -94,6 +95,7 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
+    "Likes": Likes,
 }
 
 export const pagesConfig = {
