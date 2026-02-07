@@ -48,6 +48,11 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import Activities from './pages/Activities';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminReports from './pages/AdminReports';
+import AdminSubscriptions from './pages/AdminSubscriptions';
+import AdminTickets from './pages/AdminTickets';
+import AdminUsers from './pages/AdminUsers';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
@@ -56,15 +61,15 @@ import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminUsers from './pages/AdminUsers';
-import AdminReports from './pages/AdminReports';
-import AdminTickets from './pages/AdminTickets';
-import AdminSubscriptions from './pages/AdminSubscriptions';
 
 
 export const PAGES = {
     "Activities": Activities,
+    "AdminDashboard": AdminDashboard,
+    "AdminReports": AdminReports,
+    "AdminSubscriptions": AdminSubscriptions,
+    "AdminTickets": AdminTickets,
+    "AdminUsers": AdminUsers,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
     "Home": Home,
@@ -73,11 +78,6 @@ export const PAGES = {
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
-    "AdminDashboard": AdminDashboard,
-    "AdminUsers": AdminUsers,
-    "AdminReports": AdminReports,
-    "AdminTickets": AdminTickets,
-    "AdminSubscriptions": AdminSubscriptions,
 }
 
 export const pagesConfig = {

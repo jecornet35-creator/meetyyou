@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
 
 const Section = ({ title, children, defaultOpen = true, showMore = false }) => {
@@ -49,6 +50,9 @@ export default function Correspondances() {
   
   const [currentUser, setCurrentUser] = useState(null);
   const [criteria, setCriteria] = useState({
+    profile_title: '',
+    about_yourself: '',
+    looking_for_in_partner: '',
     looking_for: 'women',
     age_min: '',
     age_max: '',
@@ -749,6 +753,43 @@ export default function Correspondances() {
                   </div>
                 </div>
               </Section>
+
+          {/* In your own words */}
+          <Section title="In your own words">
+            <div className="space-y-4">
+              <div>
+                <label className="text-gray-700 text-sm mb-2 block flex items-center gap-2">
+                  Your profile title:
+                  <span className="bg-amber-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">i</span>
+                </label>
+                <Input 
+                  value={criteria.profile_title} 
+                  onChange={(e) => setCriteria(prev => ({ ...prev, profile_title: e.target.value }))} 
+                  placeholder="Your profile title"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-700 text-sm mb-2 block">A glimpse of yourself:</label>
+                <Textarea 
+                  value={criteria.about_yourself} 
+                  onChange={(e) => setCriteria(prev => ({ ...prev, about_yourself: e.target.value }))} 
+                  placeholder="A glimpse of yourself"
+                  className="min-h-[100px]"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-700 text-sm mb-2 block">What you are looking for in a partner:</label>
+                <Textarea 
+                  value={criteria.looking_for_in_partner} 
+                  onChange={(e) => setCriteria(prev => ({ ...prev, looking_for_in_partner: e.target.value }))} 
+                  placeholder="What you are looking for in a partner"
+                  className="min-h-[100px]"
+                />
+              </div>
+            </div>
+          </Section>
 
           {/* Submit button */}
           <div className="flex justify-center mt-8">
