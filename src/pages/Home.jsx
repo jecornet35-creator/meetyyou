@@ -13,6 +13,7 @@ export default function Home() {
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [filterMode, setFilterMode] = useState('default'); // 'default', 'simple', 'advanced'
 
   useEffect(() => {
     const handleOpenQuickSearch = () => setIsQuickSearchOpen(true);
@@ -45,28 +46,34 @@ export default function Home() {
 
   const blockedEmails = blockedUsers.map(b => b.blocked_email);
   
-  // Filtrage par défaut basé sur le profil de l'utilisateur
-  const filteredProfiles = profiles.filter(profile => {
-    // Exclure les profils bloqués
+  // Fonction de filtrage selon le mode
+  const applyFilters = (profile) => {
+    // Exclure les profils bloqués (toujours appliqué)
     if (blockedEmails.includes(profile.created_by)) return false;
     
-    // Exclure son propre profil
+    // Exclure son propre profil (toujours appliqué)
     if (currentUser && profile.created_by === currentUser.email) return false;
     
-    // Si on a le profil utilisateur, appliquer les filtres par défaut
-    if (userProfile) {
-      // Filtrer par genre recherché
-      if (userProfile.seeking_gender) {
-        if (profile.i_am !== userProfile.seeking_gender) return false;
+    // Filtrage selon le mode
+    if (filterMode === 'default') {
+      // Filtre par défaut : basé sur seeking_gender et age_min/age_max du profil
+      if (userProfile) {
+        if (userProfile.seeking_gender && profile.i_am !== userProfile.seeking_gender) return false;
+        if (userProfile.age_min && profile.age && profile.age < userProfile.age_min) return false;
+        if (userProfile.age_max && profile.age && profile.age > userProfile.age_max) return false;
       }
-      
-      // Filtrer par âge (age_min et age_max du profil utilisateur)
-      if (userProfile.age_min && profile.age && profile.age < userProfile.age_min) return false;
-      if (userProfile.age_max && profile.age && profile.age > userProfile.age_max) return false;
+    } else if (filterMode === 'simple') {
+      // Filtre simple : à implémenter avec les critères de recherche rapide
+      // TODO: Implémenter la logique du filtre simple
+    } else if (filterMode === 'advanced') {
+      // Filtre avancé : à implémenter avec tous les critères de correspondance
+      // TODO: Implémenter la logique du filtre avancé
     }
     
     return true;
-  });
+  };
+  
+  const filteredProfiles = profiles.filter(applyFilters);
 
   return (
     <div className="min-h-screen bg-gray-100">
