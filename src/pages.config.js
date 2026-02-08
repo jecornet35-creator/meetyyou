@@ -64,12 +64,13 @@ import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
+import Likes from './pages/Likes';
 import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
-import Likes from './pages/Likes';
+import AdminPhotos from './pages/AdminPhotos';
 
 
 export const PAGES = {
@@ -90,12 +91,13 @@ export const PAGES = {
     "EditProfile": EditProfile,
     "Home": Home,
     "Landing": Landing,
+    "Likes": Likes,
     "Messages": Messages,
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
-    "Likes": Likes,
+    "AdminPhotos": AdminPhotos,
 }
 
 export const pagesConfig = {
