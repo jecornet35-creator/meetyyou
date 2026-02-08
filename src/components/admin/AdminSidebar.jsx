@@ -59,6 +59,7 @@ const menuItems = [
     icon: BarChart3,
     subItems: [
       { label: 'Tableau de bord', page: 'AdminDashboard' },
+      { label: 'Rapports de modération', page: 'AdminAnalytics' },
       { label: 'Utilisateurs actifs', page: 'AdminActiveUsers' },
       { label: 'Rapports', page: 'AdminReportsExport' },
     ]
@@ -148,6 +149,7 @@ export default function AdminSidebar({ currentPage }) {
       'AdminTransactions': 'transactions',
       'AdminPromoCodes': 'promo_codes',
       'AdminDashboard': true,
+      'AdminAnalytics': true,
       'AdminActiveUsers': 'users',
       'AdminReportsExport': true,
       'AdminConfig': 'admin_management',
