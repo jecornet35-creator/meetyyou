@@ -61,20 +61,10 @@ export default function AdminUserProfile() {
     enabled: !!profileId,
   });
 
-  const { data: correspondance } = useQuery({
-    queryKey: ['correspondance', profile?.created_by],
-    queryFn: async () => {
-      const corrs = await base44.entities.Correspondance.filter({ created_by: profile.created_by });
-      return corrs[0] || null;
-    },
-    enabled: !!profile,
-  });
-
-  const InfoRow = ({ label, userValue, searchValue }) => (
-    <div className="grid grid-cols-3 py-2 border-b border-gray-100 text-sm">
+  const InfoRow = ({ label, value }) => (
+    <div className="flex justify-between py-2 border-b border-gray-100 text-sm">
       <div className="font-medium text-gray-600">{label}:</div>
-      <div className="text-gray-900">{userValue || 'Non renseigné'}</div>
-      <div className="text-gray-500">{searchValue || 'Pas de préférence'}</div>
+      <div className="text-gray-900">{value || 'Non renseigné'}</div>
     </div>
   );
 
@@ -163,87 +153,98 @@ export default function AdminUserProfile() {
             </div>
 
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white rounded-xl shadow-sm p-6">
-                <div className="grid grid-cols-3 gap-4 mb-4 pb-4 border-b">
-                  <div className="text-center"><h3 className="text-sm font-medium text-gray-500">Critère</h3></div>
-                  <div className="text-center"><h3 className="text-sm font-semibold text-gray-900">Profil</h3></div>
-                  <div className="text-center"><h3 className="text-sm font-semibold text-gray-900">Recherche</h3></div>
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
+                  <h2 className="text-white font-semibold text-lg">Informations essentielles</h2>
+                </div>
+                <div className="p-6">
+                  <InfoRow label="Nom complet" value={profile.first_name} />
+                  <InfoRow label="Âge" value={profile.age ? `${profile.age} ans` : null} />
+                  <InfoRow label="Genre" value={profile.i_am === 'homme' ? 'Homme' : 'Femme'} />
+                  <InfoRow label="Date de naissance" value={profile.birth_month && profile.birth_year ? `${profile.birth_month} ${profile.birth_year}` : null} />
+                  <InfoRow label="Email" value={profile.created_by} />
+                  <InfoRow label="Ville" value={profile.city} />
+                  <InfoRow label="État/Province" value={profile.state} />
+                  <InfoRow label="Pays" value={profile.country} />
+                  <InfoRow label="Nationalité" value={profile.nationality} />
                 </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-3">
-                  <h2 className="text-white font-semibold">Informations de base</h2>
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                  <h2 className="text-white font-semibold text-lg">Identité & Apparence</h2>
                 </div>
                 <div className="p-6">
-                  <InfoRow label="Niveau d'études" userValue={profile.education_level} searchValue={correspondance?.education_level} />
-                  <InfoRow label="A des enfants" userValue={profile.has_children || 'Non'} searchValue={correspondance?.has_children} />
-                  <InfoRow label="Alcool" userValue={translateValue(profile.drinking, 'drinking')} searchValue={correspondance?.drinking?.[0]} />
-                  <InfoRow label="Tabac" userValue={translateValue(profile.smoking, 'smoking')} searchValue={correspondance?.smoking?.[0]} />
-                  <InfoRow label="Religion" userValue={profile.religion} searchValue={correspondance?.religion?.[0]} />
-                  <InfoRow label="Profession" userValue={profile.occupation} searchValue={correspondance?.occupation?.[0]} />
+                  <InfoRow label="Taille" value={profile.height} />
+                  <InfoRow label="Poids" value={profile.weight} />
+                  <InfoRow label="Type de corps" value={translateValue(profile.body_type, 'body_type')} />
+                  <InfoRow label="Couleur cheveux" value={translateValue(profile.hair_color, 'hair_color')} />
+                  <InfoRow label="Couleur yeux" value={translateValue(profile.eye_color, 'eye_color')} />
+                  <InfoRow label="Ethnicité" value={translateValue(profile.ethnicity, 'ethnicity')} />
+                  <InfoRow label="Art corporel" value={profile.body_art?.join(', ')} />
                 </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-6 py-3">
-                  <h2 className="text-white font-semibold">Apparence</h2>
+                <div className="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
+                  <h2 className="text-white font-semibold text-lg">Situation personnelle</h2>
                 </div>
                 <div className="p-6">
-                  <InfoRow label="Couleur cheveux" userValue={translateValue(profile.hair_color, 'hair_color')} searchValue={correspondance?.hair_color?.[0]} />
-                  <InfoRow label="Couleur yeux" userValue={translateValue(profile.eye_color, 'eye_color')} searchValue={correspondance?.eye_color?.[0]} />
-                  <InfoRow label="Taille" userValue={profile.height} searchValue={correspondance?.height_min && correspondance?.height_max ? `${correspondance.height_min} - ${correspondance.height_max}` : null} />
-                  <InfoRow label="Poids" userValue={profile.weight} searchValue={correspondance?.weight_min && correspondance?.weight_max ? `${correspondance.weight_min} - ${correspondance.weight_max}` : null} />
-                  <InfoRow label="Type de corps" userValue={translateValue(profile.body_type, 'body_type')} searchValue={correspondance?.body_type?.[0]} />
-                  <InfoRow label="Ethnicité" userValue={translateValue(profile.ethnicity, 'ethnicity')} searchValue={correspondance?.ethnicity?.[0]} />
+                  <InfoRow label="Situation familiale" value={translateValue(profile.family_situation, 'family_situation')} />
+                  <InfoRow label="A des enfants" value={profile.has_children} />
+                  <InfoRow label="Nombre d'enfants" value={profile.number_of_children} />
+                  <InfoRow label="Veut des enfants" value={translateValue(profile.want_children, 'want_children')} />
+                  <InfoRow label="Profession" value={profile.occupation} />
+                  <InfoRow label="Statut professionnel" value={profile.professional_status} />
+                  <InfoRow label="Revenu annuel" value={profile.annual_income} />
+                  <InfoRow label="Niveau d'études" value={profile.education_level} />
                 </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-green-500 to-green-600 px-6 py-3">
-                  <h2 className="text-white font-semibold">Style de vie</h2>
+                <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-6 py-4">
+                  <h2 className="text-white font-semibold text-lg">Langue & Culture</h2>
                 </div>
                 <div className="p-6">
-                  <InfoRow label="Statut matrimonial" userValue={translateValue(profile.family_situation, 'family_situation')} searchValue={correspondance?.family_situation?.[0]} />
-                  <InfoRow label="Veut des enfants" userValue={translateValue(profile.want_children, 'want_children')} searchValue={correspondance?.want_children?.[0]} />
-                  <InfoRow label="Statut professionnel" userValue={profile.professional_status} searchValue={correspondance?.professional_status?.[0]} />
-                  <InfoRow label="Revenu" userValue={profile.annual_income} searchValue={correspondance?.annual_income_min} />
-                  <InfoRow label="Situation de vie" userValue={profile.living_situation} searchValue={correspondance?.living_situation?.[0]} />
+                  <InfoRow label="Langues parlées" value={profile.languages_spoken?.join(', ')} />
+                  <InfoRow label="Niveau d'anglais" value={profile.english_proficiency} />
+                  <InfoRow label="Niveau de français" value={profile.french_proficiency} />
+                  <InfoRow label="Religion" value={profile.religion} />
+                  <InfoRow label="Valeurs religieuses" value={profile.religious_values} />
+                  <InfoRow label="Polygamie" value={translateValue(profile.polygamy, 'polygamy')} />
                 </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3">
-                  <h2 className="text-white font-semibold">Origines / Valeurs culturelles</h2>
+                <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
+                  <h2 className="text-white font-semibold text-lg">Style de vie</h2>
                 </div>
                 <div className="p-6">
-                  <InfoRow label="Nationalité" userValue={profile.nationality} searchValue={correspondance?.nationality?.[0]} />
-                  <InfoRow label="Langues parlées" userValue={profile.languages_spoken?.join(', ')} searchValue={correspondance?.languages_spoken?.join(', ')} />
-                  <InfoRow label="Niveau d'anglais" userValue={profile.english_proficiency} searchValue={correspondance?.english_proficiency} />
-                  <InfoRow label="Niveau de français" userValue={profile.french_proficiency} searchValue={correspondance?.french_proficiency} />
-                  <InfoRow label="Valeurs religieuses" userValue={profile.religious_values} searchValue={correspondance?.religious_values?.[0]} />
-                  <InfoRow label="Polygamie" userValue={translateValue(profile.polygamy, 'polygamy')} searchValue={correspondance?.polygamy?.[0]} />
+                  <InfoRow label="Fumeur" value={translateValue(profile.smoking, 'smoking')} />
+                  <InfoRow label="Alcool" value={translateValue(profile.drinking, 'drinking')} />
+                  <InfoRow label="Situation de vie" value={profile.living_situation} />
+                  <InfoRow label="Prêt à déménager" value={profile.ready_to_move} />
                 </div>
               </div>
 
               {profile.about_me && (
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                  <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3">
-                    <h2 className="text-white font-semibold">À propos de moi</h2>
+                  <div className="bg-gradient-to-r from-pink-500 to-pink-600 px-6 py-4">
+                    <h2 className="text-white font-semibold text-lg">À propos</h2>
                   </div>
                   <div className="p-6">
-                    <p className="text-gray-700 leading-relaxed">{profile.about_me}</p>
+                    <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{profile.about_me}</p>
                   </div>
                 </div>
               )}
 
               {profile.looking_for_in_partner && (
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                  <div className="bg-gradient-to-r from-pink-500 to-pink-600 px-6 py-3">
-                    <h2 className="text-white font-semibold">Je recherche</h2>
+                  <div className="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
+                    <h2 className="text-white font-semibold text-lg">Recherche</h2>
                   </div>
                   <div className="p-6">
-                    <p className="text-gray-700 leading-relaxed">{profile.looking_for_in_partner}</p>
+                    <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{profile.looking_for_in_partner}</p>
                   </div>
                 </div>
               )}
