@@ -28,6 +28,7 @@ const menuItems = [
     subItems: [
       { label: 'Signalements', page: 'AdminReports' },
       { label: 'Conversations signalées', page: 'AdminFlaggedMessages' },
+      { label: 'Modération automatique', page: 'AdminAutoModeration' },
       { label: 'Détection de fraude', page: 'AdminFraud' },
       { label: 'Journal d\'audit', page: 'AdminAuditLog' },
     ]
@@ -139,6 +140,7 @@ export default function AdminSidebar({ currentPage }) {
       'AdminBanned': 'users',
       'AdminReports': 'reports',
       'AdminFlaggedMessages': 'messages',
+      'AdminAutoModeration': 'reports',
       'AdminFraud': 'reports',
       'AdminAuditLog': 'admin_management',
       'AdminMessages': 'messages',

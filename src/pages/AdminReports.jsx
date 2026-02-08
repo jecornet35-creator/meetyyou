@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { checkAndApplyAutoModeration } from '@/components/moderation/AutoModerationEngine';
 
 const typeIcons = {
   profile: User,
@@ -69,6 +70,29 @@ export default function AdminReports() {
     queryKey: ['moderation-actions'],
     queryFn: () => base44.entities.ModerationAction.list('-created_date', 200),
   });
+
+  // Vérifier la modération automatique quand les signalements changent
+  React.useEffect(() => {
+    if (reports.length > 0) {
+      const latestReport = reports[0];
+      if (latestReport.reported_user_email && latestReport.created_date) {
+        // Vérifier si c'est un nouveau signalement (moins de 1 minute)
+        const reportAge = Date.now() - new Date(latestReport.created_date).getTime();
+        if (reportAge < 60000) {
+          checkAndApplyAutoModeration(
+            latestReport.reported_user_email,
+            latestReport.reported_profile_id,
+            latestReport.type
+          ).then(result => {
+            if (result?.success) {
+              queryClient.invalidateQueries({ queryKey: ['moderation-actions'] });
+              toast.info(`Action automatique: ${result.rule.name}`);
+            }
+          });
+        }
+      }
+    }
+  }, [reports]);
 
   const updateReportMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Report.update(id, data),
