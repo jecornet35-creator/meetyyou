@@ -10,6 +10,8 @@ export default function Layout({ children, currentPageName }) {
   useEffect(() => {
     const checkAdminRedirect = async () => {
       try {
+        // TODO: Redirection admin temporairement désactivée
+        /* 
         const user = await base44.auth.me();
         const roles = await base44.entities.AdminRole.filter({ user_email: user.email });
         
@@ -20,6 +22,7 @@ export default function Layout({ children, currentPageName }) {
             return;
           }
         }
+        */
       } catch (error) {
         // L'utilisateur n'est pas connecté ou une erreur s'est produite
       } finally {
