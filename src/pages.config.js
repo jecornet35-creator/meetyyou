@@ -50,8 +50,6 @@
 import Activities from './pages/Activities';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminEmails from './pages/AdminEmails';
-import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
-import AdminPhotos from './pages/AdminPhotos';
 import AdminPromoCodes from './pages/AdminPromoCodes';
 import AdminReports from './pages/AdminReports';
 import AdminSubscriptionPlans from './pages/AdminSubscriptionPlans';
@@ -72,15 +70,14 @@ import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
-import AdminUserProfile from './pages/AdminUserProfile';
+import AdminPhotos from './pages/AdminPhotos';
+import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
 
 
 export const PAGES = {
     "Activities": Activities,
     "AdminDashboard": AdminDashboard,
     "AdminEmails": AdminEmails,
-    "AdminFlaggedMessages": AdminFlaggedMessages,
-    "AdminPhotos": AdminPhotos,
     "AdminPromoCodes": AdminPromoCodes,
     "AdminReports": AdminReports,
     "AdminSubscriptionPlans": AdminSubscriptionPlans,
@@ -101,7 +98,8 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
-    "AdminUserProfile": AdminUserProfile,
+    "AdminPhotos": AdminPhotos,
+    "AdminFlaggedMessages": AdminFlaggedMessages,
 }
 
 export const pagesConfig = {
