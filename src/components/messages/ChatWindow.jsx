@@ -3,12 +3,31 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Check, CheckCheck, ArrowLeft } from 'lucide-react';
+import { Send, Check, CheckCheck, ArrowLeft, Flag } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [newMessage, setNewMessage] = useState('');
+  const [showReportDialog, setShowReportDialog] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportDescription, setReportDescription] = useState('');
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -120,6 +139,27 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     sendMutation.mutate(newMessage.trim());
   };
 
+  const reportMutation = useMutation({
+    mutationFn: async () => {
+      await base44.entities.FlaggedConversation.create({
+        conversation_id: conversation.id,
+        reporter_email: currentUser.email,
+        reporter_name: currentUser.full_name,
+        reported_email: otherParticipant.email,
+        reported_name: otherParticipant.display_name,
+        reason: reportReason,
+        description: reportDescription,
+        status: 'pending'
+      });
+    },
+    onSuccess: () => {
+      toast.success('Conversation signalée');
+      setShowReportDialog(false);
+      setReportReason('');
+      setReportDescription('');
+    }
+  });
+
   if (!conversation) {
     return (
       <div className="flex-1 flex items-center justify-center bg-gray-50">
@@ -143,10 +183,18 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           alt={otherParticipant.display_name}
           className="w-10 h-10 rounded-full object-cover"
         />
-        <div>
+        <div className="flex-1">
           <h2 className="font-semibold">{otherParticipant.display_name || 'Utilisateur'}</h2>
           <p className="text-xs text-gray-500">En ligne</p>
         </div>
+        <Button 
+          variant="ghost" 
+          size="icon"
+          onClick={() => setShowReportDialog(true)}
+          className="text-gray-500 hover:text-red-600"
+        >
+          <Flag className="w-5 h-5" />
+        </Button>
       </div>
 
       {/* Messages */}
@@ -214,6 +262,69 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           </Button>
         </div>
       </form>
+
+      {/* Dialog signalement */}
+      <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Signaler cette conversation</DialogTitle>
+            <DialogDescription>
+              Signalez cette conversation si elle enfreint nos règles de conduite.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Raison du signalement</label>
+              <Select value={reportReason} onValueChange={setReportReason}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionnez une raison" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="harassment">Harcèlement</SelectItem>
+                  <SelectItem value="inappropriate_content">Contenu inapproprié</SelectItem>
+                  <SelectItem value="spam">Spam</SelectItem>
+                  <SelectItem value="scam">Arnaque</SelectItem>
+                  <SelectItem value="fake_profile">Faux profil</SelectItem>
+                  <SelectItem value="other">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Description (optionnel)</label>
+              <Textarea
+                placeholder="Décrivez le problème..."
+                value={reportDescription}
+                onChange={(e) => setReportDescription(e.target.value)}
+                rows={4}
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowReportDialog(false);
+                  setReportReason('');
+                  setReportDescription('');
+                }}
+                className="flex-1"
+              >
+                Annuler
+              </Button>
+              <Button
+                onClick={() => reportMutation.mutate()}
+                variant="destructive"
+                className="flex-1"
+                disabled={!reportReason || reportMutation.isPending}
+              >
+                Signaler
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

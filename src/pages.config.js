@@ -71,6 +71,7 @@ import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
 import AdminPhotos from './pages/AdminPhotos';
+import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
 
 
 export const PAGES = {
@@ -98,6 +99,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
     "AdminPhotos": AdminPhotos,
+    "AdminFlaggedMessages": AdminFlaggedMessages,
 }
 
 export const pagesConfig = {
