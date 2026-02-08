@@ -89,7 +89,7 @@ export default function Header({ user }) {
                       Modifier Mon Profil
                     </DropdownMenuItem>
                   </Link>
-                  <Link to={createPageUrl('EditProfile') + '?tab=photos'}>
+                  <Link to={createPageUrl('PhotosManagement')}>
                     <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                       <Camera className="w-4 h-4 mr-3 text-gray-400" />
                       Photos

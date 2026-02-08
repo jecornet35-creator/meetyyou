@@ -79,6 +79,7 @@ import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
 import LoisirsInterets from './pages/LoisirsInterets';
 import AdminTrustScores from './pages/AdminTrustScores';
+import PhotosManagement from './pages/PhotosManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -115,6 +116,7 @@ export const PAGES = {
     "VerifyProfile": VerifyProfile,
     "LoisirsInterets": LoisirsInterets,
     "AdminTrustScores": AdminTrustScores,
+    "PhotosManagement": PhotosManagement,
 }
 
 export const pagesConfig = {
