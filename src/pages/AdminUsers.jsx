@@ -7,6 +7,7 @@ import AdminSidebar from '@/components/admin/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -32,6 +33,10 @@ export default function AdminUsers() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [countryFilter, setCountryFilter] = useState('all');
+  const [familyStatusFilter, setFamilyStatusFilter] = useState('all');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
 
   const { data: profiles = [], isLoading } = useQuery({
     queryKey: ['admin-all-profiles'],
@@ -48,6 +53,10 @@ export default function AdminUsers() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-all-profiles'] }),
   });
 
+  // Extract unique countries and family situations
+  const uniqueCountries = [...new Set(profiles.map(p => p.country).filter(Boolean))].sort();
+  const familyStatuses = ['bachelor', 'separated', 'widower', 'divorce', 'other'];
+
   const filteredProfiles = profiles.filter(profile => {
     const matchesSearch = !search || 
       profile.display_name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -59,7 +68,14 @@ export default function AdminUsers() {
       (statusFilter === 'online' && profile.is_online) ||
       (statusFilter === 'unverified' && !profile.is_verified);
     
-    return matchesSearch && matchesStatus;
+    const matchesCountry = countryFilter === 'all' || profile.country === countryFilter;
+    
+    const matchesFamilyStatus = familyStatusFilter === 'all' || profile.family_situation === familyStatusFilter;
+    
+    const matchesDateRange = (!dateFrom || new Date(profile.created_date) >= new Date(dateFrom)) &&
+                             (!dateTo || new Date(profile.created_date) <= new Date(dateTo));
+    
+    return matchesSearch && matchesStatus && matchesCountry && matchesFamilyStatus && matchesDateRange;
   });
 
   const handleVerify = (profile) => {
@@ -83,7 +99,7 @@ export default function AdminUsers() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
+        <div className="bg-white rounded-lg shadow p-4 mb-6 space-y-4">
           <div className="flex flex-wrap gap-4">
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
@@ -112,6 +128,74 @@ export default function AdminUsers() {
                 </Button>
               ))}
             </div>
+          </div>
+
+          <div className="flex flex-wrap gap-4 items-end">
+            <div className="w-48">
+              <label className="text-sm font-medium text-gray-700 mb-1 block">Pays</label>
+              <Select value={countryFilter} onValueChange={setCountryFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Tous les pays" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les pays</SelectItem>
+                  {uniqueCountries.map(country => (
+                    <SelectItem key={country} value={country}>{country}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="w-56">
+              <label className="text-sm font-medium text-gray-700 mb-1 block">Statut matrimonial</label>
+              <Select value={familyStatusFilter} onValueChange={setFamilyStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Tous les statuts" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les statuts</SelectItem>
+                  <SelectItem value="bachelor">Célibataire</SelectItem>
+                  <SelectItem value="separated">Séparé</SelectItem>
+                  <SelectItem value="widower">Veuf/Veuve</SelectItem>
+                  <SelectItem value="divorce">Divorcé</SelectItem>
+                  <SelectItem value="other">Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="w-44">
+              <label className="text-sm font-medium text-gray-700 mb-1 block">Date début</label>
+              <Input
+                type="date"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+              />
+            </div>
+
+            <div className="w-44">
+              <label className="text-sm font-medium text-gray-700 mb-1 block">Date fin</label>
+              <Input
+                type="date"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+              />
+            </div>
+
+            {(countryFilter !== 'all' || familyStatusFilter !== 'all' || dateFrom || dateTo) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setCountryFilter('all');
+                  setFamilyStatusFilter('all');
+                  setDateFrom('');
+                  setDateTo('');
+                }}
+                className="mb-0.5"
+              >
+                Réinitialiser
+              </Button>
+            )}
           </div>
         </div>
 
