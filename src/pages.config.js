@@ -74,6 +74,7 @@ import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
 import AdminManagement from './pages/AdminManagement';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
@@ -109,4 +110,5 @@ export const PAGES = {
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
+    Layout: __Layout,
 };

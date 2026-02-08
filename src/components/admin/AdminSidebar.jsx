@@ -106,11 +106,62 @@ const menuItems = [
 
 export default function AdminSidebar({ currentPage }) {
   const [expandedItems, setExpandedItems] = useState(['users', 'moderation', 'subscriptions', 'analytics']);
+  const [currentUser, setCurrentUser] = React.useState(null);
+  const [userRole, setUserRole] = React.useState(null);
+
+  React.useEffect(() => {
+    base44.auth.me().then(async (user) => {
+      setCurrentUser(user);
+      const roles = await base44.entities.AdminRole.filter({ user_email: user.email });
+      setUserRole(roles[0] || null);
+    });
+  }, []);
 
   const toggleExpand = (id) => {
     setExpandedItems(prev => 
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
+  };
+
+  const hasPermission = (page) => {
+    if (!userRole) return true;
+    if (userRole.role === 'admin') return true;
+    
+    const permissionMap = {
+      'AdminUsers': 'users',
+      'AdminVerification': 'verification',
+      'AdminPhotos': 'photos',
+      'AdminBanned': 'users',
+      'AdminReports': 'reports',
+      'AdminFlaggedMessages': 'messages',
+      'AdminFraud': 'reports',
+      'AdminAuditLog': 'admin_management',
+      'AdminMessages': 'messages',
+      'AdminMessageStats': 'messages',
+      'AdminMatches': 'users',
+      'AdminSubscriptionPlans': 'subscriptions',
+      'AdminSubscriptions': 'subscriptions',
+      'AdminTransactions': 'transactions',
+      'AdminPromoCodes': 'promo_codes',
+      'AdminDashboard': true,
+      'AdminActiveUsers': 'users',
+      'AdminReportsExport': true,
+      'AdminConfig': 'admin_management',
+      'AdminMatchingRules': 'admin_management',
+      'AdminMaintenance': 'admin_management',
+      'AdminCMS': 'emails',
+      'AdminPushNotifications': 'emails',
+      'AdminEmails': 'emails',
+      'AdminTickets': 'tickets',
+      'AdminCannedResponses': 'tickets',
+      'AdminGDPR': 'admin_management',
+      'AdminSecurityLogs': 'admin_management',
+      'AdminManagement': 'admin_management'
+    };
+    
+    const permission = permissionMap[page];
+    if (permission === true) return true;
+    return permission ? userRole.permissions?.[permission] : false;
   };
 
   return (
@@ -149,7 +200,7 @@ export default function AdminSidebar({ currentPage }) {
               
               {isExpanded && (
                 <div className="bg-gray-800/50">
-                  {item.subItems.map((subItem) => (
+                  {item.subItems.filter(subItem => hasPermission(subItem.page)).map((subItem) => (
                     <Link
                       key={subItem.page}
                       to={createPageUrl(subItem.page)}
