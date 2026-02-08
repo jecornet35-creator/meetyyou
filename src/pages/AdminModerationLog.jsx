@@ -154,7 +154,8 @@ export default function AdminModerationLog() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tous les modérateurs</SelectItem>
-              {uniqueModerators.map(mod => (
+              <SelectItem value="system@auto-moderation">🤖 Actions automatiques</SelectItem>
+              {uniqueModerators.filter(m => m !== 'system@auto-moderation').map(mod => (
                 <SelectItem key={mod} value={mod}>{mod}</SelectItem>
               ))}
             </SelectContent>
@@ -184,6 +185,11 @@ export default function AdminModerationLog() {
                           <Badge className={actionTypeColors[action.action_type]}>
                             {actionTypeLabels[action.action_type]}
                           </Badge>
+                          {action.moderator_email === 'system@auto-moderation' && (
+                            <Badge variant="default" className="bg-blue-600">
+                              🤖 Automatique
+                            </Badge>
+                          )}
                           <span className="text-sm text-gray-500">
                             {action.created_date && format(new Date(action.created_date), 'dd MMM yyyy HH:mm', { locale: fr })}
                           </span>
