@@ -5,6 +5,10 @@ import AdminSidebar from '@/components/admin/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 import {
   Select,
   SelectContent,
@@ -48,15 +52,50 @@ export default function AdminReports() {
   const queryClient = useQueryClient();
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [actionDialog, setActionDialog] = useState({ open: false, report: null, actionType: null });
+  const [actionDetails, setActionDetails] = useState({ reason: '', details: '', suspensionDays: 7 });
+  const [currentUser, setCurrentUser] = useState(null);
+
+  React.useEffect(() => {
+    base44.auth.me().then(setCurrentUser);
+  }, []);
 
   const { data: reports = [], isLoading } = useQuery({
     queryKey: ['admin-reports'],
     queryFn: () => base44.entities.Report.list('-created_date', 100),
   });
 
+  const { data: moderationActions = [] } = useQuery({
+    queryKey: ['moderation-actions'],
+    queryFn: () => base44.entities.ModerationAction.list('-created_date', 200),
+  });
+
   const updateReportMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.Report.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-reports'] }),
+  });
+
+  const createModerationActionMutation = useMutation({
+    mutationFn: (data) => base44.entities.ModerationAction.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['moderation-actions'] });
+      toast.success('Action de modération enregistrée');
+    },
+  });
+
+  const updateUserStatusMutation = useMutation({
+    mutationFn: async ({ userEmail, statusData }) => {
+      const existing = await base44.entities.UserStatus.filter({ user_email: userEmail });
+      if (existing.length > 0) {
+        return base44.entities.UserStatus.update(existing[0].id, statusData);
+      } else {
+        return base44.entities.UserStatus.create({ user_email: userEmail, ...statusData });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      toast.success('Statut utilisateur mis à jour');
+    },
   });
 
   const filteredReports = reports.filter(report => {
@@ -73,6 +112,78 @@ export default function AdminReports() {
       id: reportId, 
       data: { status: newStatus, action_taken: action }
     });
+  };
+
+  const openActionDialog = (report, actionType) => {
+    setActionDialog({ open: true, report, actionType });
+    setActionDetails({ reason: report.reason || '', details: '', suspensionDays: 7 });
+  };
+
+  const handleModerationAction = async () => {
+    const { report, actionType } = actionDialog;
+    if (!report || !currentUser) return;
+
+    try {
+      // Compter les actions précédentes sur cet utilisateur
+      const previousActions = moderationActions.filter(
+        a => a.target_user_email === report.reported_user_email
+      );
+
+      // Créer l'action de modération
+      const actionData = {
+        moderator_email: currentUser.email,
+        moderator_name: currentUser.full_name || currentUser.email,
+        target_user_email: report.reported_user_email,
+        target_profile_id: report.reported_profile_id,
+        action_type: actionType,
+        reason: actionDetails.reason,
+        details: actionDetails.details,
+        related_report_id: report.id,
+        previous_action_count: previousActions.length,
+      };
+
+      if (actionType === 'temporary_suspension') {
+        const suspensionEnd = new Date();
+        suspensionEnd.setDate(suspensionEnd.getDate() + parseInt(actionDetails.suspensionDays));
+        actionData.suspension_end_date = suspensionEnd.toISOString();
+      }
+
+      await createModerationActionMutation.mutateAsync(actionData);
+
+      // Mettre à jour le statut de l'utilisateur
+      const statusUpdate = {};
+      if (actionType === 'warning') {
+        statusUpdate.status = 'warned';
+        statusUpdate.warning_count = previousActions.filter(a => a.action_type === 'warning').length + 1;
+        statusUpdate.last_warning_date = new Date().toISOString();
+      } else if (actionType === 'temporary_suspension') {
+        statusUpdate.status = 'suspended';
+        statusUpdate.suspension_count = previousActions.filter(a => a.action_type === 'temporary_suspension').length + 1;
+        const suspensionEnd = new Date();
+        suspensionEnd.setDate(suspensionEnd.getDate() + parseInt(actionDetails.suspensionDays));
+        statusUpdate.suspension_end_date = suspensionEnd.toISOString();
+      } else if (actionType === 'permanent_ban') {
+        statusUpdate.status = 'banned';
+        statusUpdate.ban_reason = actionDetails.reason;
+        statusUpdate.banned_at = new Date().toISOString();
+      }
+
+      await updateUserStatusMutation.mutateAsync({
+        userEmail: report.reported_user_email,
+        statusData: statusUpdate,
+      });
+
+      // Mettre à jour le signalement
+      updateReportMutation.mutate({
+        id: report.id,
+        data: { status: 'resolved', action_taken: actionType },
+      });
+
+      setActionDialog({ open: false, report: null, actionType: null });
+      setActionDetails({ reason: '', details: '', suspensionDays: 7 });
+    } catch (error) {
+      toast.error('Erreur lors de l\'action de modération');
+    }
   };
 
   return (
@@ -217,15 +328,23 @@ export default function AdminReports() {
                             size="sm"
                             variant="outline"
                             className="text-orange-600 border-orange-600"
-                            onClick={() => handleStatusChange(report.id, 'resolved', 'warning')}
+                            onClick={() => openActionDialog(report, 'warning')}
                           >
                             Avertir
                           </Button>
                           <Button
                             size="sm"
                             variant="outline"
+                            className="text-amber-600 border-amber-600"
+                            onClick={() => openActionDialog(report, 'temporary_suspension')}
+                          >
+                            Suspendre
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
                             className="text-red-600 border-red-600"
-                            onClick={() => handleStatusChange(report.id, 'resolved', 'ban')}
+                            onClick={() => openActionDialog(report, 'permanent_ban')}
                           >
                             <Ban className="w-4 h-4 mr-1" />
                             Bannir
@@ -247,6 +366,81 @@ export default function AdminReports() {
             })
           )}
         </div>
+
+        {/* Action Dialog */}
+        <Dialog open={actionDialog.open} onOpenChange={(open) => setActionDialog({ ...actionDialog, open })}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>
+                {actionDialog.actionType === 'warning' && 'Avertir l\'utilisateur'}
+                {actionDialog.actionType === 'temporary_suspension' && 'Suspendre temporairement'}
+                {actionDialog.actionType === 'permanent_ban' && 'Bannir définitivement'}
+              </DialogTitle>
+              <DialogDescription>
+                Action contre: {actionDialog.report?.reported_user_email}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Raison</label>
+                <Input
+                  value={actionDetails.reason}
+                  onChange={(e) => setActionDetails({ ...actionDetails, reason: e.target.value })}
+                  placeholder="Raison principale..."
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Détails supplémentaires</label>
+                <Textarea
+                  value={actionDetails.details}
+                  onChange={(e) => setActionDetails({ ...actionDetails, details: e.target.value })}
+                  placeholder="Détails de l'action..."
+                  rows={4}
+                />
+              </div>
+
+              {actionDialog.actionType === 'temporary_suspension' && (
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Durée de suspension (jours)</label>
+                  <Input
+                    type="number"
+                    value={actionDetails.suspensionDays}
+                    onChange={(e) => setActionDetails({ ...actionDetails, suspensionDays: e.target.value })}
+                    min="1"
+                    max="365"
+                  />
+                </div>
+              )}
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <p className="text-sm text-yellow-800">
+                  <strong>⚠️ Attention:</strong> Cette action sera enregistrée dans le journal de modération et notifiera l'utilisateur.
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() => setActionDialog({ open: false, report: null, actionType: null })}
+                >
+                  Annuler
+                </Button>
+                <Button
+                  onClick={handleModerationAction}
+                  className={
+                    actionDialog.actionType === 'permanent_ban' ? 'bg-red-600 hover:bg-red-700' :
+                    actionDialog.actionType === 'temporary_suspension' ? 'bg-amber-600 hover:bg-amber-700' :
+                    'bg-orange-600 hover:bg-orange-700'
+                  }
+                >
+                  Confirmer l'action
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

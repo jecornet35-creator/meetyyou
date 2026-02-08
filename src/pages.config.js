@@ -74,6 +74,7 @@ import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
 import AdminManagement from './pages/AdminManagement';
+import AdminModerationLog from './pages/AdminModerationLog';
 import __Layout from './Layout.jsx';
 
 
@@ -105,6 +106,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
     "AdminManagement": AdminManagement,
+    "AdminModerationLog": AdminModerationLog,
 }
 
 export const pagesConfig = {
