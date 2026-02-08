@@ -173,12 +173,12 @@ export default function AdminUsers() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="gap-2" asChild>
-                          <a href={`/AdminUserProfile?id=${profile.id}`}>
+                        <Link to={createPageUrl('AdminUserProfile') + `?id=${profile.id}`}>
+                          <DropdownMenuItem className="gap-2">
                             <Eye className="w-4 h-4" />
                             Voir le profil
-                          </a>
-                        </DropdownMenuItem>
+                          </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem className="gap-2" onClick={() => handleVerify(profile)}>
                           <UserCheck className="w-4 h-4" />
                           {profile.is_verified ? 'Retirer vérification' : 'Vérifier profil'}
