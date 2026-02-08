@@ -48,6 +48,8 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import Activities from './pages/Activities';
+import AdminAnalytics from './pages/AdminAnalytics';
+import AdminAutoModeration from './pages/AdminAutoModeration';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminEmails from './pages/AdminEmails';
 import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
@@ -75,13 +77,13 @@ import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
-import AdminAnalytics from './pages/AdminAnalytics';
-import AdminAutoModeration from './pages/AdminAutoModeration';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "Activities": Activities,
+    "AdminAnalytics": AdminAnalytics,
+    "AdminAutoModeration": AdminAutoModeration,
     "AdminDashboard": AdminDashboard,
     "AdminEmails": AdminEmails,
     "AdminFlaggedMessages": AdminFlaggedMessages,
@@ -109,8 +111,6 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
-    "AdminAnalytics": AdminAnalytics,
-    "AdminAutoModeration": AdminAutoModeration,
 }
 
 export const pagesConfig = {

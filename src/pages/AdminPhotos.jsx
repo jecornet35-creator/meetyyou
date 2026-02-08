@@ -30,6 +30,7 @@ export default function AdminPhotos() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
+  const [fraudRiskLevel, setFraudRiskLevel] = useState('low');
   const [currentUser, setCurrentUser] = useState(null);
   const queryClient = useQueryClient();
 
@@ -101,7 +102,7 @@ export default function AdminPhotos() {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: async ({ moderation, reason }) => {
+    mutationFn: async ({ moderation, reason, riskLevel }) => {
       // Marquer comme rejetée
       await base44.entities.PhotoModeration.update(moderation.id, {
         status: 'rejected',
@@ -109,6 +110,47 @@ export default function AdminPhotos() {
         reviewed_at: new Date().toISOString(),
         rejection_reason: reason,
       });
+
+      // Créer un signalement de fraude potentiel
+      const fraudReport = await base44.entities.Report.create({
+        reporter_email: currentUser?.email || 'system@admin',
+        reported_user_email: moderation.user_email,
+        reported_profile_id: moderation.profile_id,
+        type: 'photo',
+        reason: riskLevel === 'high' ? 'Photo volée / trouvée sur internet' : 'Photo non conforme aux règles',
+        description: `Photo supprimée par ${currentUser?.email}. Raison: ${reason}. Niveau de risque: ${riskLevel === 'high' ? 'ÉLEVÉ - Surveillance requise' : 'Faible'}`,
+        evidence_urls: [moderation.photo_url],
+        status: 'pending',
+        priority: riskLevel === 'high' ? 'high' : 'medium'
+      });
+
+      // Si risque élevé, créer une action de modération automatique
+      if (riskLevel === 'high') {
+        await base44.entities.ModerationAction.create({
+          moderator_email: currentUser?.email || 'system@admin',
+          moderator_name: currentUser?.full_name || currentUser?.email || 'Administrateur',
+          target_user_email: moderation.user_email,
+          target_profile_id: moderation.profile_id,
+          action_type: 'content_removal',
+          reason: 'Photo volée ou trouvée sur internet - Risque élevé',
+          details: `Photo supprimée et utilisateur mis sous surveillance. ${reason}`,
+          related_report_id: fraudReport.id
+        });
+
+        // Marquer l'utilisateur pour surveillance
+        const existingStatus = await base44.entities.UserStatus.filter({ user_email: moderation.user_email });
+        if (existingStatus.length > 0) {
+          await base44.entities.UserStatus.update(existingStatus[0].id, {
+            notes: `⚠️ SURVEILLANCE: Photo volée détectée. ${existingStatus[0].notes || ''}`
+          });
+        } else {
+          await base44.entities.UserStatus.create({
+            user_email: moderation.user_email,
+            status: 'active',
+            notes: '⚠️ SURVEILLANCE: Photo volée détectée'
+          });
+        }
+      }
 
       // Supprimer la photo du profil
       const profile = profiles.find(p => p.id === moderation.profile_id);
@@ -149,10 +191,12 @@ export default function AdminPhotos() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['photoModerations'] });
       queryClient.invalidateQueries({ queryKey: ['profiles-with-photos'] });
-      toast.success('Photo supprimée et utilisateur notifié');
+      queryClient.invalidateQueries({ queryKey: ['admin-reports'] });
+      toast.success('Photo supprimée, utilisateur notifié et signalement créé');
       setShowRejectDialog(false);
       setSelectedPhoto(null);
       setRejectionReason('');
+      setFraudRiskLevel('low');
     },
   });
 
@@ -392,12 +436,43 @@ export default function AdminPhotos() {
           </DialogHeader>
 
           <div className="space-y-4">
-            <Textarea
-              placeholder="Ex: Photo inappropriée, ne respecte pas les conditions d'utilisation..."
-              value={rejectionReason}
-              onChange={(e) => setRejectionReason(e.target.value)}
-              rows={4}
-            />
+            <div>
+              <label className="text-sm font-medium mb-2 block">Raison de la suppression</label>
+              <Textarea
+                placeholder="Ex: Photo inappropriée, ne respecte pas les conditions d'utilisation..."
+                value={rejectionReason}
+                onChange={(e) => setRejectionReason(e.target.value)}
+                rows={4}
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Niveau de risque de fraude</label>
+              <Select value={fraudRiskLevel} onValueChange={setFraudRiskLevel}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
+                      <span>Faible - Photo non conforme aux règles</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="high">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                      <span>Élevé - Photo volée / internet (⚠️ Surveillance)</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {fraudRiskLevel === 'high' && (
+                <p className="text-xs text-red-600 mt-2">
+                  ⚠️ L'utilisateur sera automatiquement mis sous surveillance et un signalement de fraude sera créé.
+                </p>
+              )}
+            </div>
 
             <div className="flex gap-3">
               <Button
@@ -405,6 +480,7 @@ export default function AdminPhotos() {
                 onClick={() => {
                   setShowRejectDialog(false);
                   setRejectionReason('');
+                  setFraudRiskLevel('low');
                 }}
                 className="flex-1"
               >
@@ -413,7 +489,8 @@ export default function AdminPhotos() {
               <Button
                 onClick={() => rejectMutation.mutate({ 
                   moderation: selectedPhoto, 
-                  reason: rejectionReason 
+                  reason: rejectionReason,
+                  riskLevel: fraudRiskLevel
                 })}
                 variant="destructive"
                 className="flex-1"
