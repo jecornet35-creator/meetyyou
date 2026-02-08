@@ -78,6 +78,7 @@ import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
 import LoisirsInterets from './pages/LoisirsInterets';
+import AdminTrustScores from './pages/AdminTrustScores';
 import __Layout from './Layout.jsx';
 
 
@@ -113,6 +114,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
     "LoisirsInterets": LoisirsInterets,
+    "AdminTrustScores": AdminTrustScores,
 }
 
 export const pagesConfig = {
