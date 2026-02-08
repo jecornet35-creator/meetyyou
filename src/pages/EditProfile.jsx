@@ -135,25 +135,6 @@ export default function EditProfile() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      
-      {/* Profile Tabs */}
-      <div className="bg-gradient-to-r from-amber-700 to-amber-600 text-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="flex items-center gap-6 overflow-x-auto">
-            <Link to="#" className="py-3 px-4 flex items-center gap-2 hover:bg-white/10">
-              <Camera className="w-4 h-4" />
-              Photos
-            </Link>
-            <div className="py-3 px-4 border-b-2 border-white font-medium">
-              Profile
-            </div>
-            <Link to="#" className="py-3 px-4 hover:bg-white/10">Correspondences</Link>
-            <Link to="#" className="py-3 px-4 hover:bg-white/10">Flash</Link>
-            <Link to="#" className="py-3 px-4 hover:bg-white/10">Personality</Link>
-            <Link to="#" className="py-3 px-4 hover:bg-white/10">Verify Profile</Link>
-          </div>
-        </div>
-      </div>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">

@@ -62,6 +62,7 @@ import AdminSubscriptionPlans from './pages/AdminSubscriptionPlans';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
 import AdminTransactions from './pages/AdminTransactions';
+import AdminTrustScores from './pages/AdminTrustScores';
 import AdminUserProfile from './pages/AdminUserProfile';
 import AdminUsers from './pages/AdminUsers';
 import AdminVerification from './pages/AdminVerification';
@@ -72,14 +73,13 @@ import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
 import Likes from './pages/Likes';
+import LoisirsInterets from './pages/LoisirsInterets';
 import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
+import PhotosManagement from './pages/PhotosManagement';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
-import LoisirsInterets from './pages/LoisirsInterets';
-import AdminTrustScores from './pages/AdminTrustScores';
-import PhotosManagement from './pages/PhotosManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -99,6 +99,7 @@ export const PAGES = {
     "AdminSubscriptions": AdminSubscriptions,
     "AdminTickets": AdminTickets,
     "AdminTransactions": AdminTransactions,
+    "AdminTrustScores": AdminTrustScores,
     "AdminUserProfile": AdminUserProfile,
     "AdminUsers": AdminUsers,
     "AdminVerification": AdminVerification,
@@ -109,14 +110,13 @@ export const PAGES = {
     "Home": Home,
     "Landing": Landing,
     "Likes": Likes,
+    "LoisirsInterets": LoisirsInterets,
     "Messages": Messages,
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
+    "PhotosManagement": PhotosManagement,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
-    "LoisirsInterets": LoisirsInterets,
-    "AdminTrustScores": AdminTrustScores,
-    "PhotosManagement": PhotosManagement,
 }
 
 export const pagesConfig = {
