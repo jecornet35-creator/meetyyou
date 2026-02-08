@@ -135,6 +135,8 @@ export default function AdminManagement() {
 
   const isAdmin = myRole?.role === 'admin';
 
+  // TODO: Accès temporairement débloqué en mode développement
+  /*
   if (!isAdmin) {
     return (
       <div className="flex min-h-screen bg-gray-50">
@@ -149,6 +151,7 @@ export default function AdminManagement() {
       </div>
     );
   }
+  */
 
   const permissionLabels = {
     users: 'Gestion des utilisateurs',
