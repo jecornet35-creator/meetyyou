@@ -75,6 +75,7 @@ import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
+import AdminAnalytics from './pages/AdminAnalytics';
 import __Layout from './Layout.jsx';
 
 
@@ -107,6 +108,7 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
+    "AdminAnalytics": AdminAnalytics,
 }
 
 export const pagesConfig = {
