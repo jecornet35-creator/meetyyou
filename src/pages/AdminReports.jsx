@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select';
 import { 
   AlertTriangle, Clock, CheckCircle, XCircle, Eye, Ban, 
-  MessageCircle, User, Image, Flag
+  MessageCircle, User, Image, Flag, Merge, UserCog
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -56,6 +56,10 @@ export default function AdminReports() {
   const [actionDialog, setActionDialog] = useState({ open: false, report: null, actionType: null });
   const [actionDetails, setActionDetails] = useState({ reason: '', details: '', suspensionDays: 7 });
   const [currentUser, setCurrentUser] = useState(null);
+  const [selectedReports, setSelectedReports] = useState([]);
+  const [mergeDialog, setMergeDialog] = useState(false);
+  const [assignDialog, setAssignDialog] = useState({ open: false, report: null });
+  const [selectedModerator, setSelectedModerator] = useState('');
 
   React.useEffect(() => {
     base44.auth.me().then(setCurrentUser);
@@ -69,6 +73,11 @@ export default function AdminReports() {
   const { data: moderationActions = [] } = useQuery({
     queryKey: ['moderation-actions'],
     queryFn: () => base44.entities.ModerationAction.list('-created_date', 200),
+  });
+
+  const { data: moderators = [] } = useQuery({
+    queryKey: ['admin-roles'],
+    queryFn: () => base44.entities.AdminRole.filter({ is_active: true }),
   });
 
   // Vérifier la modération automatique quand les signalements changent
@@ -141,6 +150,85 @@ export default function AdminReports() {
   const openActionDialog = (report, actionType) => {
     setActionDialog({ open: true, report, actionType });
     setActionDetails({ reason: report.reason || '', details: '', suspensionDays: 7 });
+  };
+
+  const toggleReportSelection = (reportId) => {
+    setSelectedReports(prev => 
+      prev.includes(reportId) 
+        ? prev.filter(id => id !== reportId)
+        : [...prev, reportId]
+    );
+  };
+
+  const handleMergeReports = async () => {
+    if (selectedReports.length < 2) {
+      toast.error('Sélectionnez au moins 2 signalements à fusionner');
+      return;
+    }
+
+    try {
+      const reportsToMerge = reports.filter(r => selectedReports.includes(r.id));
+      const primaryReport = reportsToMerge[0];
+      
+      // Fusionner les descriptions
+      const mergedDescription = reportsToMerge
+        .map((r, i) => `[Signalement ${i + 1}] ${r.description}`)
+        .join('\n\n');
+      
+      // Fusionner les preuves
+      const mergedEvidences = reportsToMerge
+        .flatMap(r => r.evidence_urls || [])
+        .filter((url, index, self) => url && self.indexOf(url) === index);
+
+      // Mettre à jour le signalement principal
+      await updateReportMutation.mutateAsync({
+        id: primaryReport.id,
+        data: {
+          description: `🔗 SIGNALEMENTS FUSIONNÉS (${reportsToMerge.length})\n\n${mergedDescription}`,
+          evidence_urls: mergedEvidences,
+          priority: reportsToMerge.some(r => r.priority === 'urgent') ? 'urgent' : 
+                    reportsToMerge.some(r => r.priority === 'high') ? 'high' : primaryReport.priority
+        }
+      });
+
+      // Marquer les autres comme résolus (fusionnés)
+      for (const report of reportsToMerge.slice(1)) {
+        await updateReportMutation.mutateAsync({
+          id: report.id,
+          data: { 
+            status: 'resolved', 
+            resolution: `Fusionné avec signalement ${primaryReport.id}`,
+            action_taken: 'none'
+          }
+        });
+      }
+
+      setSelectedReports([]);
+      setMergeDialog(false);
+      toast.success(`${reportsToMerge.length} signalements fusionnés`);
+    } catch (error) {
+      toast.error('Erreur lors de la fusion');
+    }
+  };
+
+  const handleAssignReport = async () => {
+    if (!assignDialog.report || !selectedModerator) return;
+
+    try {
+      await updateReportMutation.mutateAsync({
+        id: assignDialog.report.id,
+        data: { 
+          assigned_to: selectedModerator,
+          status: 'reviewing'
+        }
+      });
+
+      setAssignDialog({ open: false, report: null });
+      setSelectedModerator('');
+      toast.success('Signalement assigné');
+    } catch (error) {
+      toast.error('Erreur lors de l\'assignation');
+    }
   };
 
   const handleModerationAction = async () => {
@@ -268,9 +356,11 @@ export default function AdminReports() {
           </Card>
         </div>
 
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6 flex gap-4">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
+        {/* Filters and Bulk Actions */}
+        <div className="bg-white rounded-lg shadow p-4 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex gap-4">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Statut" />
             </SelectTrigger>
@@ -293,7 +383,30 @@ export default function AdminReports() {
               <SelectItem value="medium">Moyenne</SelectItem>
               <SelectItem value="low">Basse</SelectItem>
             </SelectContent>
-          </Select>
+              </Select>
+            </div>
+            {selectedReports.length > 0 && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-600">{selectedReports.length} sélectionné(s)</span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setMergeDialog(true)}
+                  disabled={selectedReports.length < 2}
+                >
+                  <Merge className="w-4 h-4 mr-2" />
+                  Fusionner
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setSelectedReports([])}
+                >
+                  Annuler sélection
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Reports List */}
@@ -308,10 +421,16 @@ export default function AdminReports() {
             filteredReports.map((report) => {
               const TypeIcon = typeIcons[report.type] || Flag;
               return (
-                <Card key={report.id} className="hover:shadow-md transition-shadow">
+                <Card key={report.id} className={`hover:shadow-md transition-shadow ${selectedReports.includes(report.id) ? 'ring-2 ring-blue-500' : ''}`}>
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex items-start gap-4">
+                        <input
+                          type="checkbox"
+                          checked={selectedReports.includes(report.id)}
+                          onChange={() => toggleReportSelection(report.id)}
+                          className="mt-4 w-4 h-4 cursor-pointer"
+                        />
                         <div className={`p-3 rounded-full ${priorityColors[report.priority]}`}>
                           <TypeIcon className="w-5 h-5" />
                         </div>
@@ -332,6 +451,11 @@ export default function AdminReports() {
                           <div className="flex items-center gap-4 text-xs text-gray-500">
                             <span>Type: {report.type}</span>
                             <span>Signalé par: {report.reporter_email}</span>
+                            {report.assigned_to && (
+                              <span className="text-blue-600 font-medium">
+                                Assigné à: {report.assigned_to}
+                              </span>
+                            )}
                             <span>
                               {report.created_date && format(new Date(report.created_date), 'dd MMM yyyy HH:mm', { locale: fr })}
                             </span>
@@ -340,6 +464,14 @@ export default function AdminReports() {
                       </div>
                       {report.status === 'pending' && (
                         <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setAssignDialog({ open: true, report })}
+                          >
+                            <UserCog className="w-4 h-4 mr-1" />
+                            Assigner
+                          </Button>
                           <Button
                             size="sm"
                             variant="outline"
@@ -390,6 +522,124 @@ export default function AdminReports() {
             })
           )}
         </div>
+
+        {/* Merge Dialog */}
+        <Dialog open={mergeDialog} onOpenChange={setMergeDialog}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Fusionner les signalements</DialogTitle>
+              <DialogDescription>
+                Vous êtes sur le point de fusionner {selectedReports.length} signalements
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="text-sm text-blue-800">
+                  <strong>ℹ️ Comment ça fonctionne:</strong>
+                  <br />
+                  • Le premier signalement devient le signalement principal
+                  <br />
+                  • Les descriptions sont fusionnées ensemble
+                  <br />
+                  • Les preuves (photos, captures) sont regroupées
+                  <br />
+                  • Les autres signalements sont marqués comme "résolus (fusionnés)"
+                  <br />
+                  • La priorité la plus élevée est conservée
+                </p>
+              </div>
+
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {reports.filter(r => selectedReports.includes(r.id)).map((report, index) => (
+                  <div key={report.id} className="border rounded-lg p-3 bg-gray-50">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        {index === 0 && (
+                          <Badge className="bg-blue-600 mb-2">Signalement principal</Badge>
+                        )}
+                        <p className="font-medium">{report.reason}</p>
+                        <p className="text-sm text-gray-600 mt-1">{report.description}</p>
+                        <div className="flex gap-2 mt-2 text-xs text-gray-500">
+                          <span>Type: {report.type}</span>
+                          <span>Par: {report.reporter_email}</span>
+                        </div>
+                      </div>
+                      <Badge className={priorityColors[report.priority]}>
+                        {report.priority}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <Button variant="outline" onClick={() => setMergeDialog(false)}>
+                  Annuler
+                </Button>
+                <Button onClick={handleMergeReports} className="bg-blue-600 hover:bg-blue-700">
+                  <Merge className="w-4 h-4 mr-2" />
+                  Confirmer la fusion
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Assign Dialog */}
+        <Dialog open={assignDialog.open} onOpenChange={(open) => setAssignDialog({ ...assignDialog, open })}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Assigner le signalement</DialogTitle>
+              <DialogDescription>
+                Choisissez un modérateur pour traiter ce signalement
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Modérateur</label>
+                <Select value={selectedModerator} onValueChange={setSelectedModerator}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner un modérateur..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {moderators.map(mod => (
+                      <SelectItem key={mod.id} value={mod.user_email}>
+                        {mod.first_name} {mod.last_name} ({mod.user_email})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {assignDialog.report && (
+                <div className="bg-gray-50 rounded-lg p-3 border">
+                  <p className="text-sm font-medium mb-1">{assignDialog.report.reason}</p>
+                  <p className="text-xs text-gray-600">{assignDialog.report.description}</p>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-3">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setAssignDialog({ open: false, report: null });
+                    setSelectedModerator('');
+                  }}
+                >
+                  Annuler
+                </Button>
+                <Button 
+                  onClick={handleAssignReport}
+                  disabled={!selectedModerator}
+                >
+                  Assigner
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Action Dialog */}
         <Dialog open={actionDialog.open} onOpenChange={(open) => setActionDialog({ ...actionDialog, open })}>
