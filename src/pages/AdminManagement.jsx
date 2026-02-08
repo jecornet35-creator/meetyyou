@@ -20,6 +20,8 @@ export default function AdminManagement() {
 
   const [formData, setFormData] = useState({
     email: '',
+    first_name: '',
+    last_name: '',
     role: 'moderator',
     permissions: {
       users: true,
@@ -85,6 +87,8 @@ export default function AdminManagement() {
   const resetForm = () => {
     setFormData({
       email: '',
+      first_name: '',
+      last_name: '',
       role: 'moderator',
       permissions: {
         users: true,
@@ -109,6 +113,8 @@ export default function AdminManagement() {
     } else {
       createMutation.mutate({
         user_email: formData.email,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
         role: formData.role,
         permissions: formData.permissions,
         is_active: true
@@ -120,6 +126,8 @@ export default function AdminManagement() {
     setEditingRole(role);
     setFormData({
       email: role.user_email,
+      first_name: role.first_name || '',
+      last_name: role.last_name || '',
       role: role.role,
       permissions: role.permissions
     });
@@ -199,6 +207,25 @@ export default function AdminManagement() {
               </DialogHeader>
               
               <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Prénom</label>
+                    <Input
+                      value={formData.first_name}
+                      onChange={(e) => setFormData({...formData, first_name: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Nom</label>
+                    <Input
+                      value={formData.last_name}
+                      onChange={(e) => setFormData({...formData, last_name: e.target.value})}
+                      required
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label className="text-sm font-medium mb-2 block">Email</label>
                   <Input
@@ -264,6 +291,7 @@ export default function AdminManagement() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Nom</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Rôle</TableHead>
                 <TableHead>Statut</TableHead>
@@ -275,7 +303,10 @@ export default function AdminManagement() {
             <TableBody>
               {adminRoles.map((role) => (
                 <TableRow key={role.id}>
-                  <TableCell className="font-medium">{role.user_email}</TableCell>
+                  <TableCell className="font-medium">
+                    {role.first_name && role.last_name ? `${role.first_name} ${role.last_name}` : '-'}
+                  </TableCell>
+                  <TableCell className="text-sm text-gray-600">{role.user_email}</TableCell>
                   <TableCell>
                     <Badge className={role.role === 'admin' ? 'bg-amber-500' : 'bg-blue-500'}>
                       {role.role === 'admin' ? 'Administrateur' : 'Modérateur'}
