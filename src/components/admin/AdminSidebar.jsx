@@ -29,6 +29,7 @@ const menuItems = [
       { label: 'Signalements', page: 'AdminReports' },
       { label: 'Conversations signalées', page: 'AdminFlaggedMessages' },
       { label: 'Modération automatique', page: 'AdminAutoModeration' },
+      { label: 'Scores de Confiance', page: 'AdminTrustScores' },
       { label: 'Détection de fraude', page: 'AdminFraud' },
       { label: 'Journal d\'audit', page: 'AdminAuditLog' },
     ]
