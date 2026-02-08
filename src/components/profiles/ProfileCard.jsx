@@ -1,12 +1,22 @@
 import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Heart, MessageCircle, Star, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+import TrustBadge from '@/components/trust/TrustBadge';
 
 export default function ProfileCard({ profile, currentUser }) {
   const queryClient = useQueryClient();
+
+  const { data: trustScore } = useQuery({
+    queryKey: ['trust-score', profile.created_by],
+    queryFn: async () => {
+      const scores = await base44.entities.TrustScore.filter({ user_email: profile.created_by });
+      return scores[0];
+    },
+    enabled: !!profile.created_by,
+  });
 
   const startConversationMutation = useMutation({
     mutationFn: async () => {
@@ -64,6 +74,13 @@ export default function ProfileCard({ profile, currentUser }) {
           {profile.is_verified && (
             <div className="absolute top-3 left-3 bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">
               ✓ Vérifié
+            </div>
+          )}
+
+          {/* Trust Score Badge */}
+          {trustScore && (
+            <div className="absolute top-3 left-3" style={{ marginTop: profile.is_verified ? '28px' : '0' }}>
+              <TrustBadge trustScore={trustScore} />
             </div>
           )}
           
