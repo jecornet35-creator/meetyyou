@@ -18,11 +18,12 @@ import {
 } from '@/components/ui/select';
 import { 
   AlertTriangle, Clock, CheckCircle, XCircle, Eye, Ban, 
-  MessageCircle, User, Image, Flag, Merge, UserCog
+  MessageCircle, User, Image, Flag, Merge, UserCog, Brain
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { checkAndApplyAutoModeration } from '@/components/moderation/AutoModerationEngine';
+import ReportAIAnalysis from '@/components/admin/ReportAIAnalysis';
 
 const typeIcons = {
   profile: User,
@@ -60,6 +61,7 @@ export default function AdminReports() {
   const [mergeDialog, setMergeDialog] = useState(false);
   const [assignDialog, setAssignDialog] = useState({ open: false, report: null });
   const [selectedModerator, setSelectedModerator] = useState('');
+  const [showAIAnalysis, setShowAIAnalysis] = useState(false);
 
   React.useEffect(() => {
     base44.auth.me().then(setCurrentUser);
@@ -231,6 +233,14 @@ export default function AdminReports() {
     }
   };
 
+  const handleSimilarReportsFound = (reportIds) => {
+    // Sélectionner automatiquement les signalements similaires
+    setSelectedReports(reportIds);
+    // Scroller vers la liste
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+    toast.info(`${reportIds.length} signalements similaires sélectionnés`);
+  };
+
   const handleModerationAction = async () => {
     const { report, actionType } = actionDialog;
     if (!report || !currentUser) return;
@@ -304,9 +314,31 @@ export default function AdminReports() {
       
       <div className="flex-1 p-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Signalements</h1>
-          <p className="text-gray-500 mt-1">Gérez les signalements des utilisateurs</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Signalements</h1>
+              <p className="text-gray-500 mt-1">Gérez les signalements des utilisateurs</p>
+            </div>
+            <Button
+              onClick={() => setShowAIAnalysis(!showAIAnalysis)}
+              variant={showAIAnalysis ? "default" : "outline"}
+              className={showAIAnalysis ? "bg-purple-600 hover:bg-purple-700" : ""}
+            >
+              <Brain className="w-4 h-4 mr-2" />
+              {showAIAnalysis ? 'Masquer l\'analyse IA' : 'Analyse IA'}
+            </Button>
+          </div>
         </div>
+
+        {/* AI Analysis Section */}
+        {showAIAnalysis && (
+          <div className="mb-8">
+            <ReportAIAnalysis 
+              reports={filteredReports}
+              onSimilarReportsFound={handleSimilarReportsFound}
+            />
+          </div>
+        )}
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
