@@ -270,29 +270,19 @@ export default function Correspondances() {
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">City</label>
-                {cities.length > 0 ? (
-                  <Select 
-                    value={criteria.city} 
-                    onValueChange={(v) => setCriteria(prev => ({ ...prev, city: v }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select city" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {cities.map(city => (
-                        <SelectItem key={city.name} value={city.name}>
-                          {city.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <Input 
-                    placeholder="Enter city name" 
-                    value={criteria.city} 
-                    onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))}
-                    disabled={!criteria.country || criteria.country === 'all'}
-                  />
+                <Input 
+                  list="correspondances-cities-list"
+                  placeholder={cities.length > 0 ? "Select or type city name" : "Enter city name"}
+                  value={criteria.city} 
+                  onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))}
+                  disabled={!criteria.country || criteria.country === 'all'}
+                />
+                {cities.length > 0 && (
+                  <datalist id="correspondances-cities-list">
+                    {cities.map(city => (
+                      <option key={city.name} value={city.name} />
+                    ))}
+                  </datalist>
                 )}
               </div>
               <div>
