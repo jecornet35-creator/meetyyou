@@ -555,14 +555,28 @@ export default function EditProfile() {
               onChange={(v) => updateField('french_proficiency', v)}
             />
 
-            <div className="mb-6">
-              <FieldLabel>Religion</FieldLabel>
-              <Input
-                value={profile.religion || ''}
-                onChange={(e) => updateField('religion', e.target.value)}
-                placeholder="Your religion"
-              />
-            </div>
+            <RadioGroup
+              label="Religion:"
+              options={[
+                { value: 'baptist', label: 'Basiste' },
+                { value: 'buddhist', label: 'Buddhist' },
+                { value: 'christian', label: 'Christian' },
+                { value: 'hindu', label: 'Hindu' },
+                { value: 'islam', label: 'Islam' },
+                { value: 'jainism', label: 'Jainism' },
+                { value: 'jewish', label: 'Jewish' },
+                { value: 'parsi', label: 'Parsi' },
+                { value: 'shintoism', label: 'Shintoism' },
+                { value: 'sikhism', label: 'Sikhism' },
+                { value: 'taoism', label: 'Taoism' },
+                { value: 'other', label: 'Other' },
+                { value: 'atheist', label: 'Atheist' },
+                { value: 'prefer_not_comment', label: 'I prefer not to comment' },
+              ]}
+              value={profile.religion}
+              onChange={(v) => updateField('religion', v)}
+              columns={4}
+            />
 
             <RadioGroup
               label="Religious values:"
