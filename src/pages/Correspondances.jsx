@@ -270,22 +270,30 @@ export default function Correspondances() {
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">City</label>
-                <Select 
-                  value={criteria.city} 
-                  onValueChange={(v) => setCriteria(prev => ({ ...prev, city: v }))}
-                  disabled={!criteria.state_province}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={criteria.state_province ? "Select city" : "Select state first"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cities.map(city => (
-                      <SelectItem key={city.name} value={city.name}>
-                        {city.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {cities.length > 0 ? (
+                  <Select 
+                    value={criteria.city} 
+                    onValueChange={(v) => setCriteria(prev => ({ ...prev, city: v }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {cities.map(city => (
+                        <SelectItem key={city.name} value={city.name}>
+                          {city.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Input 
+                    placeholder="Enter city name" 
+                    value={criteria.city} 
+                    onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))}
+                    disabled={!criteria.country || criteria.country === 'all'}
+                  />
+                )}
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">between</label>

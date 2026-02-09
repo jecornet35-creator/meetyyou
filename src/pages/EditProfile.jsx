@@ -292,22 +292,30 @@ export default function EditProfile() {
               </div>
               <div>
                 <FieldLabel>City</FieldLabel>
-                <Select 
-                  value={profile.city} 
-                  onValueChange={(v) => updateField('city', v)}
-                  disabled={!profile.state}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={profile.state ? "Select city" : "Select state first"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cities.map(city => (
-                      <SelectItem key={city.name} value={city.name}>
-                        {city.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {cities.length > 0 ? (
+                  <Select 
+                    value={profile.city} 
+                    onValueChange={(v) => updateField('city', v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {cities.map(city => (
+                        <SelectItem key={city.name} value={city.name}>
+                          {city.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Input
+                    value={profile.city || ''}
+                    onChange={(e) => updateField('city', e.target.value)}
+                    placeholder="Enter city name"
+                    disabled={!profile.country}
+                  />
+                )}
               </div>
             </div>
 
