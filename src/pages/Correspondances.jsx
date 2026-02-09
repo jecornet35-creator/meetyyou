@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { Country, State, City } from 'country-state-city';
 
 const Section = ({ title, children, defaultOpen = true, showMore = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -49,6 +50,8 @@ export default function Correspondances() {
   const queryClient = useQueryClient();
   
   const [currentUser, setCurrentUser] = useState(null);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
   const [criteria, setCriteria] = useState({
     profile_title: '',
     about_yourself: '',
@@ -112,6 +115,32 @@ export default function Correspondances() {
       setCriteria(prev => ({ ...prev, ...existingCriteria }));
     }
   }, [existingCriteria]);
+
+  // Load states when country changes
+  useEffect(() => {
+    if (criteria.country) {
+      const country = Country.getAllCountries().find(c => c.name === criteria.country);
+      if (country) {
+        setStates(State.getStatesOfCountry(country.isoCode));
+      }
+    } else {
+      setStates([]);
+      setCities([]);
+    }
+  }, [criteria.country]);
+
+  // Load cities when state changes
+  useEffect(() => {
+    if (criteria.country && criteria.state_province) {
+      const country = Country.getAllCountries().find(c => c.name === criteria.country);
+      const state = states.find(s => s.name === criteria.state_province);
+      if (country && state) {
+        setCities(City.getCitiesOfState(country.isoCode, state.isoCode));
+      }
+    } else {
+      setCities([]);
+    }
+  }, [criteria.state_province, criteria.country, states]);
 
   const saveMutation = useMutation({
     mutationFn: async (data) => {
@@ -205,23 +234,58 @@ export default function Correspondances() {
             <div className="grid grid-cols-4 gap-4">
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">Country</label>
-                <Select value={criteria.country} onValueChange={(v) => setCriteria(prev => ({ ...prev, country: v }))}>
+                <Select 
+                  value={criteria.country} 
+                  onValueChange={(v) => setCriteria(prev => ({ ...prev, country: v, state_province: '', city: '' }))}
+                >
                   <SelectTrigger><SelectValue placeholder="All Countries" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Countries</SelectItem>
-                    <SelectItem value="france">France</SelectItem>
-                    <SelectItem value="usa">USA</SelectItem>
-                    <SelectItem value="canada">Canada</SelectItem>
+                    {Country.getAllCountries().map(country => (
+                      <SelectItem key={country.isoCode} value={country.name}>
+                        {country.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">State/Province</label>
-                <Input placeholder="Any state" value={criteria.state_province} onChange={(e) => setCriteria(prev => ({ ...prev, state_province: e.target.value }))} />
+                <Select 
+                  value={criteria.state_province} 
+                  onValueChange={(v) => setCriteria(prev => ({ ...prev, state_province: v, city: '' }))}
+                  disabled={!criteria.country || criteria.country === 'all'}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={criteria.country && criteria.country !== 'all' ? "Select state" : "Select country first"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {states.map(state => (
+                      <SelectItem key={state.isoCode} value={state.name}>
+                        {state.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">City</label>
-                <Input placeholder="Any City" value={criteria.city} onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))} />
+                <Select 
+                  value={criteria.city} 
+                  onValueChange={(v) => setCriteria(prev => ({ ...prev, city: v }))}
+                  disabled={!criteria.state_province}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={criteria.state_province ? "Select city" : "Select state first"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map(city => (
+                      <SelectItem key={city.name} value={city.name}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">between</label>

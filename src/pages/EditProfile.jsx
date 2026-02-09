@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Camera, Eye } from 'lucide-react';
+import { Country, State, City } from 'country-state-city';
 
 const SectionTitle = ({ children }) => (
   <h2 className="text-xl font-semibold text-amber-700 mb-4 mt-8 first:mt-0">{children}</h2>
@@ -69,10 +70,38 @@ export default function EditProfile() {
   const queryClient = useQueryClient();
   const [profile, setProfile] = useState({});
   const [user, setUser] = useState(null);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
+
+  // Load states when country changes
+  useEffect(() => {
+    if (profile.country) {
+      const country = Country.getAllCountries().find(c => c.name === profile.country);
+      if (country) {
+        setStates(State.getStatesOfCountry(country.isoCode));
+      }
+    } else {
+      setStates([]);
+      setCities([]);
+    }
+  }, [profile.country]);
+
+  // Load cities when state changes
+  useEffect(() => {
+    if (profile.country && profile.state) {
+      const country = Country.getAllCountries().find(c => c.name === profile.country);
+      const state = states.find(s => s.name === profile.state);
+      if (country && state) {
+        setCities(City.getCitiesOfState(country.isoCode, state.isoCode));
+      }
+    } else {
+      setCities([]);
+    }
+  }, [profile.state, profile.country, states]);
 
   const { data: existingProfile, isLoading } = useQuery({
     queryKey: ['myProfile'],
@@ -219,27 +248,66 @@ export default function EditProfile() {
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div>
                 <FieldLabel>Country</FieldLabel>
-                <Input
-                  value={profile.country || ''}
-                  onChange={(e) => updateField('country', e.target.value)}
-                  placeholder="Country"
-                />
+                <Select 
+                  value={profile.country} 
+                  onValueChange={(v) => {
+                    updateField('country', v);
+                    updateField('state', '');
+                    updateField('city', '');
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Country.getAllCountries().map(country => (
+                      <SelectItem key={country.isoCode} value={country.name}>
+                        {country.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <FieldLabel>State/Province</FieldLabel>
-                <Input
-                  value={profile.state || ''}
-                  onChange={(e) => updateField('state', e.target.value)}
-                  placeholder="State/Province"
-                />
+                <Select 
+                  value={profile.state} 
+                  onValueChange={(v) => {
+                    updateField('state', v);
+                    updateField('city', '');
+                  }}
+                  disabled={!profile.country}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={profile.country ? "Select state" : "Select country first"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {states.map(state => (
+                      <SelectItem key={state.isoCode} value={state.name}>
+                        {state.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <FieldLabel>City</FieldLabel>
-                <Input
-                  value={profile.city || ''}
-                  onChange={(e) => updateField('city', e.target.value)}
-                  placeholder="City"
-                />
+                <Select 
+                  value={profile.city} 
+                  onValueChange={(v) => updateField('city', v)}
+                  disabled={!profile.state}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={profile.state ? "Select city" : "Select state first"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map(city => (
+                      <SelectItem key={city.name} value={city.name}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
