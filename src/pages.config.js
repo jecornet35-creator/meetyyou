@@ -80,6 +80,7 @@ import Notifications from './pages/Notifications';
 import PhotosManagement from './pages/PhotosManagement';
 import ProfileDetail from './pages/ProfileDetail';
 import VerifyProfile from './pages/VerifyProfile';
+import ProfileSettings from './pages/ProfileSettings';
 import __Layout from './Layout.jsx';
 
 
@@ -117,6 +118,7 @@ export const PAGES = {
     "PhotosManagement": PhotosManagement,
     "ProfileDetail": ProfileDetail,
     "VerifyProfile": VerifyProfile,
+    "ProfileSettings": ProfileSettings,
 }
 
 export const pagesConfig = {
