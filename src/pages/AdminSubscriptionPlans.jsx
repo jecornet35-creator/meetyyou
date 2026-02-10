@@ -9,8 +9,10 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Edit, Trash2, Check, X } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus, Edit, Trash2, Check, X, Globe } from 'lucide-react';
 import { toast } from 'sonner';
+import { Country } from 'country-state-city';
 
 export default function AdminSubscriptionPlans() {
   const queryClient = useQueryClient();
@@ -29,7 +31,11 @@ export default function AdminSubscriptionPlans() {
     can_use_advanced_filters: false,
     priority_support: false,
     is_active: true,
+    available_countries: [],
   });
+
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const countries = Country.getAllCountries();
 
   const { data: plans = [] } = useQuery({
     queryKey: ['subscription-plans'],
@@ -78,7 +84,9 @@ export default function AdminSubscriptionPlans() {
       can_use_advanced_filters: false,
       priority_support: false,
       is_active: true,
+      available_countries: [],
     });
+    setSelectedCountry('');
     setEditingPlan(null);
   };
 
@@ -97,8 +105,27 @@ export default function AdminSubscriptionPlans() {
       can_use_advanced_filters: plan.can_use_advanced_filters || false,
       priority_support: plan.priority_support || false,
       is_active: plan.is_active !== false,
+      available_countries: plan.available_countries || [],
     });
+    setSelectedCountry('');
     setIsDialogOpen(true);
+  };
+
+  const addCountry = () => {
+    if (selectedCountry && !formData.available_countries.includes(selectedCountry)) {
+      setFormData({
+        ...formData,
+        available_countries: [...formData.available_countries, selectedCountry]
+      });
+      setSelectedCountry('');
+    }
+  };
+
+  const removeCountry = (country) => {
+    setFormData({
+      ...formData,
+      available_countries: formData.available_countries.filter(c => c !== country)
+    });
   };
 
   const handleSubmit = () => {
@@ -220,6 +247,41 @@ export default function AdminSubscriptionPlans() {
                   </div>
                 </div>
 
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    <Globe className="w-4 h-4 inline mr-1" />
+                    Pays éligibles (vide = tous les pays)
+                  </label>
+                  <div className="flex gap-2 mb-2">
+                    <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner un pays" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map(country => (
+                          <SelectItem key={country.isoCode} value={country.name}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button type="button" variant="outline" onClick={addCountry} disabled={!selectedCountry}>
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.available_countries.map(country => (
+                      <Badge key={country} variant="secondary" className="cursor-pointer" onClick={() => removeCountry(country)}>
+                        {country}
+                        <X className="w-3 h-3 ml-1" />
+                      </Badge>
+                    ))}
+                  </div>
+                  {formData.available_countries.length === 0 && (
+                    <p className="text-xs text-gray-500 mt-2">Ce plan sera disponible dans tous les pays</p>
+                  )}
+                </div>
+
                 <div className="space-y-3 border-t pt-4">
                   <div className="flex items-center justify-between">
                     <label className="text-sm font-medium">Voir qui a liké</label>
@@ -300,6 +362,12 @@ export default function AdminSubscriptionPlans() {
                   {plan.can_see_who_liked && <div>✓ Voir qui a liké</div>}
                   {plan.can_use_advanced_filters && <div>✓ Filtres avancés</div>}
                   {plan.priority_support && <div>✓ Support prioritaire</div>}
+                  {plan.available_countries?.length > 0 && (
+                    <div className="flex items-center gap-1 mt-2">
+                      <Globe className="w-3 h-3" />
+                      <span>{plan.available_countries.length} pays</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-2">
