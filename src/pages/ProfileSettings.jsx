@@ -224,7 +224,7 @@ export default function ProfileSettings() {
           </CardHeader>
           <CardContent>
             <p className="text-gray-700 mb-4">
-              Vous souhaitez suspendre votre profil sur AfroIntroductions ?{' '}
+              Vous souhaitez suspendre votre profil sur Meetyyou ?{' '}
               <button className="text-amber-600 hover:underline font-medium">
                 cliquez ici
               </button>
