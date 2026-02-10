@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Settings, Eye, EyeOff, Clock, Globe, Ruler } from 'lucide-react';
+import { Settings, Eye, EyeOff, Clock, Globe, Ruler, X } from 'lucide-react';
 import { Country } from 'country-state-city';
 
 export default function ProfileSettings() {
@@ -15,7 +15,8 @@ export default function ProfileSettings() {
   const [currentUser, setCurrentUser] = useState(null);
   const [settings, setSettings] = useState({
     online_status: true,
-    show_profile: true,
+    show_profile: 'show',
+    hidden_countries: [],
     timezone: '(GMT+01:00) Europe/Brussels',
     date_format: 'Français (France)',
     unit_system: 'Métrique',
@@ -38,6 +39,15 @@ export default function ProfileSettings() {
   });
 
   const countries = Country.getAllCountries();
+
+  const toggleCountry = (countryName) => {
+    setSettings(prev => ({
+      ...prev,
+      hidden_countries: prev.hidden_countries.includes(countryName)
+        ? prev.hidden_countries.filter(c => c !== countryName)
+        : [...prev.hidden_countries, countryName]
+    }));
+  };
 
   const handleSave = () => {
     toast.success('Paramètres enregistrés avec succès');
@@ -99,8 +109,8 @@ export default function ProfileSettings() {
                   <input 
                     type="radio" 
                     name="show_profile" 
-                    checked={settings.show_profile}
-                    onChange={() => setSettings({ ...settings, show_profile: true })}
+                    checked={settings.show_profile === 'show'}
+                    onChange={() => setSettings({ ...settings, show_profile: 'show' })}
                     className="w-4 h-4 text-amber-600"
                   />
                   <span className="text-gray-700">Afficher mon profil aux utilisateurs</span>
@@ -109,15 +119,25 @@ export default function ProfileSettings() {
                   <input 
                     type="radio" 
                     name="show_profile" 
-                    checked={!settings.show_profile}
-                    onChange={() => setSettings({ ...settings, show_profile: false })}
+                    checked={settings.show_profile === 'hide_all'}
+                    onChange={() => setSettings({ ...settings, show_profile: 'hide_all' })}
                     className="w-4 h-4 text-amber-600"
                   />
                   <span className="text-gray-700">Cacher mon profil aux utilisateurs</span>
                 </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input 
+                    type="radio" 
+                    name="show_profile" 
+                    checked={settings.show_profile === 'hide_countries'}
+                    onChange={() => setSettings({ ...settings, show_profile: 'hide_countries' })}
+                    className="w-4 h-4 text-amber-600"
+                  />
+                  <span className="text-gray-700">Cacher mon profil à certains pays</span>
+                </label>
               </div>
               
-              {!settings.show_profile && (
+              {settings.show_profile === 'hide_all' && (
                 <div className="mt-4 p-4 bg-green-100 rounded-lg border-l-4 border-green-500">
                   <div className="flex items-start gap-2">
                     <span className="text-green-700 text-3xl mt-1">⚠</span>
@@ -125,6 +145,53 @@ export default function ProfileSettings() {
                       Abonnez-vous maintenant pour cacher votre profil aux autres utilisateurs et naviguer anonymement
                     </p>
                   </div>
+                </div>
+              )}
+
+              {settings.show_profile === 'hide_countries' && (
+                <div className="mt-4 space-y-3">
+                  <label className="text-sm font-medium text-gray-700 block">
+                    Sélectionnez les pays où votre profil sera caché:
+                  </label>
+                  
+                  <Select onValueChange={toggleCountry}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner un pays" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {countries.map(country => (
+                        <SelectItem 
+                          key={country.isoCode} 
+                          value={country.name}
+                          disabled={settings.hidden_countries.includes(country.name)}
+                        >
+                          {country.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {settings.hidden_countries.length > 0 && (
+                    <div className="mt-3">
+                      <p className="text-xs text-gray-600 mb-2">Pays sélectionnés:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {settings.hidden_countries.map(country => (
+                          <div 
+                            key={country}
+                            className="flex items-center gap-2 bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm"
+                          >
+                            <span>{country}</span>
+                            <button
+                              onClick={() => toggleCountry(country)}
+                              className="hover:bg-amber-200 rounded-full p-0.5"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
