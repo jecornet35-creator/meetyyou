@@ -79,15 +79,12 @@ export default function Correspondances() {
     professional_status: ['no_preference'],
     annual_income_min: '',
     living_situation: ['no_preference'],
-    nationality: [],
     education_level: 'no_preference',
     english_proficiency: 'no_preference',
     french_proficiency: 'no_preference',
-    languages_spoken: [],
     religion: ['no_preference'],
     religious_values: ['no_preference'],
     polygamy: ['no_preference'],
-    astrological_sign: ['no_preference'],
   });
 
   useEffect(() => {
@@ -597,11 +594,7 @@ export default function Correspondances() {
               {/* Their cultural origins/values */}
               <Section title="Their cultural origins/values" showMore>
                 <div className="space-y-4">
-                  <div>
-                    <label className="text-amber-700 text-sm mb-2 block">Nationality:</label>
-                    <Input placeholder="No preference" value={criteria.nationality.join(', ')} onChange={(e) => setCriteria(prev => ({ ...prev, nationality: e.target.value.split(',').map(v => v.trim()) }))} />
-                    <p className="text-xs text-gray-500 mt-1">* Use the Ctrl key for multiple selections</p>
-                  </div>
+
 
                   <div>
                     <label className="text-amber-700 text-sm mb-2 block">Studies (or above):</label>
@@ -680,11 +673,7 @@ export default function Correspondances() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="text-amber-700 text-sm mb-2 block">Languages spoken:</label>
-                    <Input placeholder="Any language" value={criteria.languages_spoken.join(', ')} onChange={(e) => setCriteria(prev => ({ ...prev, languages_spoken: e.target.value.split(',').map(v => v.trim()) }))} />
-                    <p className="text-xs text-gray-500 mt-1">* Use the Ctrl key for multiple selections</p>
-                  </div>
+
 
                   <div>
                     <label className="text-amber-700 text-sm mb-2 block">Religion:</label>
@@ -728,25 +717,7 @@ export default function Correspondances() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="text-amber-700 text-sm mb-2 block">Astrological sign:</label>
-                    <div className="grid grid-cols-5 gap-3">
-                      <CheckboxField label="No preference" checked={isChecked('astrological_sign', 'no_preference')} onChange={() => handleCheckboxArray('astrological_sign', 'no_preference')} />
-                      <CheckboxField label="Aquarius" checked={isChecked('astrological_sign', 'aquarius')} onChange={() => handleCheckboxArray('astrological_sign', 'aquarius')} />
-                      <CheckboxField label="Gemini" checked={isChecked('astrological_sign', 'gemini')} onChange={() => handleCheckboxArray('astrological_sign', 'gemini')} />
-                      <CheckboxField label="Scorpio" checked={isChecked('astrological_sign', 'scorpio')} onChange={() => handleCheckboxArray('astrological_sign', 'scorpio')} />
-                      <CheckboxField label="Ram" checked={isChecked('astrological_sign', 'aries')} onChange={() => handleCheckboxArray('astrological_sign', 'aries')} />
-                      <CheckboxField label="Lion" checked={isChecked('astrological_sign', 'leo')} onChange={() => handleCheckboxArray('astrological_sign', 'leo')} />
-                      <CheckboxField label="Bull" checked={isChecked('astrological_sign', 'taurus')} onChange={() => handleCheckboxArray('astrological_sign', 'taurus')} />
-                      <CheckboxField label="Cancer" checked={isChecked('astrological_sign', 'cancer')} onChange={() => handleCheckboxArray('astrological_sign', 'cancer')} />
-                      <CheckboxField label="Balance" checked={isChecked('astrological_sign', 'libra')} onChange={() => handleCheckboxArray('astrological_sign', 'libra')} />
-                      <CheckboxField label="Virgin" checked={isChecked('astrological_sign', 'virgo')} onChange={() => handleCheckboxArray('astrological_sign', 'virgo')} />
-                      <CheckboxField label="Capricorn" checked={isChecked('astrological_sign', 'capricorn')} onChange={() => handleCheckboxArray('astrological_sign', 'capricorn')} />
-                      <CheckboxField label="Pisces" checked={isChecked('astrological_sign', 'pisces')} onChange={() => handleCheckboxArray('astrological_sign', 'pisces')} />
-                      <CheckboxField label="Sagittarius" checked={isChecked('astrological_sign', 'sagittarius')} onChange={() => handleCheckboxArray('astrological_sign', 'sagittarius')} />
-                      <CheckboxField label="I don't know" checked={isChecked('astrological_sign', 'dont_know')} onChange={() => handleCheckboxArray('astrological_sign', 'dont_know')} />
-                    </div>
-                  </div>
+
                 </div>
               </Section>
 
