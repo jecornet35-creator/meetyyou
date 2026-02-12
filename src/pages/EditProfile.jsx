@@ -75,8 +75,8 @@ export default function EditProfile() {
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
     const urlParams = new URLSearchParams(window.location.search);
-    const tab = urlParams.get('tab');
-    if (tab) setActiveTab(tab);
+    const tab = urlParams.get('tab') || 'profile';
+    setActiveTab(tab);
   }, []);
 
   const { data: existingProfile, isLoading } = useQuery({
