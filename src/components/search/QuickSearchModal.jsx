@@ -14,7 +14,6 @@ export default function QuickSearchModal({ isOpen, onClose }) {
     age_max: '35',
     country: '',
     state_province: '',
-    city: '',
   });
 
   const saveMutation = useMutation({
@@ -173,18 +172,6 @@ export default function QuickSearchModal({ isOpen, onClose }) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">N'importe quel Etat</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Ville */}
-                <div>
-                  <Select value={criteria.city} onValueChange={(v) => setCriteria(prev => ({ ...prev, city: v }))}>
-                    <SelectTrigger className="w-full h-12 rounded-lg border-gray-200">
-                      <SelectValue placeholder="N'importe quelle ville" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">N'importe quelle ville</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

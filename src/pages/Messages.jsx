@@ -4,15 +4,12 @@ import { base44 } from '@/api/base44Client';
 import Header from '@/components/layout/Header';
 import ConversationList from '@/components/messages/ConversationList';
 import ChatWindow from '@/components/messages/ChatWindow';
-import ConversationFilter from '@/components/messages/ConversationFilter';
 import { MessageCircle } from 'lucide-react';
 
 export default function Messages() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [showChat, setShowChat] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState('inbox');
-  const [selectedLabel, setSelectedLabel] = useState(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -64,63 +61,41 @@ export default function Messages() {
     setShowChat(false);
   };
 
-  const filteredConversations = conversations.filter(conv => {
-    const folder = conv.folder?.[currentUser?.email] || 'inbox';
-    const labels = conv.labels?.[currentUser?.email] || [];
-    
-    if (folder !== selectedFolder) return false;
-    if (selectedLabel && !labels.includes(selectedLabel)) return false;
-    
-    return true;
-  });
-
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
       
       <main className="max-w-6xl mx-auto">
         <div className="bg-white shadow-lg md:rounded-xl md:my-6 overflow-hidden">
-          <div className="flex flex-col h-[calc(100vh-120px)]">
-            {/* Filters */}
-            <ConversationFilter
-              currentUserEmail={currentUser?.email}
-              selectedFolder={selectedFolder}
-              onFolderChange={setSelectedFolder}
-              selectedLabel={selectedLabel}
-              onLabelChange={setSelectedLabel}
-            />
-
-            <div className="flex flex-1 overflow-hidden">
-              {/* Conversations List */}
-              <div className={`w-full md:w-96 border-r bg-white ${showChat ? 'hidden md:block' : ''}`}>
-                <div className="p-4 border-b bg-gradient-to-r from-amber-600 to-amber-500 text-white">
-                  <h1 className="text-xl font-bold flex items-center gap-2">
-                    <MessageCircle className="w-5 h-5" />
-                    Messages
-                  </h1>
-                  <p className="text-sm text-white/80 mt-1">
-                    {filteredConversations.length} conversation{filteredConversations.length > 1 ? 's' : ''}
-                  </p>
-                </div>
-                <div className="overflow-y-auto h-[calc(100%-80px)]">
-                  <ConversationList
-                    conversations={filteredConversations}
-                    currentUserEmail={currentUser?.email}
-                    selectedId={selectedConversation?.id}
-                    onSelect={handleSelectConversation}
-                    onUpdateConversation={() => queryClient.invalidateQueries({ queryKey: ['conversations'] })}
-                  />
-                </div>
+          <div className="flex h-[calc(100vh-120px)]">
+            {/* Conversations List */}
+            <div className={`w-full md:w-96 border-r bg-white ${showChat ? 'hidden md:block' : ''}`}>
+              <div className="p-4 border-b bg-gradient-to-r from-amber-600 to-amber-500 text-white">
+                <h1 className="text-xl font-bold flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5" />
+                  Messages
+                </h1>
+                <p className="text-sm text-white/80 mt-1">
+                  {conversations.length} conversation{conversations.length > 1 ? 's' : ''}
+                </p>
               </div>
-
-              {/* Chat Window */}
-              <div className={`flex-1 ${!showChat ? 'hidden md:flex' : 'flex'}`}>
-                <ChatWindow
-                  conversation={selectedConversation}
-                  currentUser={currentUser}
-                  onBack={handleBack}
+              <div className="overflow-y-auto h-[calc(100%-80px)]">
+                <ConversationList
+                  conversations={conversations}
+                  currentUserEmail={currentUser?.email}
+                  selectedId={selectedConversation?.id}
+                  onSelect={handleSelectConversation}
                 />
               </div>
+            </div>
+
+            {/* Chat Window */}
+            <div className={`flex-1 ${!showChat ? 'hidden md:flex' : 'flex'}`}>
+              <ChatWindow
+                conversation={selectedConversation}
+                currentUser={currentUser}
+                onBack={handleBack}
+              />
             </div>
           </div>
         </div>

@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Camera, Eye } from 'lucide-react';
-import { Country, State, City } from 'country-state-city';
 
 const SectionTitle = ({ children }) => (
   <h2 className="text-xl font-semibold text-amber-700 mb-4 mt-8 first:mt-0">{children}</h2>
@@ -70,38 +69,10 @@ export default function EditProfile() {
   const queryClient = useQueryClient();
   const [profile, setProfile] = useState({});
   const [user, setUser] = useState(null);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
-
-  // Load states when country changes
-  useEffect(() => {
-    if (profile.country) {
-      const country = Country.getAllCountries().find(c => c.name === profile.country);
-      if (country) {
-        setStates(State.getStatesOfCountry(country.isoCode));
-      }
-    } else {
-      setStates([]);
-      setCities([]);
-    }
-  }, [profile.country]);
-
-  // Load cities when state changes
-  useEffect(() => {
-    if (profile.country && profile.state) {
-      const country = Country.getAllCountries().find(c => c.name === profile.country);
-      const state = states.find(s => s.name === profile.state);
-      if (country && state) {
-        setCities(City.getCitiesOfState(country.isoCode, state.isoCode));
-      }
-    } else {
-      setCities([]);
-    }
-  }, [profile.state, profile.country, states]);
 
   const { data: existingProfile, isLoading } = useQuery({
     queryKey: ['myProfile'],
@@ -164,6 +135,25 @@ export default function EditProfile() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
+      
+      {/* Profile Tabs */}
+      <div className="bg-gradient-to-r from-amber-700 to-amber-600 text-white">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="flex items-center gap-6 overflow-x-auto">
+            <Link to="#" className="py-3 px-4 flex items-center gap-2 hover:bg-white/10">
+              <Camera className="w-4 h-4" />
+              Photos
+            </Link>
+            <div className="py-3 px-4 border-b-2 border-white font-medium">
+              Profile
+            </div>
+            <Link to="#" className="py-3 px-4 hover:bg-white/10">Correspondences</Link>
+            <Link to="#" className="py-3 px-4 hover:bg-white/10">Flash</Link>
+            <Link to="#" className="py-3 px-4 hover:bg-white/10">Personality</Link>
+            <Link to="#" className="py-3 px-4 hover:bg-white/10">Verify Profile</Link>
+          </div>
+        </div>
+      </div>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
@@ -248,64 +238,27 @@ export default function EditProfile() {
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div>
                 <FieldLabel>Country</FieldLabel>
-                <Select 
-                  value={profile.country} 
-                  onValueChange={(v) => {
-                    updateField('country', v);
-                    updateField('state', '');
-                    updateField('city', '');
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Country.getAllCountries().map(country => (
-                      <SelectItem key={country.isoCode} value={country.name}>
-                        {country.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  value={profile.country || ''}
+                  onChange={(e) => updateField('country', e.target.value)}
+                  placeholder="Country"
+                />
               </div>
               <div>
                 <FieldLabel>State/Province</FieldLabel>
-                <Select 
-                  value={profile.state} 
-                  onValueChange={(v) => {
-                    updateField('state', v);
-                    updateField('city', '');
-                  }}
-                  disabled={!profile.country}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={profile.country ? "Select state" : "Select country first"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {states.map(state => (
-                      <SelectItem key={state.isoCode} value={state.name}>
-                        {state.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  value={profile.state || ''}
+                  onChange={(e) => updateField('state', e.target.value)}
+                  placeholder="State/Province"
+                />
               </div>
               <div>
                 <FieldLabel>City</FieldLabel>
                 <Input
-                  list="cities-list"
                   value={profile.city || ''}
                   onChange={(e) => updateField('city', e.target.value)}
-                  placeholder={cities.length > 0 ? "Select or type city name" : "Enter city name"}
-                  disabled={!profile.country}
+                  placeholder="City"
                 />
-                {cities.length > 0 && (
-                  <datalist id="cities-list">
-                    {cities.map(city => (
-                      <option key={city.name} value={city.name} />
-                    ))}
-                  </datalist>
-                )}
               </div>
             </div>
 
@@ -621,28 +574,14 @@ export default function EditProfile() {
               onChange={(v) => updateField('french_proficiency', v)}
             />
 
-            <RadioGroup
-              label="Religion:"
-              options={[
-                { value: 'baptist', label: 'Basiste' },
-                { value: 'buddhist', label: 'Buddhist' },
-                { value: 'christian', label: 'Christian' },
-                { value: 'hindu', label: 'Hindu' },
-                { value: 'islam', label: 'Islam' },
-                { value: 'jainism', label: 'Jainism' },
-                { value: 'jewish', label: 'Jewish' },
-                { value: 'parsi', label: 'Parsi' },
-                { value: 'shintoism', label: 'Shintoism' },
-                { value: 'sikhism', label: 'Sikhism' },
-                { value: 'taoism', label: 'Taoism' },
-                { value: 'other', label: 'Other' },
-                { value: 'atheist', label: 'Atheist' },
-                { value: 'prefer_not_comment', label: 'I prefer not to comment' },
-              ]}
-              value={profile.religion}
-              onChange={(v) => updateField('religion', v)}
-              columns={4}
-            />
+            <div className="mb-6">
+              <FieldLabel>Religion</FieldLabel>
+              <Input
+                value={profile.religion || ''}
+                onChange={(e) => updateField('religion', e.target.value)}
+                placeholder="Your religion"
+              />
+            </div>
 
             <RadioGroup
               label="Religious values:"

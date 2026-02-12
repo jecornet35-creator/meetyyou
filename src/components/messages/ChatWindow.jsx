@@ -3,38 +3,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Check, CheckCheck, ArrowLeft, Flag, Paperclip, X, Image as ImageIcon, File } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from 'sonner';
+import { Send, Check, CheckCheck, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [newMessage, setNewMessage] = useState('');
-  const [showReportDialog, setShowReportDialog] = useState(false);
-  const [reportReason, setReportReason] = useState('');
-  const [reportDescription, setReportDescription] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [otherUserTyping, setOtherUserTyping] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
-  const typingTimeoutRef = useRef(null);
   const queryClient = useQueryClient();
 
   const otherParticipant = conversation?.participant_profiles?.find(
@@ -52,7 +27,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     refetchInterval: 3000,
   });
 
-  // Real-time subscription for messages
+  // Real-time subscription
   useEffect(() => {
     if (!conversation?.id) return;
 
@@ -64,47 +39,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
 
     return unsubscribe;
   }, [conversation?.id, queryClient]);
-
-  // Real-time subscription for typing indicator
-  useEffect(() => {
-    if (!conversation?.id) return;
-
-    const unsubscribe = base44.entities.Conversation.subscribe((event) => {
-      if (event.data.id === conversation.id && event.type === 'update') {
-        const otherEmail = conversation.participants.find(p => p !== currentUser?.email);
-        const isOtherTyping = event.data.is_typing?.[otherEmail];
-        setOtherUserTyping(isOtherTyping || false);
-      }
-    });
-
-    return unsubscribe;
-  }, [conversation?.id, conversation?.participants, currentUser?.email]);
-
-  // Handle typing indicator
-  useEffect(() => {
-    if (!conversation?.id || !currentUser?.email) return;
-
-    if (isTyping) {
-      base44.entities.Conversation.update(conversation.id, {
-        is_typing: {
-          ...conversation.is_typing,
-          [currentUser.email]: true
-        },
-        last_typing_update: new Date().toISOString()
-      });
-    }
-
-    return () => {
-      if (isTyping) {
-        base44.entities.Conversation.update(conversation.id, {
-          is_typing: {
-            ...conversation.is_typing,
-            [currentUser.email]: false
-          }
-        });
-      }
-    };
-  }, [isTyping, conversation?.id, currentUser?.email]);
 
   // Mark messages as read
   useEffect(() => {
@@ -134,58 +68,14 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleFileSelect = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Limit to 10MB
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error('Le fichier est trop volumineux (max 10MB)');
-        return;
-      }
-      setSelectedFile(file);
-    }
-  };
-
-  const handleTyping = () => {
-    if (!isTyping) {
-      setIsTyping(true);
-    }
-
-    if (typingTimeoutRef.current) {
-      clearTimeout(typingTimeoutRef.current);
-    }
-
-    typingTimeoutRef.current = setTimeout(() => {
-      setIsTyping(false);
-    }, 3000);
-  };
-
   const sendMutation = useMutation({
-    mutationFn: async ({ content, file }) => {
-      let fileUrl = null;
-      let fileName = null;
-      let fileSize = null;
-      let messageType = 'text';
-
-      if (file) {
-        setUploading(true);
-        const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        fileUrl = file_url;
-        fileName = file.name;
-        fileSize = file.size;
-        messageType = file.type.startsWith('image/') ? 'image' : 'file';
-      }
-
+    mutationFn: async (content) => {
       const message = await base44.entities.Message.create({
         conversation_id: conversation.id,
         sender_email: currentUser.email,
         sender_name: currentUser.full_name,
         sender_photo: currentUser.main_photo,
-        content: content || (file ? fileName : ''),
-        message_type: messageType,
-        file_url: fileUrl,
-        file_name: fileName,
-        file_size: fileSize,
+        content,
         is_read: false
       });
 
@@ -219,43 +109,16 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     },
     onSuccess: () => {
       setNewMessage('');
-      setSelectedFile(null);
-      setUploading(false);
-      setIsTyping(false);
       queryClient.invalidateQueries({ queryKey: ['messages', conversation.id] });
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
-    },
-    onError: () => {
-      setUploading(false);
     }
   });
 
   const handleSend = (e) => {
     e.preventDefault();
-    if (!newMessage.trim() && !selectedFile) return;
-    sendMutation.mutate({ content: newMessage.trim(), file: selectedFile });
+    if (!newMessage.trim()) return;
+    sendMutation.mutate(newMessage.trim());
   };
-
-  const reportMutation = useMutation({
-    mutationFn: async () => {
-      await base44.entities.FlaggedConversation.create({
-        conversation_id: conversation.id,
-        reporter_email: currentUser.email,
-        reporter_name: currentUser.full_name,
-        reported_email: otherParticipant.email,
-        reported_name: otherParticipant.display_name,
-        reason: reportReason,
-        description: reportDescription,
-        status: 'pending'
-      });
-    },
-    onSuccess: () => {
-      toast.success('Conversation signalée');
-      setShowReportDialog(false);
-      setReportReason('');
-      setReportDescription('');
-    }
-  });
 
   if (!conversation) {
     return (
@@ -280,24 +143,10 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           alt={otherParticipant.display_name}
           className="w-10 h-10 rounded-full object-cover"
         />
-        <div className="flex-1">
+        <div>
           <h2 className="font-semibold">{otherParticipant.display_name || 'Utilisateur'}</h2>
-          <p className="text-xs text-gray-500">
-            {otherUserTyping ? (
-              <span className="text-amber-600 italic">En train d'écrire...</span>
-            ) : (
-              'En ligne'
-            )}
-          </p>
+          <p className="text-xs text-gray-500">En ligne</p>
         </div>
-        <Button 
-          variant="ghost" 
-          size="icon"
-          onClick={() => setShowReportDialog(true)}
-          className="text-gray-500 hover:text-red-600"
-        >
-          <Flag className="w-5 h-5" />
-        </Button>
       </div>
 
       {/* Messages */}
@@ -324,36 +173,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                       : 'bg-white text-gray-900 rounded-bl-md shadow-sm'
                   }`}
                 >
-                  {message.message_type === 'image' && message.file_url ? (
-                    <div className="space-y-2">
-                      <img 
-                        src={message.file_url} 
-                        alt={message.file_name}
-                        className="max-w-xs rounded-lg cursor-pointer hover:opacity-90"
-                        onClick={() => window.open(message.file_url, '_blank')}
-                      />
-                      {message.content && <p className="text-sm">{message.content}</p>}
-                    </div>
-                  ) : message.message_type === 'file' && message.file_url ? (
-                    <a 
-                      href={message.file_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 hover:underline"
-                    >
-                      <File className="w-4 h-4" />
-                      <div>
-                        <p className="text-sm font-medium">{message.file_name}</p>
-                        {message.file_size && (
-                          <p className="text-xs opacity-75">
-                            {(message.file_size / 1024).toFixed(1)} KB
-                          </p>
-                        )}
-                      </div>
-                    </a>
-                  ) : (
-                    <p className="text-sm">{message.content}</p>
-                  )}
+                  <p className="text-sm">{message.content}</p>
                 </div>
                 <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : ''}`}>
                   <span className="text-xs text-gray-400">
@@ -378,132 +198,22 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
 
       {/* Input */}
       <form onSubmit={handleSend} className="bg-white border-t p-4">
-        {selectedFile && (
-          <div className="mb-2 p-2 bg-gray-50 rounded-lg flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {selectedFile.type.startsWith('image/') ? (
-                <ImageIcon className="w-4 h-4 text-amber-600" />
-              ) : (
-                <File className="w-4 h-4 text-amber-600" />
-              )}
-              <span className="text-sm">{selectedFile.name}</span>
-              <span className="text-xs text-gray-500">
-                ({(selectedFile.size / 1024).toFixed(1)} KB)
-              </span>
-            </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setSelectedFile(null)}
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
         <div className="flex gap-2">
-          <input
-            ref={fileInputRef}
-            type="file"
-            className="hidden"
-            accept="image/*,.pdf,.doc,.docx,.txt"
-            onChange={handleFileSelect}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-          >
-            <Paperclip className="w-5 h-5" />
-          </Button>
           <Input
             value={newMessage}
-            onChange={(e) => {
-              setNewMessage(e.target.value);
-              handleTyping();
-            }}
+            onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Écrivez votre message..."
             className="flex-1"
-            disabled={uploading}
           />
           <Button
             type="submit"
             className="bg-amber-500 hover:bg-amber-600"
-            disabled={(!newMessage.trim() && !selectedFile) || sendMutation.isPending || uploading}
+            disabled={!newMessage.trim() || sendMutation.isPending}
           >
-            {uploading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <Send className="w-5 h-5" />
-            )}
+            <Send className="w-5 h-5" />
           </Button>
         </div>
       </form>
-
-      {/* Dialog signalement */}
-      <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Signaler cette conversation</DialogTitle>
-            <DialogDescription>
-              Signalez cette conversation si elle enfreint nos règles de conduite.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Raison du signalement</label>
-              <Select value={reportReason} onValueChange={setReportReason}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionnez une raison" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="harassment">Harcèlement</SelectItem>
-                  <SelectItem value="inappropriate_content">Contenu inapproprié</SelectItem>
-                  <SelectItem value="spam">Spam</SelectItem>
-                  <SelectItem value="scam">Arnaque</SelectItem>
-                  <SelectItem value="fake_profile">Faux profil</SelectItem>
-                  <SelectItem value="other">Autre</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Description (optionnel)</label>
-              <Textarea
-                placeholder="Décrivez le problème..."
-                value={reportDescription}
-                onChange={(e) => setReportDescription(e.target.value)}
-                rows={4}
-              />
-            </div>
-
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowReportDialog(false);
-                  setReportReason('');
-                  setReportDescription('');
-                }}
-                className="flex-1"
-              >
-                Annuler
-              </Button>
-              <Button
-                onClick={() => reportMutation.mutate()}
-                variant="destructive"
-                className="flex-1"
-                disabled={!reportReason || reportMutation.isPending}
-              >
-                Signaler
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

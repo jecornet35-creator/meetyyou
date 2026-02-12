@@ -8,9 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
-import { Country, State, City } from 'country-state-city';
 
 const Section = ({ title, children, defaultOpen = true, showMore = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -50,12 +48,7 @@ export default function Correspondances() {
   const queryClient = useQueryClient();
   
   const [currentUser, setCurrentUser] = useState(null);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
   const [criteria, setCriteria] = useState({
-    profile_title: '',
-    about_yourself: '',
-    looking_for_in_partner: '',
     looking_for: 'women',
     age_min: '',
     age_max: '',
@@ -116,32 +109,6 @@ export default function Correspondances() {
     }
   }, [existingCriteria]);
 
-  // Load states when country changes
-  useEffect(() => {
-    if (criteria.country) {
-      const country = Country.getAllCountries().find(c => c.name === criteria.country);
-      if (country) {
-        setStates(State.getStatesOfCountry(country.isoCode));
-      }
-    } else {
-      setStates([]);
-      setCities([]);
-    }
-  }, [criteria.country]);
-
-  // Load cities when state changes
-  useEffect(() => {
-    if (criteria.country && criteria.state_province) {
-      const country = Country.getAllCountries().find(c => c.name === criteria.country);
-      const state = states.find(s => s.name === criteria.state_province);
-      if (country && state) {
-        setCities(City.getCitiesOfState(country.isoCode, state.isoCode));
-      }
-    } else {
-      setCities([]);
-    }
-  }, [criteria.state_province, criteria.country, states]);
-
   const saveMutation = useMutation({
     mutationFn: async (data) => {
       if (existingCriteria?.id) {
@@ -179,6 +146,30 @@ export default function Correspondances() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
+      
+      {/* Top navigation bar */}
+      <div className="bg-amber-700 text-white">
+        <div className="max-w-4xl mx-auto flex">
+          <Link to={createPageUrl('EditProfile') + '?tab=photos'} className="px-6 py-3 hover:bg-amber-800">
+            Photos
+          </Link>
+          <Link to={createPageUrl('EditProfile')} className="px-6 py-3 hover:bg-amber-800">
+            Profile
+          </Link>
+          <div className="px-6 py-3 bg-white text-amber-700 font-medium">
+            Correspondences
+          </div>
+          <Link to="#" className="px-6 py-3 hover:bg-amber-800">
+            Flash
+          </Link>
+          <Link to="#" className="px-6 py-3 hover:bg-amber-800">
+            Personality
+          </Link>
+          <Link to="#" className="px-6 py-3 hover:bg-amber-800">
+            Verify Profile
+          </Link>
+        </div>
+      </div>
 
       <main className="max-w-4xl mx-auto px-4 py-6">
         <div className="bg-white rounded-lg shadow p-6">
@@ -234,56 +225,23 @@ export default function Correspondances() {
             <div className="grid grid-cols-4 gap-4">
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">Country</label>
-                <Select 
-                  value={criteria.country} 
-                  onValueChange={(v) => setCriteria(prev => ({ ...prev, country: v, state_province: '', city: '' }))}
-                >
+                <Select value={criteria.country} onValueChange={(v) => setCriteria(prev => ({ ...prev, country: v }))}>
                   <SelectTrigger><SelectValue placeholder="All Countries" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Countries</SelectItem>
-                    {Country.getAllCountries().map(country => (
-                      <SelectItem key={country.isoCode} value={country.name}>
-                        {country.name}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="france">France</SelectItem>
+                    <SelectItem value="usa">USA</SelectItem>
+                    <SelectItem value="canada">Canada</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">State/Province</label>
-                <Select 
-                  value={criteria.state_province} 
-                  onValueChange={(v) => setCriteria(prev => ({ ...prev, state_province: v, city: '' }))}
-                  disabled={!criteria.country || criteria.country === 'all'}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={criteria.country && criteria.country !== 'all' ? "Select state" : "Select country first"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {states.map(state => (
-                      <SelectItem key={state.isoCode} value={state.name}>
-                        {state.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input placeholder="Any state" value={criteria.state_province} onChange={(e) => setCriteria(prev => ({ ...prev, state_province: e.target.value }))} />
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">City</label>
-                <Input 
-                  list="correspondances-cities-list"
-                  placeholder={cities.length > 0 ? "Select or type city name" : "Enter city name"}
-                  value={criteria.city} 
-                  onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))}
-                  disabled={!criteria.country || criteria.country === 'all'}
-                />
-                {cities.length > 0 && (
-                  <datalist id="correspondances-cities-list">
-                    {cities.map(city => (
-                      <option key={city.name} value={city.name} />
-                    ))}
-                  </datalist>
-                )}
+                <Input placeholder="Any City" value={criteria.city} onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))} />
               </div>
               <div>
                 <label className="text-sm text-gray-600 mb-1 block">between</label>
@@ -791,43 +749,6 @@ export default function Correspondances() {
                   </div>
                 </div>
               </Section>
-
-          {/* In your own words */}
-          <Section title="In your own words">
-            <div className="space-y-4">
-              <div>
-                <label className="text-gray-700 text-sm mb-2 block flex items-center gap-2">
-                  Your profile title:
-                  <span className="bg-amber-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">i</span>
-                </label>
-                <Input 
-                  value={criteria.profile_title} 
-                  onChange={(e) => setCriteria(prev => ({ ...prev, profile_title: e.target.value }))} 
-                  placeholder="Your profile title"
-                />
-              </div>
-
-              <div>
-                <label className="text-gray-700 text-sm mb-2 block">A glimpse of yourself:</label>
-                <Textarea 
-                  value={criteria.about_yourself} 
-                  onChange={(e) => setCriteria(prev => ({ ...prev, about_yourself: e.target.value }))} 
-                  placeholder="A glimpse of yourself"
-                  className="min-h-[100px]"
-                />
-              </div>
-
-              <div>
-                <label className="text-gray-700 text-sm mb-2 block">What you are looking for in a partner:</label>
-                <Textarea 
-                  value={criteria.looking_for_in_partner} 
-                  onChange={(e) => setCriteria(prev => ({ ...prev, looking_for_in_partner: e.target.value }))} 
-                  placeholder="What you are looking for in a partner"
-                  className="min-h-[100px]"
-                />
-              </div>
-            </div>
-          </Section>
 
           {/* Submit button */}
           <div className="flex justify-center mt-8">

@@ -94,91 +94,49 @@ export default function NotificationToast() {
   };
 
   return (
-    <div className="fixed bottom-4 left-4 z-50 space-y-2 max-w-md">
+    <div className="fixed top-20 right-4 z-50 space-y-2 max-w-sm">
       <AnimatePresence>
         {toasts.map((toast) => {
           const Icon = iconMap[toast.type] || MessageCircle;
+          const bgColor = colorMap[toast.type] || 'bg-gray-500';
           
           return (
             <motion.div
               key={toast.id}
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="bg-gray-800 text-white rounded-lg shadow-2xl overflow-hidden cursor-pointer hover:bg-gray-750 transition-colors"
-              onClick={() => {
-                if (toast.link) {
-                  window.location.href = toast.link;
-                  removeToast(toast.id);
-                }
-              }}
+              initial={{ opacity: 0, x: 100, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 100, scale: 0.9 }}
+              className="bg-white rounded-lg shadow-xl border overflow-hidden"
             >
-              <div className="flex items-center gap-3 p-4">
-                {/* Photo de profil */}
-                {toast.from_profile_photo ? (
-                  <img 
-                    src={toast.from_profile_photo} 
-                    alt="" 
-                    className="w-12 h-12 rounded-full object-cover border-2 border-gray-700 flex-shrink-0"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-gray-400" />
-                  </div>
-                )}
-                
-                {/* Contenu */}
+              <div className="flex items-start gap-3 p-4">
+                <div className={`${bgColor} p-2 rounded-full`}>
+                  <Icon className="w-4 h-4 text-white" />
+                </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white">
-                    {toast.type === 'like' && 'Like Received'}
-                    {toast.type === 'profile_view' && 'Profile View'}
-                    {toast.type === 'message' && 'New Message'}
-                    {toast.type === 'favorite' && 'New Favorite'}
-                    {toast.type === 'match' && 'New Match'}
-                  </p>
-                  <p className="text-sm text-gray-300 mt-0.5">
-                    {toast.message}
-                  </p>
-                  {toast.link && (
-                    <p className="text-xs text-blue-400 mt-1 hover:text-blue-300">
-                      {toast.type === 'like' && `View ${toast.from_profile_name?.split(' ')[0]}'s profile.`}
-                      {toast.type === 'profile_view' && `View ${toast.from_profile_name?.split(' ')[0]}'s profile.`}
-                      {toast.type === 'message' && 'Read message.'}
-                      {toast.type === 'favorite' && `View ${toast.from_profile_name?.split(' ')[0]}'s profile.`}
-                      {toast.type === 'match' && 'Start conversation.'}
-                    </p>
+                  <p className="font-medium text-gray-900 text-sm">{toast.title}</p>
+                  <p className="text-gray-600 text-xs mt-1 truncate">{toast.message}</p>
+                  {toast.from_profile_name && (
+                    <div className="flex items-center gap-2 mt-2">
+                      {toast.from_profile_photo && (
+                        <img src={toast.from_profile_photo} alt="" className="w-6 h-6 rounded-full object-cover" />
+                      )}
+                      <span className="text-xs text-gray-500">{toast.from_profile_name}</span>
+                    </div>
                   )}
                 </div>
-
-                {/* Icône de type */}
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <div className={`p-2 rounded-full ${
-                    toast.type === 'like' ? 'bg-red-500/20' : 
-                    toast.type === 'profile_view' ? 'bg-purple-500/20' :
-                    toast.type === 'message' ? 'bg-blue-500/20' :
-                    toast.type === 'favorite' ? 'bg-amber-500/20' :
-                    'bg-green-500/20'
-                  }`}>
-                    <Icon className={`w-5 h-5 ${
-                      toast.type === 'like' ? 'text-red-400 fill-red-400' : 
-                      toast.type === 'profile_view' ? 'text-purple-400' :
-                      toast.type === 'message' ? 'text-blue-400' :
-                      toast.type === 'favorite' ? 'text-amber-400 fill-amber-400' :
-                      'text-green-400'
-                    }`} />
-                  </div>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeToast(toast.id);
-                    }} 
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+                <button onClick={() => removeToast(toast.id)} className="text-gray-400 hover:text-gray-600">
+                  <X className="w-4 h-4" />
+                </button>
               </div>
+              {toast.link && (
+                <Link 
+                  to={toast.link}
+                  onClick={() => removeToast(toast.id)}
+                  className="block px-4 py-2 bg-gray-50 text-amber-600 text-xs font-medium hover:bg-gray-100"
+                >
+                  Voir →
+                </Link>
+              )}
             </motion.div>
           );
         })}

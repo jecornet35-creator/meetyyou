@@ -48,81 +48,39 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import Activities from './pages/Activities';
-import AdminAnalytics from './pages/AdminAnalytics';
-import AdminAutoModeration from './pages/AdminAutoModeration';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminEmails from './pages/AdminEmails';
-import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
-import AdminManagement from './pages/AdminManagement';
-import AdminModerationLog from './pages/AdminModerationLog';
-import AdminPhotos from './pages/AdminPhotos';
-import AdminPromoCodes from './pages/AdminPromoCodes';
-import AdminReports from './pages/AdminReports';
-import AdminSubscriptionPlans from './pages/AdminSubscriptionPlans';
-import AdminSubscriptions from './pages/AdminSubscriptions';
-import AdminTickets from './pages/AdminTickets';
-import AdminTransactions from './pages/AdminTransactions';
-import AdminTrustScores from './pages/AdminTrustScores';
-import AdminUserProfile from './pages/AdminUserProfile';
-import AdminUsers from './pages/AdminUsers';
-import AdminVerification from './pages/AdminVerification';
-import BlockedUsers from './pages/BlockedUsers';
-import ConversationDetail from './pages/ConversationDetail';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
 import Landing from './pages/Landing';
-import Likes from './pages/Likes';
-import LoisirsInterets from './pages/LoisirsInterets';
 import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
-import PhotosManagement from './pages/PhotosManagement';
 import ProfileDetail from './pages/ProfileDetail';
-import ProfileSettings from './pages/ProfileSettings';
-import VerifyProfile from './pages/VerifyProfile';
-import __Layout from './Layout.jsx';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminUsers from './pages/AdminUsers';
+import AdminReports from './pages/AdminReports';
+import AdminTickets from './pages/AdminTickets';
+import AdminSubscriptions from './pages/AdminSubscriptions';
 
 
 export const PAGES = {
     "Activities": Activities,
-    "AdminAnalytics": AdminAnalytics,
-    "AdminAutoModeration": AdminAutoModeration,
-    "AdminDashboard": AdminDashboard,
-    "AdminEmails": AdminEmails,
-    "AdminFlaggedMessages": AdminFlaggedMessages,
-    "AdminManagement": AdminManagement,
-    "AdminModerationLog": AdminModerationLog,
-    "AdminPhotos": AdminPhotos,
-    "AdminPromoCodes": AdminPromoCodes,
-    "AdminReports": AdminReports,
-    "AdminSubscriptionPlans": AdminSubscriptionPlans,
-    "AdminSubscriptions": AdminSubscriptions,
-    "AdminTickets": AdminTickets,
-    "AdminTransactions": AdminTransactions,
-    "AdminTrustScores": AdminTrustScores,
-    "AdminUserProfile": AdminUserProfile,
-    "AdminUsers": AdminUsers,
-    "AdminVerification": AdminVerification,
-    "BlockedUsers": BlockedUsers,
-    "ConversationDetail": ConversationDetail,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
     "Home": Home,
     "Landing": Landing,
-    "Likes": Likes,
-    "LoisirsInterets": LoisirsInterets,
     "Messages": Messages,
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
-    "PhotosManagement": PhotosManagement,
     "ProfileDetail": ProfileDetail,
-    "ProfileSettings": ProfileSettings,
-    "VerifyProfile": VerifyProfile,
+    "AdminDashboard": AdminDashboard,
+    "AdminUsers": AdminUsers,
+    "AdminReports": AdminReports,
+    "AdminTickets": AdminTickets,
+    "AdminSubscriptions": AdminSubscriptions,
 }
 
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
-    Layout: __Layout,
 };

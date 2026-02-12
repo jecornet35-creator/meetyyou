@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Bell, Settings, Heart, Users, Zap, User, Camera, Mail, Sparkles, HelpCircle, CheckCircle, Ban } from 'lucide-react';
+import { MessageCircle, Bell, Settings, Heart, Users, Zap, User, Camera, Mail, Sparkles, HelpCircle, CheckCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -89,46 +89,30 @@ export default function Header({ user }) {
                       Modifier Mon Profil
                     </DropdownMenuItem>
                   </Link>
-                  <Link to={createPageUrl('PhotosManagement')}>
+                  <Link to={createPageUrl('EditProfile') + '?tab=photos'}>
                     <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                       <Camera className="w-4 h-4 mr-3 text-gray-400" />
                       Photos
                     </DropdownMenuItem>
                   </Link>
-                  <Link to={createPageUrl('Correspondances')}>
+                  <Link to={createPageUrl('Messages')}>
                     <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                       <Mail className="w-4 h-4 mr-3 text-gray-400" />
                       Correspondances
                     </DropdownMenuItem>
                   </Link>
-                  <Link to={createPageUrl('LoisirsInterets')}>
-                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                      <Sparkles className="w-4 h-4 mr-3 text-gray-400" />
-                      Loisirs et Intérêts
-                    </DropdownMenuItem>
-                  </Link>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    <Sparkles className="w-4 h-4 mr-3 text-gray-400" />
+                    Loisirs et Intérêts
+                  </DropdownMenuItem>
                   <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                     <HelpCircle className="w-4 h-4 mr-3 text-gray-400" />
                     Questions Sur Votre Personnalité
                   </DropdownMenuItem>
-                  <Link to={createPageUrl('ProfileSettings')}>
-                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                      <Settings className="w-4 h-4 mr-3 text-gray-400" />
-                      Paramètres profil
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link to={createPageUrl('VerifyProfile')}>
-                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                      <CheckCircle className="w-4 h-4 mr-3 text-gray-400" />
-                      Vérifiez profil
-                    </DropdownMenuItem>
-                  </Link>
-                  <Link to={createPageUrl('BlockedUsers')}>
-                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                      <Ban className="w-4 h-4 mr-3 text-gray-400" />
-                      Utilisateurs bloqués
-                    </DropdownMenuItem>
-                  </Link>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    <CheckCircle className="w-4 h-4 mr-3 text-gray-400" />
+                    Vérifiez profil
+                  </DropdownMenuItem>
                   <Link to={createPageUrl('NotificationSettings')}>
                     <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                       <Bell className="w-4 h-4 mr-3 text-gray-400" />
@@ -146,6 +130,11 @@ export default function Header({ user }) {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
+            <Link to={createPageUrl('Home')}>
+              <Button variant="ghost" className="text-white hover:bg-white/10">
+                Accueil
+              </Button>
+            </Link>
             <Link to={createPageUrl('Messages')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
                 Messages
@@ -154,14 +143,8 @@ export default function Header({ user }) {
             </Link>
             <Link to={createPageUrl('Activities')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
-                Profil Vu
+                Activités
                 <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">42</Badge>
-              </Button>
-            </Link>
-            <Link to={createPageUrl('Likes')}>
-              <Button variant="ghost" className="text-white hover:bg-white/10 relative">
-                Like
-                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">36</Badge>
               </Button>
             </Link>
           </nav>
