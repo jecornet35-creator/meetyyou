@@ -23,7 +23,10 @@ export default function AdminSubscriptionPlans() {
     slug: '',
     description: '',
     price: '',
+    country_pricing: [],
     duration_days: '30',
+    has_trial: false,
+    trial_period_days: '',
     features: '',
     max_messages_per_day: '',
     max_likes_per_day: '',
@@ -35,6 +38,9 @@ export default function AdminSubscriptionPlans() {
   });
 
   const [selectedCountry, setSelectedCountry] = useState('');
+  const [pricingCountry, setPricingCountry] = useState('');
+  const [pricingPrice, setPricingPrice] = useState('');
+  const [pricingCurrency, setPricingCurrency] = useState('EUR');
   const countries = Country.getAllCountries();
 
   const { data: plans = [] } = useQuery({
@@ -76,7 +82,10 @@ export default function AdminSubscriptionPlans() {
       slug: '',
       description: '',
       price: '',
+      country_pricing: [],
       duration_days: '30',
+      has_trial: false,
+      trial_period_days: '',
       features: '',
       max_messages_per_day: '',
       max_likes_per_day: '',
@@ -87,6 +96,9 @@ export default function AdminSubscriptionPlans() {
       available_countries: [],
     });
     setSelectedCountry('');
+    setPricingCountry('');
+    setPricingPrice('');
+    setPricingCurrency('EUR');
     setEditingPlan(null);
   };
 
@@ -97,7 +109,10 @@ export default function AdminSubscriptionPlans() {
       slug: plan.slug || '',
       description: plan.description || '',
       price: plan.price || '',
+      country_pricing: plan.country_pricing || [],
       duration_days: plan.duration_days || '30',
+      has_trial: plan.has_trial || false,
+      trial_period_days: plan.trial_period_days || '',
       features: (plan.features || []).join('\n'),
       max_messages_per_day: plan.max_messages_per_day || '',
       max_likes_per_day: plan.max_likes_per_day || '',
@@ -108,6 +123,9 @@ export default function AdminSubscriptionPlans() {
       available_countries: plan.available_countries || [],
     });
     setSelectedCountry('');
+    setPricingCountry('');
+    setPricingPrice('');
+    setPricingCurrency('EUR');
     setIsDialogOpen(true);
   };
 
@@ -128,11 +146,46 @@ export default function AdminSubscriptionPlans() {
     });
   };
 
+  const addCountryPricing = () => {
+    if (pricingCountry && pricingPrice) {
+      const existingIndex = formData.country_pricing.findIndex(p => p.country === pricingCountry);
+      if (existingIndex >= 0) {
+        const updated = [...formData.country_pricing];
+        updated[existingIndex] = {
+          country: pricingCountry,
+          price: Number(pricingPrice),
+          currency: pricingCurrency
+        };
+        setFormData({ ...formData, country_pricing: updated });
+      } else {
+        setFormData({
+          ...formData,
+          country_pricing: [...formData.country_pricing, {
+            country: pricingCountry,
+            price: Number(pricingPrice),
+            currency: pricingCurrency
+          }]
+        });
+      }
+      setPricingCountry('');
+      setPricingPrice('');
+      setPricingCurrency('EUR');
+    }
+  };
+
+  const removeCountryPricing = (country) => {
+    setFormData({
+      ...formData,
+      country_pricing: formData.country_pricing.filter(p => p.country !== country)
+    });
+  };
+
   const handleSubmit = () => {
     const data = {
       ...formData,
       price: Number(formData.price),
       duration_days: Number(formData.duration_days),
+      trial_period_days: formData.has_trial && formData.trial_period_days ? Number(formData.trial_period_days) : undefined,
       max_messages_per_day: formData.max_messages_per_day ? Number(formData.max_messages_per_day) : undefined,
       max_likes_per_day: formData.max_likes_per_day ? Number(formData.max_likes_per_day) : undefined,
       features: formData.features.split('\n').filter(f => f.trim()),
@@ -197,13 +250,14 @@ export default function AdminSubscriptionPlans() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium">Prix (€) *</label>
+                    <label className="text-sm font-medium">Prix par défaut (€) *</label>
                     <Input
                       type="number"
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                       placeholder="19.99"
                     />
+                    <p className="text-xs text-gray-500 mt-1">Prix appliqué si aucun prix spécifique au pays</p>
                   </div>
                   <div>
                     <label className="text-sm font-medium">Durée (jours)</label>
@@ -214,6 +268,96 @@ export default function AdminSubscriptionPlans() {
                       placeholder="30"
                     />
                   </div>
+                </div>
+
+                <div className="border rounded-lg p-4 space-y-3 bg-amber-50">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium">Période d'essai gratuite</label>
+                    <Switch
+                      checked={formData.has_trial}
+                      onCheckedChange={(checked) => setFormData({ ...formData, has_trial: checked })}
+                    />
+                  </div>
+                  {formData.has_trial && (
+                    <div>
+                      <label className="text-sm font-medium">Durée de l'essai (jours)</label>
+                      <Input
+                        type="number"
+                        value={formData.trial_period_days}
+                        onChange={(e) => setFormData({ ...formData, trial_period_days: e.target.value })}
+                        placeholder="7"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="border rounded-lg p-4 space-y-3">
+                  <label className="text-sm font-medium block">Prix par pays</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <Select value={pricingCountry} onValueChange={setPricingCountry}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Pays" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countries.map(country => (
+                          <SelectItem key={country.isoCode} value={country.name}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      type="number"
+                      value={pricingPrice}
+                      onChange={(e) => setPricingPrice(e.target.value)}
+                      placeholder="Prix"
+                    />
+                    <Select value={pricingCurrency} onValueChange={setPricingCurrency}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="EUR">EUR (€)</SelectItem>
+                        <SelectItem value="USD">USD ($)</SelectItem>
+                        <SelectItem value="GBP">GBP (£)</SelectItem>
+                        <SelectItem value="CAD">CAD ($)</SelectItem>
+                        <SelectItem value="CHF">CHF (Fr)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={addCountryPricing} 
+                    disabled={!pricingCountry || !pricingPrice}
+                    className="w-full"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Ajouter le prix
+                  </Button>
+                  
+                  {formData.country_pricing.length > 0 && (
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {formData.country_pricing.map((pricing, idx) => (
+                        <div key={idx} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                          <span className="text-sm">
+                            <strong>{pricing.country}</strong>: {pricing.price} {pricing.currency}
+                          </span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeCountryPricing(pricing.country)}
+                          >
+                            <X className="w-4 h-4 text-red-600" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {formData.country_pricing.length === 0 && (
+                    <p className="text-xs text-gray-500">Aucun prix spécifique par pays configuré</p>
+                  )}
                 </div>
 
                 <div>
@@ -353,6 +497,16 @@ export default function AdminSubscriptionPlans() {
                 </div>
 
                 <div className="space-y-1 text-xs text-gray-500 mb-4">
+                  {plan.has_trial && plan.trial_period_days && (
+                    <div className="bg-green-100 text-green-800 px-2 py-1 rounded mb-2">
+                      🎁 Essai gratuit: {plan.trial_period_days} jours
+                    </div>
+                  )}
+                  {plan.country_pricing?.length > 0 && (
+                    <div className="bg-amber-50 px-2 py-1 rounded mb-2">
+                      💰 Prix personnalisés: {plan.country_pricing.length} pays
+                    </div>
+                  )}
                   {plan.max_messages_per_day && (
                     <div>Messages: {plan.max_messages_per_day}/jour</div>
                   )}
@@ -365,7 +519,7 @@ export default function AdminSubscriptionPlans() {
                   {plan.available_countries?.length > 0 && (
                     <div className="flex items-center gap-1 mt-2">
                       <Globe className="w-3 h-3" />
-                      <span>{plan.available_countries.length} pays</span>
+                      <span>{plan.available_countries.length} pays éligibles</span>
                     </div>
                   )}
                 </div>
