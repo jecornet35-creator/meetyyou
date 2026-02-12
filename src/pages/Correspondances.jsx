@@ -143,30 +143,6 @@ export default function Correspondances() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      
-      {/* Top navigation bar */}
-      <div className="bg-amber-700 text-white">
-        <div className="max-w-4xl mx-auto flex">
-          <Link to={createPageUrl('EditProfile') + '?tab=photos'} className="px-6 py-3 hover:bg-amber-800">
-            Photos
-          </Link>
-          <Link to={createPageUrl('EditProfile')} className="px-6 py-3 hover:bg-amber-800">
-            Profile
-          </Link>
-          <div className="px-6 py-3 bg-white text-amber-700 font-medium">
-            Correspondences
-          </div>
-          <Link to="#" className="px-6 py-3 hover:bg-amber-800">
-            Flash
-          </Link>
-          <Link to="#" className="px-6 py-3 hover:bg-amber-800">
-            Personality
-          </Link>
-          <Link to="#" className="px-6 py-3 hover:bg-amber-800">
-            Verify Profile
-          </Link>
-        </div>
-      </div>
 
       <main className="max-w-4xl mx-auto px-4 py-6">
         <div className="bg-white rounded-lg shadow p-6">

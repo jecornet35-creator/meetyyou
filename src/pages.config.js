@@ -47,37 +47,37 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Activities from './pages/Activities';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminReports from './pages/AdminReports';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
+import AdminUsers from './pages/AdminUsers';
+import Correspondances from './pages/Correspondances';
+import EditProfile from './pages/EditProfile';
+import Home from './pages/Home';
+import Landing from './pages/Landing';
+import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
-import Messages from './pages/Messages';
-import EditProfile from './pages/EditProfile';
-import AdminReports from './pages/AdminReports';
-import AdminUsers from './pages/AdminUsers';
-import Activities from './pages/Activities';
-import Home from './pages/Home';
 import ProfileDetail from './pages/ProfileDetail';
-import Landing from './pages/Landing';
-import Correspondances from './pages/Correspondances';
 
 
 export const PAGES = {
+    "Activities": Activities,
     "AdminDashboard": AdminDashboard,
+    "AdminReports": AdminReports,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminTickets": AdminTickets,
+    "AdminUsers": AdminUsers,
+    "Correspondances": Correspondances,
+    "EditProfile": EditProfile,
+    "Home": Home,
+    "Landing": Landing,
+    "Messages": Messages,
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
-    "Messages": Messages,
-    "EditProfile": EditProfile,
-    "AdminReports": AdminReports,
-    "AdminUsers": AdminUsers,
-    "Activities": Activities,
-    "Home": Home,
     "ProfileDetail": ProfileDetail,
-    "Landing": Landing,
-    "Correspondances": Correspondances,
 }
 
 export const pagesConfig = {
