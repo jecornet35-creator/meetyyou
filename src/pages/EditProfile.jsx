@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
-import { Camera, Eye } from 'lucide-react';
+import { Camera, Eye, Upload, X } from 'lucide-react';
 
 const SectionTitle = ({ children }) => (
   <h2 className="text-xl font-semibold text-amber-700 mb-4 mt-8 first:mt-0">{children}</h2>
@@ -69,9 +69,14 @@ export default function EditProfile() {
   const queryClient = useQueryClient();
   const [profile, setProfile] = useState({});
   const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('profile');
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab');
+    if (tab) setActiveTab(tab);
   }, []);
 
   const { data: existingProfile, isLoading } = useQuery({
@@ -115,6 +120,51 @@ export default function EditProfile() {
     saveMutation.mutate(profile);
   };
 
+  const handlePhotoUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploadingPhoto(true);
+    try {
+      const uploadPromises = files.map(file => base44.integrations.Core.UploadFile({ file }));
+      const results = await Promise.all(uploadPromises);
+      const newPhotoUrls = results.map(r => r.file_url);
+      
+      const updatedPhotos = [...(profile.photos || []), ...newPhotoUrls];
+      const updatedProfile = {
+        ...profile,
+        photos: updatedPhotos,
+        main_photo: profile.main_photo || updatedPhotos[0]
+      };
+      
+      setProfile(updatedProfile);
+      saveMutation.mutate(updatedProfile);
+      toast.success('Photo(s) ajoutée(s) avec succès');
+    } catch (error) {
+      toast.error('Erreur lors de l\'upload');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleRemovePhoto = (photoUrl) => {
+    const updatedPhotos = (profile.photos || []).filter(p => p !== photoUrl);
+    const updatedProfile = {
+      ...profile,
+      photos: updatedPhotos,
+      main_photo: profile.main_photo === photoUrl ? updatedPhotos[0] : profile.main_photo
+    };
+    setProfile(updatedProfile);
+    saveMutation.mutate(updatedProfile);
+  };
+
+  const handleSetMainPhoto = (photoUrl) => {
+    const updatedProfile = { ...profile, main_photo: photoUrl };
+    setProfile(updatedProfile);
+    saveMutation.mutate(updatedProfile);
+    toast.success('Photo principale mise à jour');
+  };
+
   const months = [
     { value: 'january', label: 'Janvier' },
     { value: 'february', label: 'Février' },
@@ -140,14 +190,22 @@ export default function EditProfile() {
       <div className="bg-gradient-to-r from-amber-700 to-amber-600 text-white">
         <div className="max-w-5xl mx-auto px-4">
           <div className="flex items-center gap-6 overflow-x-auto">
-            <Link to="#" className="py-3 px-4 flex items-center gap-2 hover:bg-white/10">
+            <button
+              onClick={() => setActiveTab('photos')}
+              className={`py-3 px-4 flex items-center gap-2 hover:bg-white/10 ${activeTab === 'photos' ? 'border-b-2 border-white font-medium' : ''}`}
+            >
               <Camera className="w-4 h-4" />
               Photos
-            </Link>
-            <div className="py-3 px-4 border-b-2 border-white font-medium">
+            </button>
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`py-3 px-4 ${activeTab === 'profile' ? 'border-b-2 border-white font-medium' : 'hover:bg-white/10'}`}
+            >
               Profile
-            </div>
-            <Link to="#" className="py-3 px-4 hover:bg-white/10">Correspondences</Link>
+            </button>
+            <Link to={createPageUrl('Correspondances')} className="py-3 px-4 hover:bg-white/10">
+              Correspondences
+            </Link>
             <Link to="#" className="py-3 px-4 hover:bg-white/10">Flash</Link>
             <Link to="#" className="py-3 px-4 hover:bg-white/10">Personality</Link>
             <Link to="#" className="py-3 px-4 hover:bg-white/10">Verify Profile</Link>
@@ -157,23 +215,100 @@ export default function EditProfile() {
 
       <main className="max-w-5xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Edit My Profile</h1>
-              <p className="text-gray-600 text-sm mt-1">
-                Answering these profile questions allows other users to find you in search results and helps us find you more relevant matches.
-                <span className="text-amber-600"> Answer all the questions below to complete this step.</span>
-              </p>
-            </div>
-            <Link to={createPageUrl('ProfileDetail') + `?id=${existingProfile?.id}`}>
-              <Button variant="outline" className="gap-2">
-                <Eye className="w-4 h-4" />
-                View my profile
-              </Button>
-            </Link>
-          </div>
+          {activeTab === 'photos' ? (
+            <>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Mes Photos</h1>
+                  <p className="text-gray-600 text-sm mt-1">
+                    Ajoutez des photos pour rendre votre profil plus attractif. La première photo sera votre photo principale.
+                  </p>
+                </div>
+                <Link to={createPageUrl('ProfileDetail') + `?id=${existingProfile?.id}`}>
+                  <Button variant="outline" className="gap-2">
+                    <Eye className="w-4 h-4" />
+                    Voir mon profil
+                  </Button>
+                </Link>
+              </div>
 
-          <form onSubmit={handleSubmit}>
+              <div className="space-y-6">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <input
+                    type="file"
+                    id="photo-upload"
+                    multiple
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                    disabled={uploadingPhoto}
+                  />
+                  <label htmlFor="photo-upload" className="cursor-pointer">
+                    <Upload className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                    <p className="text-gray-600 mb-2">
+                      {uploadingPhoto ? 'Upload en cours...' : 'Cliquez pour ajouter des photos'}
+                    </p>
+                    <p className="text-sm text-gray-500">PNG, JPG jusqu'à 10MB</p>
+                  </label>
+                </div>
+
+                {profile.photos && profile.photos.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {profile.photos.map((photo, index) => (
+                      <div key={index} className="relative group">
+                        <img
+                          src={photo}
+                          alt={`Photo ${index + 1}`}
+                          className="w-full h-48 object-cover rounded-lg"
+                        />
+                        {profile.main_photo === photo && (
+                          <Badge className="absolute top-2 left-2 bg-amber-500">
+                            Photo principale
+                          </Badge>
+                        )}
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                          {profile.main_photo !== photo && (
+                            <Button
+                              size="sm"
+                              onClick={() => handleSetMainPhoto(photo)}
+                              className="bg-amber-600 hover:bg-amber-700"
+                            >
+                              Photo principale
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleRemovePhoto(photo)}
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">Edit My Profile</h1>
+                  <p className="text-gray-600 text-sm mt-1">
+                    Answering these profile questions allows other users to find you in search results and helps us find you more relevant matches.
+                    <span className="text-amber-600"> Answer all the questions below to complete this step.</span>
+                  </p>
+                </div>
+                <Link to={createPageUrl('ProfileDetail') + `?id=${existingProfile?.id}`}>
+                  <Button variant="outline" className="gap-2">
+                    <Eye className="w-4 h-4" />
+                    View my profile
+                  </Button>
+                </Link>
+              </div>
+
+              <form onSubmit={handleSubmit}>
             {/* Basic Information */}
             <SectionTitle>Your basic information</SectionTitle>
             
@@ -663,16 +798,18 @@ export default function EditProfile() {
               />
             </div>
 
-            <div className="flex justify-center pt-6">
-              <Button
-                type="submit"
-                className="bg-amber-600 hover:bg-amber-700 px-12 py-3 text-lg"
-                disabled={saveMutation.isPending}
-              >
-                {saveMutation.isPending ? 'Saving...' : 'SEND'}
-              </Button>
-            </div>
-          </form>
+                <div className="flex justify-center pt-6">
+                  <Button
+                    type="submit"
+                    className="bg-amber-600 hover:bg-amber-700 px-12 py-3 text-lg"
+                    disabled={saveMutation.isPending}
+                  >
+                    {saveMutation.isPending ? 'Saving...' : 'SEND'}
+                  </Button>
+                </div>
+              </form>
+            </>
+          )}
         </div>
       </main>
     </div>
