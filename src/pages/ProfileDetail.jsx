@@ -149,8 +149,13 @@ function ProfileRow({ label, profileVal, corrVal, isEven }) {
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function ProfileDetail() {
   const [activePhoto, setActivePhoto] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get('id');
+
+  useEffect(() => {
+    base44.auth.me().then(setCurrentUser).catch(() => {});
+  }, []);
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile', profileId],
