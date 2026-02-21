@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import NotificationToast from '@/components/notifications/NotificationToast';
 import QuickSearchModal from '@/components/search/QuickSearchModal';
 
+
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('correspondences');
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
