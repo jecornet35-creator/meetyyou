@@ -103,13 +103,21 @@ export default function ProfileCard({ profile, currentUser }) {
         <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
           <Heart className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
-        <button 
-          onClick={() => startConversationMutation.mutate()}
-          disabled={startConversationMutation.isPending}
-          className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
-        >
-          <MessageCircle className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
-        </button>
+        {canMessage ? (
+          <button
+            onClick={() => startConversationMutation.mutate()}
+            disabled={startConversationMutation.isPending}
+            className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
+          >
+            <MessageCircle className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
+          </button>
+        ) : (
+          <Link to={createPageUrl('SubscriptionPlans')} title="Premium requis">
+            <span className="p-1.5 flex items-center justify-center hover:bg-amber-50 rounded-full transition-colors">
+              <Lock className="w-4 h-4 text-amber-400" />
+            </span>
+          </Link>
+        )}
         <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
           <Star className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
         </button>
