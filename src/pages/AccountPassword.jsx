@@ -5,6 +5,37 @@ import { Input } from '@/components/ui/input';
 import { Eye, EyeOff } from 'lucide-react';
 import Header from '@/components/layout/Header';
 
+function getStrength(password) {
+  if (!password) return { score: 0, label: '', color: '' };
+  let score = 0;
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  const levels = [
+    { score: 1, label: 'Très faible', color: 'bg-red-500' },
+    { score: 2, label: 'Faible', color: 'bg-orange-400' },
+    { score: 3, label: 'Moyen', color: 'bg-yellow-400' },
+    { score: 4, label: 'Fort', color: 'bg-green-500' },
+  ];
+  return levels[score - 1] || { score: 0, label: '', color: '' };
+}
+
+function PasswordStrengthBar({ password }) {
+  const { score, label, color } = getStrength(password);
+  if (!password) return null;
+  return (
+    <div className="mt-2">
+      <div className="flex gap-1 mb-1">
+        {[1, 2, 3, 4].map(i => (
+          <div key={i} className={`h-1.5 flex-1 rounded-full transition-all ${i <= score ? color : 'bg-gray-200'}`} />
+        ))}
+      </div>
+      <p className={`text-xs font-medium ${score >= 4 ? 'text-green-600' : score >= 3 ? 'text-yellow-600' : 'text-red-500'}`}>{label}</p>
+    </div>
+  );
+}
+
 function PasswordInput({ value, onChange, placeholder }) {
   const [show, setShow] = useState(false);
   return (
