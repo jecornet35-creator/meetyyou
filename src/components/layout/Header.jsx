@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import NotificationToast from '@/components/notifications/NotificationToast';
 
 export default function Header({ user }) {
   const queryClient = useQueryClient();
