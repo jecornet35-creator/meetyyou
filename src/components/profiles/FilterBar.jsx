@@ -12,11 +12,6 @@ import { createPageUrl } from '@/utils';
 
 const filters = [
   { id: 'correspondences', label: 'Correspondances', icon: Heart, active: true, hasDropdown: true },
-  { id: 'online', label: 'En ligne', icon: Wifi },
-  { id: 'popular', label: 'Populaire', icon: Flame },
-  { id: 'new', label: 'Nouveau', icon: Sparkles },
-  { id: 'photos', label: 'Photos récentes', icon: Camera },
-  { id: 'region', label: 'Ma région', icon: MapPin },
 ];
 
 export default function FilterBar({ activeFilter, onFilterChange }) {
