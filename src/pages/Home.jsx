@@ -12,8 +12,10 @@ import QuickSearchModal from '@/components/search/QuickSearchModal';
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState('correspondences');
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
+    base44.auth.me().then(setCurrentUser).catch(() => {});
     const handleOpenQuickSearch = () => setIsQuickSearchOpen(true);
     window.addEventListener('openQuickSearch', handleOpenQuickSearch);
     return () => window.removeEventListener('openQuickSearch', handleOpenQuickSearch);
@@ -24,6 +26,25 @@ export default function Home() {
     queryFn: () => base44.entities.Profile.list('-created_date', 50),
     initialData: [],
   });
+
+  const { data: blockedEmails = [] } = useQuery({
+    queryKey: ['blockedEmails'],
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      // Profiles blocked BY me (I won't see them)
+      const iBlocked = await base44.entities.BlockedUser.filter({ blocker_email: user.email });
+      // Profiles that blocked ME (they can't see me, and I won't see them either)
+      const blockedMe = await base44.entities.BlockedUser.filter({ blocked_email: user.email });
+      return [
+        ...iBlocked.map(b => b.blocked_email),
+        ...blockedMe.map(b => b.blocker_email),
+      ];
+    },
+    enabled: !!currentUser,
+    initialData: [],
+  });
+
+  const visibleProfiles = profiles.filter(p => !blockedEmails.includes(p.created_by));
 
   return (
     <div className="min-h-screen bg-gray-100">
