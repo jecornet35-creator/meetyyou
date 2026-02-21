@@ -167,10 +167,12 @@ export default function Header({ user }) {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <Button size="sm" className="bg-green-500 hover:bg-green-600 gap-2 hidden sm:flex">
-              <Zap className="w-4 h-4" />
-              Premium
-            </Button>
+            <Link to={createPageUrl('SubscriptionPlans')}>
+              <Button size="sm" className="bg-green-500 hover:bg-green-600 gap-2 hidden sm:flex">
+                <Zap className="w-4 h-4" />
+                Premium
+              </Button>
+            </Link>
             <Link to={createPageUrl('Notifications')}>
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 relative">
                 <Bell className="w-5 h-5" />
