@@ -109,11 +109,18 @@ export default function AccountPassword() {
           <div className="mb-4">
             <label className="text-sm text-gray-600 mb-1 block">Nouveau Mot de passe :</label>
             <PasswordInput value={newPass} onChange={e => setNewPass(e.target.value)} />
+            <PasswordStrengthBar password={newPass} />
           </div>
 
           <div className="mb-6">
             <label className="text-sm text-gray-600 mb-1 block">Confirmez votre Nouveau Mot de passe :</label>
             <PasswordInput value={confirm} onChange={e => setConfirm(e.target.value)} />
+            {confirm && newPass !== confirm && (
+              <p className="text-xs text-red-500 mt-1">Les mots de passe ne correspondent pas.</p>
+            )}
+            {confirm && newPass === confirm && (
+              <p className="text-xs text-green-600 mt-1">Les mots de passe correspondent.</p>
+            )}
           </div>
 
           {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
