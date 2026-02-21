@@ -144,10 +144,16 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           alt={otherParticipant.display_name}
           className="w-10 h-10 rounded-full object-cover"
         />
-        <div>
+        <div className="flex-1">
           <h2 className="font-semibold">{otherParticipant.display_name || 'Utilisateur'}</h2>
           <p className="text-xs text-gray-500">En ligne</p>
         </div>
+        <BlockButton
+          targetProfile={{ created_by: otherParticipant.email, id: null, display_name: otherParticipant.display_name, main_photo: otherParticipant.photo }}
+          currentUserEmail={currentUser?.email}
+          size="sm"
+          variant="ghost"
+        />
       </div>
 
       {/* Messages */}
