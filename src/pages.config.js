@@ -63,6 +63,7 @@ import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
 import Interests from './pages/Interests';
+import PersonalityQuestions from './pages/PersonalityQuestions';
 
 
 export const PAGES = {
@@ -82,6 +83,7 @@ export const PAGES = {
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
     "Interests": Interests,
+    "PersonalityQuestions": PersonalityQuestions,
 }
 
 export const pagesConfig = {
