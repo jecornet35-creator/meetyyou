@@ -76,10 +76,10 @@ export default function NotificationToast({ duration = 5000 }) {
 
           setToasts(prev => [...prev, { ...event.data, id: event.id, timestamp: Date.now() }]);
           
-          // Auto-remove after 5 seconds
+          // Auto-remove after `duration` ms
           setTimeout(() => {
             setToasts(prev => prev.filter(t => t.id !== event.id));
-          }, 5000);
+          }, duration);
         }
         
         queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
