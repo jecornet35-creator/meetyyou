@@ -134,21 +134,22 @@ export default function Header({ user }) {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
-            <Link to={createPageUrl('Home')}>
-              <Button variant="ghost" className="text-white hover:bg-white/10">
-                Accueil
-              </Button>
-            </Link>
             <Link to={createPageUrl('Messages')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
                 Messages
                 <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">56</Badge>
               </Button>
             </Link>
-            <Link to={createPageUrl('Activities')}>
+            <Link to={createPageUrl('Notifications')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
-                Activités
-                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">42</Badge>
+                Likes
+                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{likesCount}</Badge>
+              </Button>
+            </Link>
+            <Link to={createPageUrl('Notifications')}>
+              <Button variant="ghost" className="text-white hover:bg-white/10 relative">
+                Profils vus
+                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{profileViewsCount}</Badge>
               </Button>
             </Link>
           </nav>
