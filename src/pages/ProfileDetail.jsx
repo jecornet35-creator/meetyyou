@@ -308,9 +308,12 @@ export default function ProfileDetail() {
                 <Button variant="outline" size="icon" className="h-9 w-9 border-slate-300">
                   <Flag className="w-4 h-4 text-red-400" />
                 </Button>
-                <Button variant="outline" size="icon" className="h-9 w-9 border-slate-300">
-                  <Ban className="w-4 h-4 text-gray-400" />
-                </Button>
+                <BlockButton
+                  targetProfile={profile}
+                  currentUserEmail={currentUser?.email}
+                  variant="outline"
+                  size="icon"
+                />
               </div>
             </div>
           </div>
