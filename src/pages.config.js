@@ -66,6 +66,7 @@ import PersonalityQuestions from './pages/PersonalityQuestions';
 import ProfileDetail from './pages/ProfileDetail';
 import SubscriptionPlans from './pages/SubscriptionPlans';
 import Photos from './pages/Photos';
+import BlockedUsers from './pages/BlockedUsers';
 
 
 export const PAGES = {
@@ -88,6 +89,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "SubscriptionPlans": SubscriptionPlans,
     "Photos": Photos,
+    "BlockedUsers": BlockedUsers,
 }
 
 export const pagesConfig = {
