@@ -35,6 +35,28 @@ export default function Header({ user }) {
     initialData: 0,
   });
 
+  const { data: likesCount = 0 } = useQuery({
+    queryKey: ['likesCount'],
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      const notifications = await base44.entities.Notification.filter({ user_email: user.email, type: 'like', is_read: false });
+      return notifications.length;
+    },
+    enabled: !!currentUser,
+    initialData: 0,
+  });
+
+  const { data: profileViewsCount = 0 } = useQuery({
+    queryKey: ['profileViewsCount'],
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      const notifications = await base44.entities.Notification.filter({ user_email: user.email, type: 'profile_view', is_read: false });
+      return notifications.length;
+    },
+    enabled: !!currentUser,
+    initialData: 0,
+  });
+
   // Real-time subscription for notifications
   useEffect(() => {
     if (!currentUser) return;
