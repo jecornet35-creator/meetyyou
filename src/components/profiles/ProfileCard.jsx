@@ -8,6 +8,7 @@ import { usePlan } from '@/components/premium/usePlan';
 
 export default function ProfileCard({ profile, currentUser }) {
   const queryClient = useQueryClient();
+  const { canMessage, isFree } = usePlan();
 
   const startConversationMutation = useMutation({
     mutationFn: async () => {
