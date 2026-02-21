@@ -60,13 +60,13 @@ export default function Home() {
               <Skeleton key={i} className="rounded-lg h-80" />
             ))}
           </div>
-        ) : profiles.length === 0 ? (
+        ) : visibleProfiles.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-gray-500 text-lg">Aucun profil disponible pour le moment.</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {profiles.map((profile) => (
+            {visibleProfiles.map((profile) => (
               <ProfileCard 
                 key={profile.id} 
                 profile={profile}
