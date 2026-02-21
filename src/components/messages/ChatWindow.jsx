@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Send, Check, CheckCheck, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import BlockButton from '@/components/block/BlockButton';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [newMessage, setNewMessage] = useState('');
