@@ -226,12 +226,16 @@ export default function Header({ user }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white p-2 shadow-xl rounded-lg border-0">
-                <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                  Adresse Email
-                </DropdownMenuItem>
-                <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                  Mot de passe
-                </DropdownMenuItem>
+                <Link to={createPageUrl('AccountEmail')}>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    Adresse Email
+                  </DropdownMenuItem>
+                </Link>
+                <Link to={createPageUrl('AccountPassword')}>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    Mot de passe
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                   Paramètres de Profil
                 </DropdownMenuItem>
