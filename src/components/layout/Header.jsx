@@ -80,6 +80,8 @@ export default function Header({ user }) {
   ];
 
   return (
+    <>
+    <NotificationToast />
     <header className="bg-gradient-to-r from-amber-600 to-amber-500 text-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
