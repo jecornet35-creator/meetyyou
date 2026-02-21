@@ -49,6 +49,7 @@
  */
 import Activities from './pages/Activities';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminPhotos from './pages/AdminPhotos';
 import AdminReports from './pages/AdminReports';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
@@ -61,12 +62,12 @@ import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import ProfileDetail from './pages/ProfileDetail';
-import AdminPhotos from './pages/AdminPhotos';
 
 
 export const PAGES = {
     "Activities": Activities,
     "AdminDashboard": AdminDashboard,
+    "AdminPhotos": AdminPhotos,
     "AdminReports": AdminReports,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminTickets": AdminTickets,
@@ -79,7 +80,6 @@ export const PAGES = {
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "ProfileDetail": ProfileDetail,
-    "AdminPhotos": AdminPhotos,
 }
 
 export const pagesConfig = {
