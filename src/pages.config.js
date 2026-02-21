@@ -54,6 +54,8 @@ import AdminReports from './pages/AdminReports';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
 import AdminUsers from './pages/AdminUsers';
+import AdminVerification from './pages/AdminVerification';
+import BlockedUsers from './pages/BlockedUsers';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
@@ -63,12 +65,10 @@ import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import PersonalityQuestions from './pages/PersonalityQuestions';
-import ProfileDetail from './pages/ProfileDetail';
-import SubscriptionPlans from './pages/SubscriptionPlans';
 import Photos from './pages/Photos';
-import BlockedUsers from './pages/BlockedUsers';
-import AdminVerification from './pages/AdminVerification';
+import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
+import SubscriptionPlans from './pages/SubscriptionPlans';
 
 
 export const PAGES = {
@@ -79,6 +79,8 @@ export const PAGES = {
     "AdminSubscriptions": AdminSubscriptions,
     "AdminTickets": AdminTickets,
     "AdminUsers": AdminUsers,
+    "AdminVerification": AdminVerification,
+    "BlockedUsers": BlockedUsers,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
     "Home": Home,
@@ -88,12 +90,10 @@ export const PAGES = {
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "PersonalityQuestions": PersonalityQuestions,
-    "ProfileDetail": ProfileDetail,
-    "SubscriptionPlans": SubscriptionPlans,
     "Photos": Photos,
-    "BlockedUsers": BlockedUsers,
-    "AdminVerification": AdminVerification,
+    "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
+    "SubscriptionPlans": SubscriptionPlans,
 }
 
 export const pagesConfig = {
