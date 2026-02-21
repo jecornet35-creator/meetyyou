@@ -22,7 +22,7 @@ const colorMap = {
   match: 'bg-green-500',
 };
 
-export default function NotificationToast() {
+export default function NotificationToast({ duration = 5000 }) {
   const [toasts, setToasts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [preferences, setPreferences] = useState(null);
