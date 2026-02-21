@@ -60,10 +60,30 @@ export default function AccountEmail() {
             <p className="text-green-600 text-sm mt-3">Email mis à jour avec succès.</p>
           )}
 
-          <div className="flex items-center gap-2 mt-5 text-green-700 text-sm">
-            <ShieldCheck className="w-5 h-5 text-green-600" />
-            <span>Cet email a déjà été vérifié.</span>
-          </div>
+          {isVerified ? (
+            <div className="flex items-center gap-2 mt-5 text-green-700 text-sm">
+              <ShieldCheck className="w-5 h-5 text-green-600" />
+              <span>Cet email a déjà été vérifié.</span>
+            </div>
+          ) : (
+            <div className="mt-5 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+              <div className="flex items-center gap-2 text-orange-700 text-sm mb-3">
+                <ShieldAlert className="w-5 h-5" />
+                <span>Cet email n'a pas encore été vérifié.</span>
+              </div>
+              <Button
+                onClick={handleSendVerification}
+                disabled={verificationSent}
+                className="bg-amber-700 hover:bg-amber-800 text-white gap-2"
+              >
+                <Mail className="w-4 h-4" />
+                {verificationSent ? 'Email envoyé !' : 'Envoyer un email de vérification'}
+              </Button>
+              {verificationSent && (
+                <p className="text-green-600 text-xs mt-2">Un email de vérification a été envoyé à {email}.</p>
+              )}
+            </div>
+          )}
         </div>
       </main>
     </div>
