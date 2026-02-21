@@ -80,7 +80,7 @@ export default function Header({ user }) {
   ];
 
   return (
-    <>
+    <React.Fragment>
     <NotificationToast />
     <header className="bg-gradient-to-r from-amber-600 to-amber-500 text-white">
       <div className="max-w-7xl mx-auto px-4">
