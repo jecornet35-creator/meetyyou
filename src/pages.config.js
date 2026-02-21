@@ -70,6 +70,7 @@ import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
 import AccountEmail from './pages/AccountEmail';
+import AccountPassword from './pages/AccountPassword';
 
 
 export const PAGES = {
@@ -96,6 +97,7 @@ export const PAGES = {
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
     "AccountEmail": AccountEmail,
+    "AccountPassword": AccountPassword,
 }
 
 export const pagesConfig = {
