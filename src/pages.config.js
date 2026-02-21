@@ -57,13 +57,14 @@ import AdminUsers from './pages/AdminUsers';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
+import Interests from './pages/Interests';
 import Landing from './pages/Landing';
 import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
-import ProfileDetail from './pages/ProfileDetail';
-import Interests from './pages/Interests';
 import PersonalityQuestions from './pages/PersonalityQuestions';
+import ProfileDetail from './pages/ProfileDetail';
+import SubscriptionPlans from './pages/SubscriptionPlans';
 
 
 export const PAGES = {
@@ -77,13 +78,14 @@ export const PAGES = {
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
     "Home": Home,
+    "Interests": Interests,
     "Landing": Landing,
     "Messages": Messages,
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
-    "ProfileDetail": ProfileDetail,
-    "Interests": Interests,
     "PersonalityQuestions": PersonalityQuestions,
+    "ProfileDetail": ProfileDetail,
+    "SubscriptionPlans": SubscriptionPlans,
 }
 
 export const pagesConfig = {
