@@ -62,10 +62,12 @@ export default function Header({ user }) {
     if (!currentUser) return;
 
     const unsubscribe = base44.entities.Notification.subscribe((event) => {
-      if (event.data.user_email === currentUser.email) {
-        queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
-      }
-    });
+        if (event.data.user_email === currentUser.email) {
+          queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
+          queryClient.invalidateQueries({ queryKey: ['likesCount'] });
+          queryClient.invalidateQueries({ queryKey: ['profileViewsCount'] });
+        }
+      });
 
     return unsubscribe;
   }, [currentUser, queryClient]);
