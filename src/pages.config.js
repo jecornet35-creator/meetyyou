@@ -69,6 +69,7 @@ import Photos from './pages/Photos';
 import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
+import AccountEmail from './pages/AccountEmail';
 
 
 export const PAGES = {
@@ -94,6 +95,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
+    "AccountEmail": AccountEmail,
 }
 
 export const pagesConfig = {
