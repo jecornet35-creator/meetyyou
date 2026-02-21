@@ -218,5 +218,6 @@ export default function Header({ user }) {
         </div>
       </div>
     </header>
+    </>
   );
 }
