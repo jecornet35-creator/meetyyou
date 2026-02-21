@@ -219,9 +219,38 @@ export default function Header({ user }) {
                 )}
               </Button>
             </Link>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <Settings className="w-5 h-5" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+                  <Settings className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-white p-2 shadow-xl rounded-lg border-0">
+                <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                  Adresse Email
+                </DropdownMenuItem>
+                <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                  Mot de passe
+                </DropdownMenuItem>
+                <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                  Paramètres de Profil
+                </DropdownMenuItem>
+                <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                  Aide
+                </DropdownMenuItem>
+                <Link to={createPageUrl('SubscriptionPlans')}>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    Abonnez-vous
+                  </DropdownMenuItem>
+                </Link>
+                <DropdownMenuItem
+                  className="py-3 px-4 cursor-pointer hover:bg-red-50 rounded text-red-500"
+                  onClick={() => base44.auth.logout()}
+                >
+                  Déconnexion
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
