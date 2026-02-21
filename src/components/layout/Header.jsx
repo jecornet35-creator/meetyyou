@@ -101,10 +101,12 @@ export default function Header({ user }) {
                       Correspondances
                     </DropdownMenuItem>
                   </Link>
-                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
-                    <Sparkles className="w-4 h-4 mr-3 text-gray-400" />
-                    Loisirs et Intérêts
-                  </DropdownMenuItem>
+                  <Link to={createPageUrl('Interests')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <Sparkles className="w-4 h-4 mr-3 text-gray-400" />
+                      Loisirs et Intérêts
+                    </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
                     <HelpCircle className="w-4 h-4 mr-3 text-gray-400" />
                     Questions Sur Votre Personnalité
