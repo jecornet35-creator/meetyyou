@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Heart, MessageCircle, Star, Flag, MapPin, CheckCircle, Ban, Camera } from 'lucide-react';
 import Header from '@/components/layout/Header';
+import BlockButton from '@/components/block/BlockButton';
 
 // ─── Labels ────────────────────────────────────────────────────────────────────
 const L = {
