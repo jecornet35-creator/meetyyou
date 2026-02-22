@@ -26,7 +26,20 @@ export default function Landing() {
     base44.auth.redirectToLogin();
   };
 
+  const [dismissedBanner, setDismissedBanner] = useState(false);
   const ages = Array.from({ length: 63 }, (_, i) => i + 18);
+
+  const { data: activePromo } = useQuery({
+    queryKey: ['active-promo'],
+    queryFn: async () => {
+      const promos = await base44.entities.PromoAccess.list('-created_date', 50);
+      const now = new Date();
+      return promos.find(p => p.is_active && isWithinInterval(now, {
+        start: new Date(p.start_date),
+        end: new Date(p.end_date)
+      })) || null;
+    },
+  });
 
   const footerLinks = [
     'Qui sommes-nous', 'Contacter Nous', 'Témoignages', 'Autres Sites',
