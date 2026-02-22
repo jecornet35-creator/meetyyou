@@ -167,97 +167,17 @@ function TabConfidentialite({ currentUser }) {
 
 // ─── Tab: Notifications ────────────────────────────────────────────────────
 
-function TabNotifications({ currentUser }) {
-  const queryClient = useQueryClient();
-  const [settings, setSettings] = useState({
-    push_enabled: true, new_messages: true, new_matches: true,
-    profile_views: true, likes: true, favorites: true,
-    promotions: false, email_notifications: true,
-    quiet_hours_enabled: false, quiet_hours_start: '22:00', quiet_hours_end: '08:00',
-  });
-
-  const { data: existingPrefs } = useQuery({
-    queryKey: ['notificationPrefs', currentUser?.email],
-    queryFn: async () => {
-      const prefs = await base44.entities.NotificationPreferences.filter({ created_by: currentUser.email });
-      return prefs[0];
-    },
-    enabled: !!currentUser,
-  });
-
-  useEffect(() => { if (existingPrefs) setSettings(prev => ({ ...prev, ...existingPrefs })); }, [existingPrefs]);
-
-  const saveMutation = useMutation({
-    mutationFn: async (data) => existingPrefs?.id
-      ? base44.entities.NotificationPreferences.update(existingPrefs.id, data)
-      : base44.entities.NotificationPreferences.create(data),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['notificationPrefs'] }); toast.success('Préférences enregistrées'); },
-  });
-
-  const update = (key, val) => {
-    const updated = { ...settings, [key]: val };
-    setSettings(updated);
-    saveMutation.mutate(updated);
-  };
-
-  const rows = [
-    { key: 'new_messages', icon: MessageCircle, iconBg: 'bg-blue-500', title: 'Nouveaux messages', description: 'Alerte pour chaque nouveau message' },
-    { key: 'new_matches', icon: UserCheck, iconBg: 'bg-green-500', title: 'Nouvelles correspondances', description: 'Quand un profil correspond à vos critères' },
-    { key: 'profile_views', icon: Eye, iconBg: 'bg-purple-500', title: 'Visites de profil', description: 'Quand quelqu\'un consulte votre profil' },
-    { key: 'likes', icon: Heart, iconBg: 'bg-red-500', title: 'Likes reçus', description: 'Quand quelqu\'un aime votre profil' },
-    { key: 'favorites', icon: Star, iconBg: 'bg-amber-500', title: 'Favoris', description: 'Quand vous êtes ajouté(e) aux favoris' },
-    { key: 'promotions', icon: Gift, iconBg: 'bg-pink-500', title: 'Offres et promotions', description: 'Nos offres spéciales' },
-  ];
-
+function TabNotifications() {
   return (
-    <div className="space-y-4">
-      <div className="bg-white rounded-2xl shadow-sm p-5">
-        <div className={`flex items-center justify-between p-4 rounded-xl mb-4 ${settings.push_enabled ? 'bg-amber-50 border border-amber-200' : 'bg-gray-50 border border-gray-200'}`}>
-          <div className="flex items-center gap-3">
-            <Bell className={`w-5 h-5 ${settings.push_enabled ? 'text-amber-600' : 'text-gray-400'}`} />
-            <div>
-              <p className="text-sm font-semibold text-gray-900">Notifications push</p>
-              <p className="text-xs text-gray-500">Activer ou désactiver toutes les alertes</p>
-            </div>
-          </div>
-          <Switch checked={settings.push_enabled} onCheckedChange={(v) => update('push_enabled', v)} />
-        </div>
-
-        <div className={settings.push_enabled ? '' : 'opacity-40 pointer-events-none'}>
-          <SectionTitle>Types d'alertes</SectionTitle>
-          {rows.map(({ key, icon, iconBg, title, description }) => (
-            <SettingRow key={key} icon={icon} iconBg={iconBg} title={title} description={description}>
-              <Switch checked={settings[key]} onCheckedChange={(v) => update(key, v)} />
-            </SettingRow>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-sm p-5">
-        <SectionTitle>Email</SectionTitle>
-        <SettingRow icon={Mail} iconBg="bg-gray-500" title="Notifications par email" description="Recevoir aussi les alertes par email">
-          <Switch checked={settings.email_notifications} onCheckedChange={(v) => update('email_notifications', v)} />
-        </SettingRow>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-sm p-5">
-        <SectionTitle>Mode silencieux</SectionTitle>
-        <SettingRow icon={Moon} iconBg="bg-indigo-500" title="Heures silencieuses" description="Suspendre les notifications la nuit">
-          <Switch checked={settings.quiet_hours_enabled} onCheckedChange={(v) => update('quiet_hours_enabled', v)} />
-        </SettingRow>
-        {settings.quiet_hours_enabled && (
-          <div className="mt-3 flex items-center gap-4 pl-11">
-            <div>
-              <label className="text-xs text-gray-500 block mb-1">De</label>
-              <Input type="time" value={settings.quiet_hours_start} onChange={e => update('quiet_hours_start', e.target.value)} className="w-28 text-sm" />
-            </div>
-            <div>
-              <label className="text-xs text-gray-500 block mb-1">À</label>
-              <Input type="time" value={settings.quiet_hours_end} onChange={e => update('quiet_hours_end', e.target.value)} className="w-28 text-sm" />
-            </div>
-          </div>
-        )}
-      </div>
+    <div className="bg-white rounded-2xl shadow-sm p-5">
+      <SectionTitle>Préférences de notification</SectionTitle>
+      <p className="text-sm text-gray-500 mb-4">Gérez vos alertes depuis la page dédiée.</p>
+      <Link to={createPageUrl('NotificationSettings')}>
+        <Button className="bg-amber-500 hover:bg-amber-600 gap-2">
+          <Bell className="w-4 h-4" /> Gérer les notifications
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+      </Link>
     </div>
   );
 }
