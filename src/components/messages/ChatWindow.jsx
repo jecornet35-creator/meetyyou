@@ -197,7 +197,26 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                   }`}
                 >
                   <p className="text-sm">{message.content}</p>
+                  {translations[message.id] && (
+                    <p className={`text-sm mt-1 pt-1 border-t italic ${isMe ? 'border-amber-400 text-amber-100' : 'border-gray-200 text-gray-500'}`}>
+                      {translations[message.id]}
+                    </p>
+                  )}
                 </div>
+                <button
+                  onClick={() => translateMessage(message.id, message.content)}
+                  disabled={translating[message.id]}
+                  className={`mt-1 flex items-center gap-1 text-xs transition-colors ${
+                    isMe ? 'text-amber-600 hover:text-amber-700 ml-auto' : 'text-gray-400 hover:text-gray-600'
+                  } ${translations[message.id] ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                >
+                  {translating[message.id] ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <Languages className="w-3 h-3" />
+                  )}
+                  {translations[message.id] ? 'Masquer' : 'Traduire'}
+                </button>
                 <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : ''}`}>
                   <span className="text-xs text-gray-400">
                     {format(new Date(message.created_date), 'HH:mm')}
