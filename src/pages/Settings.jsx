@@ -135,6 +135,18 @@ function TabConfidentialite({ currentUser }) {
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm p-5">
+        <SectionTitle>Conseils personnalisés</SectionTitle>
+        <SettingRow
+          icon={Bell}
+          iconBg="bg-amber-500"
+          title="Activer les conseils personnalisés"
+          description="Recevez des suggestions et recommandations basées sur votre profil"
+        >
+          <Switch checked={privacy.personalized_tips} onCheckedChange={() => toggle('personalized_tips')} />
+        </SettingRow>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <SectionTitle>Messages</SectionTitle>
         <p className="text-xs text-gray-500 mb-3">Qui peut vous envoyer des messages ?</p>
         {msgOptions.map(({ value, label, desc }) => (
