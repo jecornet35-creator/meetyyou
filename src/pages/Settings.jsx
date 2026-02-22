@@ -52,80 +52,33 @@ function PasswordInput({ value, onChange, placeholder }) {
 // ─── Tab: Compte ───────────────────────────────────────────────────────────
 
 function TabCompte({ currentUser }) {
-  const [email, setEmail] = useState(currentUser?.email || '');
-  const [current, setCurrent] = useState('');
-  const [newPass, setNewPass] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [passError, setPassError] = useState('');
-
-  const handleSaveEmail = () => toast.success('Email mis à jour');
-  const handleSavePassword = () => {
-    setPassError('');
-    if (!current) return setPassError('Entrez votre mot de passe actuel');
-    if (!newPass || newPass.length < 6) return setPassError('Le nouveau mot de passe doit faire au moins 6 caractères');
-    if (newPass !== confirm) return setPassError('Les mots de passe ne correspondent pas');
-    toast.success('Mot de passe mis à jour');
-    setCurrent(''); setNewPass(''); setConfirm('');
-  };
-
-  const strength = (() => {
-    if (!newPass) return null;
-    let s = 0;
-    if (newPass.length >= 8) s++;
-    if (/[A-Z]/.test(newPass)) s++;
-    if (/[0-9]/.test(newPass)) s++;
-    if (/[^A-Za-z0-9]/.test(newPass)) s++;
-    const levels = [{ label: 'Très faible', color: 'bg-red-500' }, { label: 'Faible', color: 'bg-orange-400' }, { label: 'Moyen', color: 'bg-yellow-400' }, { label: 'Fort', color: 'bg-green-500' }];
-    return { ...levels[s - 1], score: s };
-  })();
+  const links = [
+    { to: 'AccountEmail', icon: Mail, iconBg: 'bg-amber-500', title: 'Adresse Email', description: 'Modifier ou vérifier votre adresse email' },
+    { to: 'AccountPassword', icon: Lock, iconBg: 'bg-gray-700', title: 'Mot de passe', description: 'Changer votre mot de passe' },
+  ];
 
   return (
-    <div className="space-y-6">
-      {/* Email */}
+    <div className="space-y-4">
       <div className="bg-white rounded-2xl shadow-sm p-5">
-        <SectionTitle>Adresse email</SectionTitle>
-        <div className="flex items-center gap-2 mb-1">
-          <Mail className="w-4 h-4 text-gray-400" />
-          <p className="text-sm text-gray-500">Email actuel : <span className="font-medium text-gray-800">{currentUser?.email}</span></p>
-          <Badge className="bg-green-100 text-green-700 border-0 text-xs">Vérifié</Badge>
-        </div>
-        <div className="flex gap-2 mt-4">
-          <Input value={email} onChange={e => setEmail(e.target.value)} placeholder="nouveau@email.com" className="flex-1" />
-          <Button onClick={handleSaveEmail} className="bg-amber-500 hover:bg-amber-600 px-5">Enregistrer</Button>
-        </div>
-      </div>
-
-      {/* Password */}
-      <div className="bg-white rounded-2xl shadow-sm p-5">
-        <SectionTitle>Mot de passe</SectionTitle>
-        <div className="space-y-3">
-          <div>
-            <label className="text-xs text-gray-500 block mb-1">Mot de passe actuel</label>
-            <PasswordInput value={current} onChange={e => setCurrent(e.target.value)} />
-          </div>
-          <div>
-            <label className="text-xs text-gray-500 block mb-1">Nouveau mot de passe</label>
-            <PasswordInput value={newPass} onChange={e => setNewPass(e.target.value)} />
-            {strength && (
-              <div className="mt-1.5">
-                <div className="flex gap-1 mb-1">
-                  {[1,2,3,4].map(i => <div key={i} className={`h-1 flex-1 rounded-full ${i <= strength.score ? strength.color : 'bg-gray-200'}`} />)}
+        <SectionTitle>Paramètres du compte</SectionTitle>
+        {links.map(({ to, icon: Icon, iconBg, title, description }) => (
+          <Link key={to} to={createPageUrl(to)}>
+            <div className="flex items-center justify-between py-3.5 border-b border-gray-100 last:border-0 hover:bg-gray-50 rounded-xl px-2 -mx-2 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-xl ${iconBg}`}>
+                  <Icon className="w-4 h-4 text-white" />
                 </div>
-                <p className="text-xs text-gray-500">{strength.label}</p>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">{title}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{description}</p>
+                </div>
               </div>
-            )}
-          </div>
-          <div>
-            <label className="text-xs text-gray-500 block mb-1">Confirmer le nouveau mot de passe</label>
-            <PasswordInput value={confirm} onChange={e => setConfirm(e.target.value)} />
-            {confirm && newPass !== confirm && <p className="text-xs text-red-500 mt-1">Les mots de passe ne correspondent pas</p>}
-          </div>
-          {passError && <p className="text-xs text-red-500">{passError}</p>}
-          <Button onClick={handleSavePassword} className="bg-amber-500 hover:bg-amber-600 w-full">Mettre à jour le mot de passe</Button>
-        </div>
+              <ChevronRight className="w-4 h-4 text-gray-300" />
+            </div>
+          </Link>
+        ))}
       </div>
 
-      {/* Danger zone */}
       <div className="bg-white rounded-2xl shadow-sm p-5 border border-red-100">
         <SectionTitle>Zone de danger</SectionTitle>
         <div className="flex items-center justify-between">
