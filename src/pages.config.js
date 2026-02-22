@@ -63,16 +63,17 @@ import EditProfile from './pages/EditProfile';
 import Home from './pages/Home';
 import Interests from './pages/Interests';
 import Landing from './pages/Landing';
+import Likes from './pages/Likes';
 import Messages from './pages/Messages';
 import NotificationSettings from './pages/NotificationSettings';
 import Notifications from './pages/Notifications';
 import PersonalityQuestions from './pages/PersonalityQuestions';
 import Photos from './pages/Photos';
+import ProfilVu from './pages/ProfilVu';
 import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
-import ProfilVu from './pages/ProfilVu';
-import Likes from './pages/Likes';
+import AdminManagement from './pages/AdminManagement';
 
 
 export const PAGES = {
@@ -92,16 +93,17 @@ export const PAGES = {
     "Home": Home,
     "Interests": Interests,
     "Landing": Landing,
+    "Likes": Likes,
     "Messages": Messages,
     "NotificationSettings": NotificationSettings,
     "Notifications": Notifications,
     "PersonalityQuestions": PersonalityQuestions,
     "Photos": Photos,
+    "ProfilVu": ProfilVu,
     "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
-    "ProfilVu": ProfilVu,
-    "Likes": Likes,
+    "AdminManagement": AdminManagement,
 }
 
 export const pagesConfig = {
