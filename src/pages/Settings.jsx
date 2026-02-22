@@ -94,6 +94,7 @@ function TabConfidentialite({ currentUser }) {
     allow_messages_from: 'everyone',
     show_age: true,
     show_location: true,
+    personalized_tips: true,
   });
 
   const updatePrivacy = useMutation({
