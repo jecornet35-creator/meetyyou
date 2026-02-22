@@ -4,9 +4,42 @@ import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Heart, MessageCircle, Star, Flag, MapPin, CheckCircle, Ban, Camera } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ArrowLeft, Heart, MessageCircle, Star, Flag, MapPin, CheckCircle, Ban, Camera, Smile, Music, Plane, Dumbbell, Palette, Leaf, Cpu, Users, Apple, MoreHorizontal, Brain, Target, Quote } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BlockButton from '@/components/block/BlockButton';
+
+const INTEREST_CATEGORIES = [
+  { key: 'sports', label: 'Sports', icon: Dumbbell, color: 'bg-orange-100 text-orange-700' },
+  { key: 'music', label: 'Musique', icon: Music, color: 'bg-purple-100 text-purple-700' },
+  { key: 'arts', label: 'Arts & Culture', icon: Palette, color: 'bg-pink-100 text-pink-700' },
+  { key: 'travel', label: 'Voyages', icon: Plane, color: 'bg-blue-100 text-blue-700' },
+  { key: 'food', label: 'Cuisine', icon: Apple, color: 'bg-red-100 text-red-700' },
+  { key: 'nature', label: 'Nature', icon: Leaf, color: 'bg-green-100 text-green-700' },
+  { key: 'tech', label: 'Technologie', icon: Cpu, color: 'bg-cyan-100 text-cyan-700' },
+  { key: 'social', label: 'Social', icon: Users, color: 'bg-yellow-100 text-yellow-700' },
+  { key: 'wellness', label: 'Bien-être', icon: Smile, color: 'bg-teal-100 text-teal-700' },
+];
+
+const PERSONALITY_QUESTIONS = [
+  { key: 'personality_q1', label: 'Comment vos amis vous décriraient-ils ?' },
+  { key: 'personality_q2', label: 'Êtes-vous plutôt introverti(e) ou extraverti(e) ?' },
+  { key: 'personality_q3', label: 'Comment gérez-vous les conflits ?' },
+  { key: 'personality_q4', label: 'Qu\'est-ce qui vous rend heureux(se) au quotidien ?' },
+  { key: 'personality_q5', label: 'Quelle est votre plus grande qualité ?' },
+  { key: 'personality_q6', label: 'Quel est votre plus grand défaut ?' },
+  { key: 'personality_q7', label: 'Comment réagissez-vous face au stress ?' },
+  { key: 'personality_q8', label: 'Êtes-vous plutôt tête ou cœur ?' },
+];
+
+const LIFE_GOAL_QUESTIONS = [
+  { key: 'life_goal_q1', label: 'Votre objectif principal dans les 5 prochaines années ?' },
+  { key: 'life_goal_q2', label: 'Comment imaginez-vous votre vie idéale ?' },
+  { key: 'life_goal_q3', label: 'Quelle place occupe la famille dans votre vie ?' },
+  { key: 'life_goal_q4', label: 'Qu\'est-ce que le succès signifie pour vous ?' },
+  { key: 'life_goal_q5', label: 'Quel héritage souhaitez-vous laisser ?' },
+  { key: 'life_goal_q6', label: 'Quelle est votre vision d\'une relation épanouissante ?' },
+];
 
 // ─── Labels ────────────────────────────────────────────────────────────────────
 const L = {
