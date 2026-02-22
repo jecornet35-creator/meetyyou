@@ -179,7 +179,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           return (
             <div
               key={message.id}
-              className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
+              className={`flex group ${isMe ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`max-w-[70%] ${isMe ? 'order-2' : ''}`}>
                 {!isMe && (
