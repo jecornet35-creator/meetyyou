@@ -91,7 +91,7 @@ function TabConfidentialite({ currentUser }) {
     show_online_status: true,
     show_last_seen: true,
     show_profile_views: true,
-    allow_messages_from: 'everyone', // everyone | matches | none
+    allow_messages_from: 'everyone',
     show_age: true,
     show_location: true,
   });
@@ -107,6 +107,12 @@ function TabConfidentialite({ currentUser }) {
     updatePrivacy.mutate({ privacy_settings: updated });
   };
 
+  const msgOptions = [
+    { value: 'everyone', label: 'Tout le monde', desc: "N'importe quel membre peut vous écrire" },
+    { value: 'matches', label: 'Mes correspondances uniquement', desc: 'Seulement vos correspondances' },
+    { value: 'none', label: 'Personne', desc: 'Désactiver les messages entrants' },
+  ];
+
   return (
     <div className="space-y-4">
       <div className="bg-white rounded-2xl shadow-sm p-5">
@@ -120,10 +126,10 @@ function TabConfidentialite({ currentUser }) {
         <SettingRow icon={Eye} iconBg="bg-blue-500" title="Visites de profil" description="Permettre aux autres de voir que vous avez visité">
           <Switch checked={privacy.show_profile_views} onCheckedChange={() => toggle('show_profile_views')} />
         </SettingRow>
-        <SettingRow icon={User} iconBg="bg-teal-500" title="Afficher mon âge" description="Rendre votre âge visible sur votre profil">
+        <SettingRow icon={Eye} iconBg="bg-teal-500" title="Afficher mon âge" description="Rendre votre âge visible sur votre profil">
           <Switch checked={privacy.show_age} onCheckedChange={() => toggle('show_age')} />
         </SettingRow>
-        <SettingRow icon={User} iconBg="bg-cyan-500" title="Afficher ma localisation" description="Rendre votre ville visible">
+        <SettingRow icon={Eye} iconBg="bg-cyan-500" title="Afficher ma localisation" description="Rendre votre ville visible">
           <Switch checked={privacy.show_location} onCheckedChange={() => toggle('show_location')} />
         </SettingRow>
       </div>
@@ -131,23 +137,19 @@ function TabConfidentialite({ currentUser }) {
       <div className="bg-white rounded-2xl shadow-sm p-5">
         <SectionTitle>Messages</SectionTitle>
         <p className="text-xs text-gray-500 mb-3">Qui peut vous envoyer des messages ?</p>
-        {['everyone', 'matches', 'none'].map((option) => {
-          const labels = { everyone: 'Tout le monde', matches: 'Mes correspondances uniquement', none: 'Personne' };
-          const desc = { everyone: 'N\'importe quel membre peut vous écrire', matches: 'Seulement vos correspondances', none: 'Désactiver les messages entrants' };
-          return (
-            <button
-              key={option}
-              onClick={() => setPrivacy(p => ({ ...p, allow_messages_from: option }))}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl mb-2 border transition-all ${privacy.allow_messages_from === option ? 'border-amber-400 bg-amber-50' : 'border-gray-100 hover:border-gray-200'}`}
-            >
-              <div className="text-left">
-                <p className="text-sm font-medium text-gray-800">{labels[option]}</p>
-                <p className="text-xs text-gray-500">{desc[option]}</p>
-              </div>
-              {privacy.allow_messages_from === option && <Check className="w-4 h-4 text-amber-500" />}
-            </button>
-          );
-        })}
+        {msgOptions.map(({ value, label, desc }) => (
+          <button
+            key={value}
+            onClick={() => setPrivacy(p => ({ ...p, allow_messages_from: value }))}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl mb-2 border transition-all ${privacy.allow_messages_from === value ? 'border-amber-400 bg-amber-50' : 'border-gray-100 hover:border-gray-200'}`}
+          >
+            <div className="text-left">
+              <p className="text-sm font-medium text-gray-800">{label}</p>
+              <p className="text-xs text-gray-500">{desc}</p>
+            </div>
+            {privacy.allow_messages_from === value && <ChevronRight className="w-4 h-4 text-amber-500" />}
+          </button>
+        ))}
       </div>
     </div>
   );
