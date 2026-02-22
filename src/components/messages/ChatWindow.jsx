@@ -10,8 +10,24 @@ import BlockButton from '@/components/block/BlockButton';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [newMessage, setNewMessage] = useState('');
+  const [translations, setTranslations] = useState({});
+  const [translating, setTranslating] = useState({});
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
+
+  const translateMessage = async (messageId, content) => {
+    if (translations[messageId]) {
+      // Toggle off if already translated
+      setTranslations(prev => { const n = { ...prev }; delete n[messageId]; return n; });
+      return;
+    }
+    setTranslating(prev => ({ ...prev, [messageId]: true }));
+    const result = await base44.integrations.Core.InvokeLLM({
+      prompt: `Traduis ce message en français. Réponds uniquement avec la traduction, sans explication ni guillemets.\n\nMessage: ${content}`,
+    });
+    setTranslations(prev => ({ ...prev, [messageId]: result }));
+    setTranslating(prev => { const n = { ...prev }; delete n[messageId]; return n; });
+  };
 
   const otherParticipant = conversation?.participant_profiles?.find(
     p => p.email !== currentUser?.email
