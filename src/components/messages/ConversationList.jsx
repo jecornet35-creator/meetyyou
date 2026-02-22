@@ -44,6 +44,9 @@ export default function ConversationList({ conversations, currentUserEmail, sele
                   alt={otherParticipant.display_name}
                   className="w-14 h-14 rounded-full object-cover"
                 />
+                <span className="absolute bottom-0 right-0">
+                  <OnlineIndicator isOnline={otherParticipant.is_online} />
+                </span>
                 {unreadCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-[20px] h-5">
                     {unreadCount}
