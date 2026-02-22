@@ -158,6 +158,12 @@ export default function Header({ user }) {
                       Utilisateurs bloqués
                     </DropdownMenuItem>
                   </Link>
+                  <Link to={createPageUrl('Settings')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-amber-50 rounded text-amber-700 font-medium">
+                      <Settings className="w-4 h-4 mr-3 text-amber-500" />
+                      Paramètres
+                    </DropdownMenuItem>
+                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
               <div className="hidden md:block">
