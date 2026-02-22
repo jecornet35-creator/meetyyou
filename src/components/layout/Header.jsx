@@ -175,18 +175,18 @@ export default function Header({ user }) {
                 <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">56</Badge>
               </Button>
             </Link>
-            <Link to={createPageUrl('Notifications')}>
-              <Button variant="ghost" className="text-white hover:bg-white/10 relative">
-                Likes
-                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{likesCount}</Badge>
-              </Button>
-            </Link>
-            <Link to={createPageUrl('Notifications')}>
-              <Button variant="ghost" className="text-white hover:bg-white/10 relative">
-                Profils vus
-                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{profileViewsCount}</Badge>
-              </Button>
-            </Link>
+            <Link to={createPageUrl('Likes')}>
+                  <Button variant="ghost" className="text-white hover:bg-white/10 relative">
+                    Likes
+                    <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{likesCount}</Badge>
+                  </Button>
+                </Link>
+                <Link to={createPageUrl('ProfilVu')}>
+                  <Button variant="ghost" className="text-white hover:bg-white/10 relative">
+                    Profils vus
+                    <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{profileViewsCount}</Badge>
+                  </Button>
+                </Link>
           </nav>
 
           {/* Stats circles */}
