@@ -101,6 +101,18 @@ export default function Likes() {
               <p className="text-gray-500 text-sm mt-0.5">{unreadCount} nouveau{unreadCount > 1 ? 'x' : ''}</p>
             )}
           </div>
+          {filtered.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => deleteAllMutation.mutate()}
+              disabled={deleteAllMutation.isPending}
+              className="gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+            >
+              <Trash2 className="w-4 h-4" />
+              Tout supprimer
+            </Button>
+          )}
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
