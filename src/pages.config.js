@@ -77,6 +77,7 @@ import ProfilVu from './pages/ProfilVu';
 import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
+import Settings from './pages/Settings';
 
 
 export const PAGES = {
@@ -110,6 +111,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {
