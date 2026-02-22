@@ -371,7 +371,143 @@ export default function ProfileDetail() {
           </div>
         </div>
 
+        {/* ── Tab Navigation ── */}
+        <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+          <div className="flex border-b border-gray-200">
+            {[
+              { id: 'profile', label: 'Profil & Critères' },
+              { id: 'interests', label: '🎯 Loisirs & Intérêts' },
+              { id: 'personality', label: '🧠 Personnalité' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 py-3 text-sm font-medium transition-colors border-b-2 ${
+                  activeTab === tab.id
+                    ? 'border-amber-500 text-amber-700 bg-amber-50'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Interests Tab ── */}
+        {activeTab === 'interests' && (
+          <div className="bg-white rounded-2xl shadow-md p-6 space-y-6">
+            {(!interests || INTEREST_CATEGORIES.every(cat => !interests[cat.key]?.length)) ? (
+              <p className="text-center text-gray-400 py-8">Aucun loisir ou intérêt renseigné</p>
+            ) : (
+              INTEREST_CATEGORIES.map(cat => {
+                const items = interests?.[cat.key];
+                if (!items || items.length === 0) return null;
+                const Icon = cat.icon;
+                return (
+                  <div key={cat.key}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className={`p-1.5 rounded-lg ${cat.color}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <h3 className="font-semibold text-gray-700">{cat.label}</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {items.map((item, i) => (
+                        <Badge key={i} variant="outline" className={`${cat.color} border-0 px-3 py-1`}>
+                          {item}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+            {interests?.other_interests && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <MoreHorizontal className="w-4 h-4 text-gray-500" />
+                  <h3 className="font-semibold text-gray-700">Autres</h3>
+                </div>
+                <p className="text-gray-600 text-sm">{interests.other_interests}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── Personality Tab ── */}
+        {activeTab === 'personality' && (
+          <div className="bg-white rounded-2xl shadow-md p-6 space-y-8">
+            {/* Personality questions */}
+            {PERSONALITY_QUESTIONS.some(q => personality?.[q.key]) && (
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Brain className="w-5 h-5 text-purple-500" />
+                  <h3 className="font-bold text-gray-800">Personnalité</h3>
+                </div>
+                <div className="space-y-4">
+                  {PERSONALITY_QUESTIONS.map(q => personality?.[q.key] ? (
+                    <div key={q.key} className="bg-purple-50 rounded-xl p-4">
+                      <p className="text-xs font-medium text-purple-600 mb-1">{q.label}</p>
+                      <p className="text-gray-800 text-sm">{personality[q.key]}</p>
+                    </div>
+                  ) : null)}
+                </div>
+              </div>
+            )}
+
+            {/* Life goals */}
+            {LIFE_GOAL_QUESTIONS.some(q => personality?.[q.key]) && (
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Target className="w-5 h-5 text-amber-500" />
+                  <h3 className="font-bold text-gray-800">Objectifs de vie</h3>
+                </div>
+                <div className="space-y-4">
+                  {LIFE_GOAL_QUESTIONS.map(q => personality?.[q.key] ? (
+                    <div key={q.key} className="bg-amber-50 rounded-xl p-4">
+                      <p className="text-xs font-medium text-amber-600 mb-1">{q.label}</p>
+                      <p className="text-gray-800 text-sm">{personality[q.key]}</p>
+                    </div>
+                  ) : null)}
+                </div>
+              </div>
+            )}
+
+            {/* Quotes */}
+            {[1,2,3].some(i => personality?.[`quote${i}`]) && (
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Quote className="w-5 h-5 text-blue-500" />
+                  <h3 className="font-bold text-gray-800">Citations favorites</h3>
+                </div>
+                <div className="space-y-3">
+                  {[1,2,3].map(i => personality?.[`quote${i}`] ? (
+                    <div key={i} className="border-l-4 border-blue-300 pl-4 py-2">
+                      <p className="text-gray-700 italic">"{personality[`quote${i}`]}"</p>
+                      {personality[`quote_author${i}`] && (
+                        <p className="text-xs text-gray-400 mt-1">— {personality[`quote_author${i}`]}</p>
+                      )}
+                    </div>
+                  ) : null)}
+                </div>
+              </div>
+            )}
+
+            {!personality || (!PERSONALITY_QUESTIONS.some(q => personality?.[q.key]) && !LIFE_GOAL_QUESTIONS.some(q => personality?.[q.key]) && ![1,2,3].some(i => personality?.[`quote${i}`])) ? (
+              <p className="text-center text-gray-400 py-8">Aucune information de personnalité renseignée</p>
+            ) : null}
+          </div>
+        )}
+
+        {/* ── Detailed Table (profile tab only) ── */}
+        {activeTab === 'profile' && <></> && null}
+        {activeTab === 'profile' && (
+        <></> 
+        )}
+
         {/* ── Detailed Table ── */}
+        {activeTab === 'profile' && 
         <div className="bg-white rounded-2xl shadow-md overflow-hidden">
           {/* Table header */}
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
