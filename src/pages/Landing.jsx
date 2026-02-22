@@ -47,8 +47,29 @@ export default function Landing() {
     'Politique de Cookie', 'Sécurité', 'Plan du site', 'Règles de communauté', 'Compagnie', 'Affiliés'
   ];
 
+  const colorMap = {
+    amber: 'from-amber-500 to-amber-600',
+    red: 'from-red-500 to-red-600',
+    green: 'from-green-600 to-green-700',
+    blue: 'from-blue-500 to-blue-600',
+    purple: 'from-purple-500 to-purple-600',
+    pink: 'from-pink-500 to-pink-600',
+  };
+
   return (
     <div className="min-h-screen relative flex flex-col">
+      {/* Promo Banner */}
+      {activePromo && activePromo.banner_message && !dismissedBanner && (
+        <div className={`relative z-20 bg-gradient-to-r ${colorMap[activePromo.banner_color] || colorMap.amber} text-white`}>
+          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-center gap-3">
+            <span className="text-xl">{activePromo.banner_emoji || '🎉'}</span>
+            <p className="text-sm sm:text-base font-medium text-center">{activePromo.banner_message}</p>
+            <button onClick={() => setDismissedBanner(true)} className="ml-2 opacity-70 hover:opacity-100 flex-shrink-0">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
       {/* Background with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
