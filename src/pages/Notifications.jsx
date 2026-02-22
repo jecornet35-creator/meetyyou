@@ -113,6 +113,44 @@ function NotificationList({ notifications, type, deleteNotificationMutation, mar
   );
 }
 
+function ViewsLikesPanel({ activeTab, setActiveTab, notifications, deleteNotificationMutation, markAsReadMutation, timeFilters }) {
+  const [timeFilter, setTimeFilter] = useState('today');
+
+  return (
+    <>
+      {/* Filter bar replaces tab bar */}
+      <div className="flex gap-1 bg-white rounded-xl shadow p-1 mb-6">
+        {timeFilters.map(f => (
+          <button
+            key={f.value}
+            onClick={() => setTimeFilter(f.value)}
+            className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-colors ${
+              timeFilter === f.value ? 'bg-amber-500 text-white shadow' : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-4">
+        {activeTab === 'views' ? 'Profil Vu' : 'Likes'}
+      </h1>
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <NotificationList
+          notifications={notifications}
+          type={activeTab === 'views' ? 'profile_view' : 'like'}
+          deleteNotificationMutation={deleteNotificationMutation}
+          markAsReadMutation={markAsReadMutation}
+          timeFilter={timeFilter}
+        />
+      </div>
+      <button onClick={() => setActiveTab('general')} className="mt-4 text-sm text-amber-600 hover:underline">
+        ← Retour aux notifications
+      </button>
+    </>
+  );
+}
+
 export default function Notifications() {
   const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
