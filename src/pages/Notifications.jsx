@@ -24,9 +24,7 @@ const TIME_FILTERS = [
   { value: 'all', label: 'Tous' },
 ];
 
-function NotificationList({ notifications, type, deleteNotificationMutation, markAsReadMutation }) {
-  const [timeFilter, setTimeFilter] = useState('today');
-
+function NotificationList({ notifications, type, deleteNotificationMutation, markAsReadMutation, timeFilter }) {
   const filtered = useMemo(() => {
     const now = new Date();
     let list = notifications.filter(n => n.type === type);
@@ -44,23 +42,6 @@ function NotificationList({ notifications, type, deleteNotificationMutation, mar
 
   return (
     <>
-      {/* Time filter bar */}
-      <div className="flex gap-2 p-4 border-b bg-gray-50">
-        {TIME_FILTERS.map(f => (
-          <button
-            key={f.value}
-            onClick={() => setTimeFilter(f.value)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              timeFilter === f.value
-                ? 'bg-amber-500 text-white shadow'
-                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100'
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
       {filtered.length === 0 ? (
         <div className="p-12 text-center">
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
