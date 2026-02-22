@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { ArrowLeft, Upload, X, Star, Crop, RotateCcw, ZoomIn, ZoomOut, Check } from 'lucide-react';
+import { ArrowLeft, Upload, X, Star, Crop, RotateCcw, ZoomIn, ZoomOut, Check, CheckCircle, AlertTriangle, XCircle, Info } from 'lucide-react';
 import PhotoCropModal from '@/components/photos/PhotoCropModal.jsx';
 import PhotoGallery from '@/components/photos/PhotoGallery.jsx';
 
