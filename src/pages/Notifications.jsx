@@ -297,6 +297,7 @@ export default function Notifications() {
                 type="profile_view"
                 deleteNotificationMutation={deleteNotificationMutation}
                 markAsReadMutation={markAsReadMutation}
+                hideTabBar
               />
             </div>
           </>
