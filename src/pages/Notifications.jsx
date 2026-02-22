@@ -278,34 +278,14 @@ export default function Notifications() {
         )}
 
         {(activeTab === 'views' || activeTab === 'likes') && (
-          <>
-            {/* Filter bar replaces tab bar */}
-            <div className="flex gap-1 bg-white rounded-xl shadow p-1 mb-6">
-              {timeFilters.map(f => (
-                <button
-                  key={f.value}
-                  onClick={() => {/* handled inside NotificationList */}}
-                  className="flex-1 py-2 px-4 rounded-lg text-sm font-semibold text-gray-400 cursor-default"
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              {activeTab === 'views' ? 'Profil Vu' : 'Likes'}
-            </h1>
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-              <NotificationList
-                notifications={notifications}
-                type={activeTab === 'views' ? 'profile_view' : 'like'}
-                deleteNotificationMutation={deleteNotificationMutation}
-                markAsReadMutation={markAsReadMutation}
-              />
-            </div>
-            <button onClick={() => setActiveTab('general')} className="mt-4 text-sm text-amber-600 hover:underline">
-              ← Retour aux notifications
-            </button>
-          </>
+          <ViewsLikesPanel
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            notifications={notifications}
+            deleteNotificationMutation={deleteNotificationMutation}
+            markAsReadMutation={markAsReadMutation}
+            timeFilters={timeFilters}
+          />
         )}
       </main>
     </div>
