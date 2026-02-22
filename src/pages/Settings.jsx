@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import {
-  Settings, User, Bell, Shield, Eye, EyeOff,
+  Settings, Bell, Shield, Eye, EyeOff,
   Mail, Lock, ShieldOff, UserX, ChevronRight, Flag, Trash2
 } from 'lucide-react';
 import { toast } from 'sonner';
