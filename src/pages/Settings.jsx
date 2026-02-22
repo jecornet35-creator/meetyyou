@@ -37,18 +37,6 @@ function SettingRow({ icon: Icon, iconBg, title, description, children }) {
   );
 }
 
-function PasswordInput({ value, onChange, placeholder }) {
-  const [show, setShow] = useState(false);
-  return (
-    <div className="relative">
-      <Input type={show ? 'text' : 'password'} value={value} onChange={onChange} placeholder={placeholder} className="pr-10" />
-      <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-        {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-      </button>
-    </div>
-  );
-}
-
 // ─── Tab: Compte ───────────────────────────────────────────────────────────
 
 function TabCompte({ currentUser }) {
