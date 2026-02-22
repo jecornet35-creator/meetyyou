@@ -252,7 +252,64 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           size="sm"
           variant="ghost"
         />
+        <button
+          onClick={() => setShowReportModal(true)}
+          className="p-2 text-gray-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+          title="Signaler la conversation"
+        >
+          <Flag className="w-4 h-4" />
+        </button>
       </div>
+
+      {/* Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowReportModal(false)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-lg text-gray-900 mb-1">Signaler la conversation</h3>
+            <p className="text-sm text-gray-500 mb-4">Votre signalement sera examiné par notre équipe.</p>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Raison</label>
+              <select
+                value={reportReason}
+                onChange={e => setReportReason(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+              >
+                <option value="harassment">Harcèlement</option>
+                <option value="spam">Spam</option>
+                <option value="inappropriate">Contenu inapproprié</option>
+                <option value="scam">Arnaque / escroquerie</option>
+                <option value="other">Autre</option>
+              </select>
+            </div>
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Détails (optionnel)</label>
+              <textarea
+                value={reportDetails}
+                onChange={e => setReportDetails(e.target.value)}
+                rows={3}
+                placeholder="Décrivez le problème..."
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
+              />
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowReportModal(false)}
+                className="flex-1 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleReport}
+                disabled={reportSubmitting}
+                className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {reportSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Flag className="w-4 h-4" />}
+                Signaler
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
