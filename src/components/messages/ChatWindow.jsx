@@ -187,6 +187,22 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     return { text, images };
   };
 
+  const handleReport = async () => {
+    setReportSubmitting(true);
+    await base44.entities.FlaggedConversation.create({
+      conversation_id: conversation.id,
+      reporter_email: currentUser.email,
+      reported_user_email: otherParticipant.email,
+      reported_user_name: otherParticipant.display_name,
+      reason: reportReason,
+      details: reportDetails,
+      status: 'pending',
+    });
+    setReportSubmitting(false);
+    setShowReportModal(false);
+    setReportDetails('');
+  };
+
   const isOnline = otherUserProfile?.is_online;
   const lastSeen = otherUserProfile?.last_seen
     ? formatDistanceToNow(new Date(otherUserProfile.last_seen), { addSuffix: true, locale: fr })
