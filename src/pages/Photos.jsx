@@ -83,6 +83,72 @@ export default function Photos() {
       </div>
 
       <main className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+
+        {/* Guidelines */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          {/* Good practices */}
+          <div className="p-5 border-b border-gray-100">
+            <div className="flex items-center gap-2 mb-3">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <h2 className="font-semibold text-gray-800">Bonnes pratiques pour vos photos</h2>
+            </div>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Utilisez des photos récentes qui vous ressemblent vraiment</li>
+              <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Votre visage doit être clairement visible sur la photo principale</li>
+              <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Privilégiez des photos prises dans un environnement naturel et bien éclairé</li>
+              <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Variez les situations : portrait, loisir, voyage… pour mieux vous présenter</li>
+              <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> 3 à 6 photos est idéal pour un profil attractif et crédible</li>
+            </ul>
+          </div>
+
+          {/* Warning */}
+          <div className="p-5 bg-amber-50 border-b border-amber-100">
+            <div className="flex items-center gap-2 mb-3">
+              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              <h2 className="font-semibold text-amber-800">Photos interdites</h2>
+            </div>
+            <ul className="space-y-2 text-sm text-amber-800">
+              <li className="flex items-start gap-2"><span className="mt-0.5">⚠️</span> Photos volées sur les réseaux sociaux (Facebook, Instagram, TikTok…)</li>
+              <li className="flex items-start gap-2"><span className="mt-0.5">⚠️</span> Images générées par l'intelligence artificielle (IA, Midjourney, DALL-E…)</li>
+              <li className="flex items-start gap-2"><span className="mt-0.5">⚠️</span> Photos de célébrités, mannequins ou personnes tierces</li>
+              <li className="flex items-start gap-2"><span className="mt-0.5">⚠️</span> Images à caractère sexuel, violent ou inapproprié</li>
+              <li className="flex items-start gap-2"><span className="mt-0.5">⚠️</span> Photos floues, retouchées à l'extrême ou trompeuses</li>
+            </ul>
+          </div>
+
+          {/* Sanctions */}
+          <div className="p-5 bg-red-50">
+            <div className="flex items-center gap-2 mb-3">
+              <XCircle className="w-5 h-5 text-red-500" />
+              <h2 className="font-semibold text-red-800">Conséquences en cas de non-respect</h2>
+            </div>
+            <p className="text-sm text-red-700 mb-3">
+              Notre équipe de modération vérifie régulièrement les profils. Toute infraction peut entraîner les sanctions suivantes, par ordre de gravité :
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+              <div className="bg-white rounded-xl p-3 border border-red-100 text-center">
+                <span className="text-2xl">⚠️</span>
+                <p className="font-semibold text-gray-800 mt-1">Avertissement</p>
+                <p className="text-xs text-gray-500 mt-0.5">Suppression de la photo et notification</p>
+              </div>
+              <div className="bg-white rounded-xl p-3 border border-red-100 text-center">
+                <span className="text-2xl">⏸️</span>
+                <p className="font-semibold text-gray-800 mt-1">Suspension</p>
+                <p className="text-xs text-gray-500 mt-0.5">Compte suspendu temporairement</p>
+              </div>
+              <div className="bg-white rounded-xl p-3 border border-red-200 text-center bg-red-100">
+                <span className="text-2xl">🚫</span>
+                <p className="font-semibold text-red-700 mt-1">Suppression définitive</p>
+                <p className="text-xs text-red-500 mt-0.5">Compte supprimé sans récupération possible</p>
+              </div>
+            </div>
+            <p className="text-xs text-red-600 mt-3 flex items-start gap-1.5">
+              <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+              En ajoutant une photo, vous certifiez qu'il s'agit bien de vous et que vous en êtes l'auteur ou disposez des droits nécessaires.
+            </p>
+          </div>
+        </div>
+
         {/* Upload zone */}
         <div
           className="bg-white rounded-2xl border-2 border-dashed border-amber-300 p-10 text-center cursor-pointer hover:border-amber-500 hover:bg-amber-50/30 transition-all"
