@@ -47,6 +47,8 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AccountEmail from './pages/AccountEmail';
+import AccountPassword from './pages/AccountPassword';
 import Activities from './pages/Activities';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminPhotos from './pages/AdminPhotos';
@@ -69,11 +71,11 @@ import Photos from './pages/Photos';
 import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
-import AccountEmail from './pages/AccountEmail';
-import AccountPassword from './pages/AccountPassword';
 
 
 export const PAGES = {
+    "AccountEmail": AccountEmail,
+    "AccountPassword": AccountPassword,
     "Activities": Activities,
     "AdminDashboard": AdminDashboard,
     "AdminPhotos": AdminPhotos,
@@ -96,8 +98,6 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
-    "AccountEmail": AccountEmail,
-    "AccountPassword": AccountPassword,
 }
 
 export const pagesConfig = {
