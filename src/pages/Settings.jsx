@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import Header from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import {
-  Settings, User, Lock, Bell, Shield, Eye, EyeOff,
-  Mail, Moon, Heart, MessageCircle, Star, Gift, UserCheck,
-  ShieldOff, UserX, ChevronRight, Check, Flag, Trash2
+  Settings, User, Bell, Shield, Eye, EyeOff,
+  Mail, Lock, ShieldOff, UserX, ChevronRight, Flag, Trash2
 } from 'lucide-react';
 import { toast } from 'sonner';
 
