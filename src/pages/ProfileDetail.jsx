@@ -553,11 +553,37 @@ export default function ProfileDetail() {
           </div>
         )}
 
-        {/* ── About ── */}
-        {activeTab === 'profile' && (profile.about_me || profile.bio) && (
-          <div className="bg-white rounded-2xl shadow-md p-6">
-            <h2 className="font-bold text-gray-800 mb-3 text-lg">À propos</h2>
-            <p className="text-gray-600 leading-relaxed">{profile.about_me || profile.bio}</p>
+        {/* ── In your own words ── */}
+        {activeTab === 'profile' && (profile.profile_title || profile.about_me || profile.bio || profile.looking_for_in_partner) && (
+          <div className="bg-white rounded-2xl shadow-md p-6 space-y-5">
+            <h2 className="font-bold text-amber-600 text-xl">In your own words</h2>
+
+            {profile.profile_title && (
+              <div>
+                <p className="text-sm font-medium text-amber-700 mb-1">Your profile title</p>
+                <div className="border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 bg-gray-50">
+                  {profile.profile_title}
+                </div>
+              </div>
+            )}
+
+            {(profile.about_me || profile.bio) && (
+              <div>
+                <p className="text-sm font-medium text-amber-700 mb-1">A glimpse of yourself</p>
+                <div className="border border-gray-200 rounded-lg px-4 py-3 text-gray-700 bg-gray-50 min-h-[80px] leading-relaxed whitespace-pre-wrap">
+                  {profile.about_me || profile.bio}
+                </div>
+              </div>
+            )}
+
+            {profile.looking_for_in_partner && (
+              <div>
+                <p className="text-sm font-medium text-amber-700 mb-1">What you are looking for in a partner</p>
+                <div className="border border-gray-200 rounded-lg px-4 py-3 text-gray-700 bg-gray-50 min-h-[80px] leading-relaxed whitespace-pre-wrap">
+                  {profile.looking_for_in_partner}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>
