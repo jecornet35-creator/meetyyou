@@ -191,25 +191,33 @@ export default function Notifications() {
     { id: 'likes', label: 'Likes' },
   ];
 
+  const timeFilters = [
+    { value: 'today', label: 'Ce jour' },
+    { value: 'week', label: 'Cette semaine' },
+    { value: 'all', label: 'Tous' },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
 
       <main className="max-w-3xl mx-auto px-4 py-6">
-        {/* Tab bar */}
-        <div className="flex gap-1 bg-white rounded-xl shadow p-1 mb-6">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-colors ${
-                activeTab === tab.id ? 'bg-amber-500 text-white shadow' : 'text-gray-600 hover:bg-gray-100'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* Tab bar: shown only on general tab */}
+        {activeTab === 'general' && (
+          <div className="flex gap-1 bg-white rounded-xl shadow p-1 mb-6">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-colors ${
+                  activeTab === tab.id ? 'bg-amber-500 text-white shadow' : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {activeTab === 'general' && (
           <>
