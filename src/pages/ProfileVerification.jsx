@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import {
   ShieldCheck, Camera, FileText, Upload, CheckCircle,
-  Clock, XCircle, ArrowLeft, Loader2, Star, Info
+  Clock, XCircle, ArrowLeft, Loader2, Star, Info, Eye
 } from 'lucide-react';
 
 const STEPS = [
