@@ -54,6 +54,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminEmails from './pages/AdminEmails';
 import AdminManagement from './pages/AdminManagement';
 import AdminPhotos from './pages/AdminPhotos';
+import AdminPromoCodes from './pages/AdminPromoCodes';
 import AdminReports from './pages/AdminReports';
 import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
@@ -75,7 +76,7 @@ import ProfilVu from './pages/ProfilVu';
 import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
-import AdminPromoCodes from './pages/AdminPromoCodes';
+import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
 
 
 export const PAGES = {
@@ -86,6 +87,7 @@ export const PAGES = {
     "AdminEmails": AdminEmails,
     "AdminManagement": AdminManagement,
     "AdminPhotos": AdminPhotos,
+    "AdminPromoCodes": AdminPromoCodes,
     "AdminReports": AdminReports,
     "AdminSubscriptions": AdminSubscriptions,
     "AdminTickets": AdminTickets,
@@ -107,7 +109,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
-    "AdminPromoCodes": AdminPromoCodes,
+    "AdminFlaggedMessages": AdminFlaggedMessages,
 }
 
 export const pagesConfig = {
