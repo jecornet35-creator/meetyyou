@@ -183,6 +183,7 @@ function ProfileRow({ label, profileVal, corrVal, isEven }) {
 export default function ProfileDetail() {
   const [activePhoto, setActivePhoto] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('profile');
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get('id');
 
@@ -203,6 +204,24 @@ export default function ProfileDetail() {
     queryKey: ['correspondance', profile?.created_by],
     queryFn: async () => {
       const results = await base44.entities.Correspondance.filter({ created_by: profile.created_by });
+      return results[0] || null;
+    },
+    enabled: !!profile?.created_by,
+  });
+
+  const { data: interests } = useQuery({
+    queryKey: ['interests', profile?.created_by],
+    queryFn: async () => {
+      const results = await base44.entities.Interest.filter({ created_by: profile.created_by });
+      return results[0] || null;
+    },
+    enabled: !!profile?.created_by,
+  });
+
+  const { data: personality } = useQuery({
+    queryKey: ['personality', profile?.created_by],
+    queryFn: async () => {
+      const results = await base44.entities.Personality.filter({ created_by: profile.created_by });
       return results[0] || null;
     },
     enabled: !!profile?.created_by,
