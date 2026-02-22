@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Heart, Eye, EyeOff, Facebook, Twitter, Instagram, Youtube, Lock, ShieldCheck } from 'lucide-react';
+import { Heart, Eye, EyeOff, Facebook, Twitter, Instagram, Youtube, Lock, ShieldCheck, X } from 'lucide-react';
+import { isWithinInterval } from 'date-fns';
 
 export default function Landing() {
   const [isSignup, setIsSignup] = useState(false);
