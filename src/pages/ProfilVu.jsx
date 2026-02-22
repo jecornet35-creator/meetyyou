@@ -53,6 +53,13 @@ export default function ProfilVu() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications-views'] }),
   });
 
+  const deleteAllMutation = useMutation({
+    mutationFn: async () => {
+      await Promise.all(filtered.map(n => base44.entities.Notification.delete(n.id)));
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications-views'] }),
+  });
+
   const filtered = useMemo(() => {
     const now = new Date();
     if (timeFilter === 'today') {
