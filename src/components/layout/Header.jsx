@@ -164,8 +164,24 @@ export default function Header({ user }) {
                       Paramètres
                     </DropdownMenuItem>
                   </Link>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                    <HelpCircle className="w-4 h-4 mr-3 text-gray-400" />
+                    Aide
+                  </DropdownMenuItem>
+                  <Link to={createPageUrl('SubscriptionPlans')}>
+                    <DropdownMenuItem className="py-3 px-4 cursor-pointer hover:bg-gray-50 rounded text-gray-700">
+                      <Zap className="w-4 h-4 mr-3 text-gray-400" />
+                      Abonnez-vous
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem
+                    className="py-3 px-4 cursor-pointer hover:bg-red-50 rounded text-red-500"
+                    onClick={() => base44.auth.logout()}
+                  >
+                    Déconnexion
+                  </DropdownMenuItem>
+                  </DropdownMenuContent>
+                  </DropdownMenu>
               <div className="hidden md:block">
                 <p className="text-sm font-medium">Bienvenue</p>
                 <p className="text-xs text-white/80">Complétez vos critères</p>
