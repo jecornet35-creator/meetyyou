@@ -75,6 +75,7 @@ import ProfilVu from './pages/ProfilVu';
 import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import SubscriptionPlans from './pages/SubscriptionPlans';
+import AdminPromoCodes from './pages/AdminPromoCodes';
 
 
 export const PAGES = {
@@ -106,6 +107,7 @@ export const PAGES = {
     "ProfileDetail": ProfileDetail,
     "ProfileVerification": ProfileVerification,
     "SubscriptionPlans": SubscriptionPlans,
+    "AdminPromoCodes": AdminPromoCodes,
 }
 
 export const pagesConfig = {
