@@ -26,8 +26,20 @@ export default function Landing() {
   const [isValidating, setIsValidating] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const handleLogin = () => {
-    base44.auth.redirectToLogin();
+  const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleLogin = async () => {
+    setLoginError('');
+    setIsLoggingIn(true);
+    try {
+      await base44.auth.loginViaEmailPassword(email, password);
+      window.location.href = createPageUrl('Home');
+    } catch (e) {
+      setLoginError('Email ou mot de passe incorrect.');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-400', 'bg-green-600'];
