@@ -329,10 +329,11 @@ export default function Landing() {
                   <Input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => { setEmail(e.target.value); setErrors(e2 => ({ ...e2, email: null })); }}
                     placeholder="email@exemple.com"
-                    className="border-gray-300 h-11"
+                    className={`h-11 ${errors.email ? 'border-red-500 focus-visible:ring-red-500' : 'border-gray-300'}`}
                   />
+                  {errors.email && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.email}</p>}
                 </div>
 
                 {/* Password */}
@@ -342,9 +343,9 @@ export default function Landing() {
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => handlePasswordChange(e.target.value)}
                       placeholder="Votre Mot de Passe pour Meetyyou"
-                      className="border-gray-300 h-11 pr-12"
+                      className={`h-11 pr-12 ${errors.password ? 'border-red-500 focus-visible:ring-red-500' : 'border-gray-300'}`}
                     />
                     <button
                       type="button"
@@ -354,6 +355,18 @@ export default function Landing() {
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
+                  {/* Password strength bar */}
+                  {password.length > 0 && (
+                    <div className="mt-2">
+                      <div className="flex gap-1 mb-1">
+                        {[1,2,3,4].map(i => (
+                          <div key={i} className={`h-1.5 flex-1 rounded-full transition-colors ${i <= passwordStrength ? strengthColors[passwordStrength] : 'bg-gray-200'}`} />
+                        ))}
+                      </div>
+                      <p className="text-xs text-gray-500">{strengthLabels[passwordStrength]}</p>
+                    </div>
+                  )}
+                  {errors.password && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.password}</p>}
                 </div>
 
                 {/* Terms checkbox */}
