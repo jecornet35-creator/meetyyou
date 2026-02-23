@@ -241,9 +241,10 @@ export default function Landing() {
                   <Input
                     type="text"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="border-gray-300 h-11"
+                    onChange={(e) => { setFirstName(e.target.value); setErrors(e2 => ({ ...e2, firstName: null })); }}
+                    className={`h-11 ${errors.firstName ? 'border-red-500 focus-visible:ring-red-500' : 'border-gray-300'}`}
                   />
+                  {errors.firstName && <p className="text-red-500 text-xs mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{errors.firstName}</p>}
                 </div>
 
                 {/* Gender selectors */}
