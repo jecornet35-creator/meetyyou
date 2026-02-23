@@ -202,16 +202,7 @@ export default function Header({ user }) {
           </nav>
 
           {/* Stats circles */}
-          <div className="hidden xl:flex items-center gap-3">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-full ${stat.color} flex items-center justify-center text-sm font-bold`}>
-                  {stat.value}
-                </div>
-                <span className="text-xs text-white/70 mt-1">{stat.label}</span>
-              </div>
-            ))}
-          </div>
+
 
           {/* Actions */}
           <div className="flex items-center gap-2">
