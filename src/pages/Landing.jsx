@@ -29,6 +29,41 @@ export default function Landing() {
   const [loginError, setLoginError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
+  // OTP verification step
+  const [showOtp, setShowOtp] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [pendingSignupData, setPendingSignupData] = useState(null);
+
+  const handleVerifyOtp = async () => {
+    setOtpError('');
+    setIsVerifying(true);
+    try {
+      await base44.auth.verifyOtp({ email, otpCode });
+      // Now login
+      await base44.auth.loginViaEmailPassword(email, password);
+      if (pendingSignupData) {
+        localStorage.setItem('pendingSignupData', JSON.stringify(pendingSignupData));
+      }
+      window.location.href = createPageUrl('Home');
+    } catch (e) {
+      setOtpError('Code invalide ou expiré. Vérifiez votre email.');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      await base44.auth.resendOtp(email);
+      setOtpError('');
+      alert('Code renvoyé ! Vérifiez votre email.');
+    } catch (e) {
+      setOtpError('Impossible de renvoyer le code.');
+    }
+  };
+
   const handleLogin = async () => {
     setLoginError('');
     setIsLoggingIn(true);
