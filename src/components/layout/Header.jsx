@@ -69,10 +69,7 @@ export default function Header({ user }) {
 
     return unsubscribe;
   }, [currentUser, queryClient]);
-  const stats = [
-    { value: profileViewsCount, label: 'Vues', color: 'bg-gray-400' },
-    { value: likesCount, label: 'Likes', color: 'bg-gray-400' },
-  ];
+
 
   return (
     <header className="bg-gradient-to-r from-amber-600 to-amber-500 text-white">
