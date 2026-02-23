@@ -15,15 +15,49 @@ export default function Home() {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(setCurrentUser).catch(() => {});
+    base44.auth.me().then(user => {
+      setCurrentUser(user);
+      // Save pending signup data (profile + correspondance) if it exists
+      const pending = localStorage.getItem('pendingSignupData');
+      if (pending && user) {
+        try {
+          const { profile: profileData, correspondance: corrData } = JSON.parse(pending);
+          localStorage.removeItem('pendingSignupData');
+          // Check if profile already exists for this user
+          base44.entities.Profile.filter({ created_by: user.email }).then(existing => {
+            if (existing.length === 0) {
+              base44.entities.Profile.create({ ...profileData, is_online: true });
+            }
+          });
+          // Check if correspondance already exists
+          base44.entities.Correspondance.filter({ created_by: user.email }).then(existing => {
+            if (existing.length === 0) {
+              base44.entities.Correspondance.create(corrData);
+            }
+          });
+        } catch (e) {
+          // ignore parse errors
+        }
+      }
+    }).catch(() => {});
     const handleOpenQuickSearch = () => setIsQuickSearchOpen(true);
     window.addEventListener('openQuickSearch', handleOpenQuickSearch);
     return () => window.removeEventListener('openQuickSearch', handleOpenQuickSearch);
   }, []);
 
+  // Fetch current user's correspondance to know their looking_for filter
+  const { data: myCorrespondance } = useQuery({
+    queryKey: ['myCorrespondance', currentUser?.email],
+    queryFn: async () => {
+      const results = await base44.entities.Correspondance.filter({ created_by: currentUser.email });
+      return results[0] || null;
+    },
+    enabled: !!currentUser,
+  });
+
   const { data: profiles, isLoading } = useQuery({
     queryKey: ['profiles'],
-    queryFn: () => base44.entities.Profile.list('-created_date', 50),
+    queryFn: () => base44.entities.Profile.list('-last_seen', 100),
     initialData: [],
   });
 
@@ -31,9 +65,7 @@ export default function Home() {
     queryKey: ['blockedEmails'],
     queryFn: async () => {
       const user = await base44.auth.me();
-      // Profiles blocked BY me (I won't see them)
       const iBlocked = await base44.entities.BlockedUser.filter({ blocker_email: user.email });
-      // Profiles that blocked ME (they can't see me, and I won't see them either)
       const blockedMe = await base44.entities.BlockedUser.filter({ blocked_email: user.email });
       return [
         ...iBlocked.map(b => b.blocked_email),
@@ -44,7 +76,16 @@ export default function Home() {
     initialData: [],
   });
 
-  const visibleProfiles = profiles.filter(p => !blockedEmails.includes(p.created_by));
+  // Map looking_for value to gender enum used in Profile
+  const genderFilter = myCorrespondance?.looking_for === 'men' ? 'homme'
+    : myCorrespondance?.looking_for === 'women' ? 'femme'
+    : null; // 'both' or not set = show all
+
+  const visibleProfiles = profiles.filter(p => {
+    if (blockedEmails.includes(p.created_by)) return false;
+    if (genderFilter && p.gender && p.gender !== genderFilter) return false;
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-gray-100">
