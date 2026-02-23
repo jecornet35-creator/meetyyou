@@ -272,11 +272,17 @@ export default function ProfileDetail() {
           <div className="flex flex-col md:flex-row">
             {/* Photo */}
             <div className="relative w-full md:w-64 flex-shrink-0">
-              <img
-                src={profile.main_photo || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800'}
-                alt={displayName}
-                className="w-full h-64 md:h-full object-cover"
-              />
+              {profile.main_photo ? (
+                <img
+                  src={profile.main_photo}
+                  alt={displayName}
+                  className="w-full h-64 md:h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-64 md:h-full bg-gray-200 flex items-center justify-center">
+                  <Camera className="w-16 h-16 text-gray-400" />
+                </div>
+              )}
               {profile.is_online && (
                 <span className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-white/90 text-green-600 text-xs font-semibold px-2.5 py-1 rounded-full shadow">
                   <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse" />
