@@ -27,6 +27,7 @@ export default function QuickSearchModal({ isOpen, onClose }) {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myCorrespondance'] });
       queryClient.invalidateQueries({ queryKey: ['correspondance'] });
       onClose();
     },
