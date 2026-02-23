@@ -90,7 +90,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
-      <NotificationToast />
       <QuickSearchModal isOpen={isQuickSearchOpen} onClose={() => setIsQuickSearchOpen(false)} />
       <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       
