@@ -117,19 +117,16 @@ export default function Landing() {
       // Register the user
       await base44.auth.register({ email, password });
 
-      // Login immediately after registration
-      await base44.auth.loginViaEmailPassword(email, password);
-
-      // Store profile/correspondance data for Home page to save
+      // Prepare pending data
       const lookingForMapped = lookingForGender === 'homme' ? 'men' : lookingForGender === 'femme' ? 'women' : 'both';
       const pendingData = {
         profile: { display_name: firstName, gender: iAmGender, age: parseInt(age) },
         correspondance: { looking_for: lookingForMapped }
       };
-      localStorage.setItem('pendingSignupData', JSON.stringify(pendingData));
+      setPendingSignupData(pendingData);
 
-      // Redirect to Home
-      window.location.href = createPageUrl('Home');
+      // Show OTP verification step
+      setShowOtp(true);
 
     } catch (e) {
       const msg = e?.response?.data?.message || e?.message || '';
