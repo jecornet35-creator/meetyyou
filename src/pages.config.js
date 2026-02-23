@@ -78,6 +78,7 @@ import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import Settings from './pages/Settings';
 import SubscriptionPlans from './pages/SubscriptionPlans';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
@@ -117,4 +118,5 @@ export const PAGES = {
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
+    Layout: __Layout,
 };
