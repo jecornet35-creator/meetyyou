@@ -51,11 +51,17 @@ export default function ProfileCard({ profile, currentUser }) {
     <div className="relative group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
       <Link to={createPageUrl('ProfileDetail') + `?id=${profile.id}`}>
         <div className="relative overflow-hidden h-64">
-          <img
-            src={profile.main_photo || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'}
-            alt={profile.display_name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+          {profile.main_photo ? (
+            <img
+              src={profile.main_photo}
+              alt={profile.display_name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              <Camera className="w-12 h-12 text-gray-400" />
+            </div>
+          )}
           
           {/* Online indicator */}
           {profile.is_online && (
