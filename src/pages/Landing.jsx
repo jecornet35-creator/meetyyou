@@ -309,8 +309,8 @@ export default function Landing() {
 
                   <div className="w-24">
                     <label className="text-gray-700 text-sm mb-2 block">Âge</label>
-                    <Select value={age} onValueChange={setAge}>
-                      <SelectTrigger className="h-[58px] border-gray-300">
+                    <Select value={age} onValueChange={(v) => { setAge(v); setErrors(e => ({ ...e, age: null })); }}>
+                      <SelectTrigger className={`h-[58px] ${errors.age ? 'border-red-500' : 'border-gray-300'}`}>
                         <SelectValue placeholder="" />
                       </SelectTrigger>
                       <SelectContent>
@@ -319,6 +319,7 @@ export default function Landing() {
                         ))}
                       </SelectContent>
                     </Select>
+                    {errors.age && <p className="text-red-500 text-xs mt-1"><AlertCircle className="w-3 h-3 inline" /></p>}
                   </div>
                 </div>
 
