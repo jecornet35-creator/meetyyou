@@ -70,11 +70,8 @@ export default function Header({ user }) {
     return unsubscribe;
   }, [currentUser, queryClient]);
   const stats = [
-    { value: '41%', label: 'Compatibilité', color: 'bg-amber-500' },
-    { value: '56', label: 'Vues', color: 'bg-gray-400' },
-    { value: '36', label: 'Likes', color: 'bg-gray-400' },
-    { value: '9', label: 'Favoris', color: 'bg-gray-400' },
-    { value: '2', label: 'Matches', color: 'bg-gray-400' },
+    { value: profileViewsCount, label: 'Vues', color: 'bg-gray-400' },
+    { value: likesCount, label: 'Likes', color: 'bg-gray-400' },
   ];
 
   return (
