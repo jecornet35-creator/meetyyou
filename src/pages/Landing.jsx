@@ -57,42 +57,51 @@ export default function Landing() {
     if (errors.password) setErrors(e => ({ ...e, password: null }));
   };
 
+  const validateSignupForm = () => {
+    const newErrors = {};
+    if (!firstName.trim()) newErrors.firstName = 'Prénom requis';
+    if (!iAmGender) newErrors.iAmGender = 'Veuillez sélectionner votre genre';
+    if (!lookingForGender) newErrors.lookingForGender = 'Veuillez sélectionner ce que vous cherchez';
+    if (!age) newErrors.age = 'Âge requis';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = 'Email invalide';
+    if (!password || password.length < 6) newErrors.password = 'Mot de passe trop court (min 6 caractères)';
+    if (!acceptTerms) newErrors.acceptTerms = 'Vous devez accepter les conditions';
+    return newErrors;
+  };
+
   const handleSignup = async () => {
+    const formErrors = validateSignupForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
     setIsValidating(true);
     setErrors({});
     try {
-      // Step 1: Validate fields via backend
-      const res = await base44.functions.invoke('validateRegistration', {
-        firstName, email, password, age, iAmGender, lookingForGender, acceptTerms
-      });
-      const data = res.data;
-
-      if (!data.valid) {
-        setErrors(data.errors || {});
-        if (data.passwordStrength !== undefined) setPasswordStrength(data.passwordStrength);
-        return;
-      }
-
-      // Step 2: Register the user (creates the account)
+      // Register the user
       await base44.auth.register({ email, password });
 
-      // Step 3: Login immediately after registration
+      // Login immediately after registration
       await base44.auth.loginViaEmailPassword(email, password);
 
-      // Step 4: Store pending data for Home page to save
-      if (data.pendingData) {
-        localStorage.setItem('pendingSignupData', JSON.stringify(data.pendingData));
-      }
+      // Store profile/correspondance data for Home page to save
+      const lookingForMapped = lookingForGender === 'homme' ? 'men' : lookingForGender === 'femme' ? 'women' : 'both';
+      const pendingData = {
+        profile: { display_name: firstName, gender: iAmGender, age: parseInt(age) },
+        correspondance: { looking_for: lookingForMapped }
+      };
+      localStorage.setItem('pendingSignupData', JSON.stringify(pendingData));
 
-      // Step 5: Redirect to Home
+      // Redirect to Home
       window.location.href = createPageUrl('Home');
 
     } catch (e) {
       const msg = e?.response?.data?.message || e?.message || '';
-      if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('exist')) {
+      if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('exist') || msg.toLowerCase().includes('duplicate')) {
         setErrors({ email: 'Cette adresse email est déjà utilisée.' });
       } else {
-        setErrors({ general: 'Une erreur est survenue. Veuillez réessayer.' });
+        setErrors({ general: `Erreur: ${msg || 'Veuillez réessayer.'}` });
       }
     } finally {
       setIsValidating(false);
