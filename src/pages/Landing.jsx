@@ -48,23 +48,39 @@ export default function Landing() {
     setIsValidating(true);
     setErrors({});
     try {
+      // Step 1: Validate fields via backend
       const res = await base44.functions.invoke('validateRegistration', {
         firstName, email, password, age, iAmGender, lookingForGender, acceptTerms
       });
       const data = res.data;
-      if (data.valid) {
-        // Store pending profile/correspondance data in localStorage so Home page can save it after login
-        if (data.pendingData) {
-          localStorage.setItem('pendingSignupData', JSON.stringify(data.pendingData));
-        }
-        // Redirect to login - after login the user lands on Home which will save the data
-        base44.auth.redirectToLogin();
-      } else {
+
+      if (!data.valid) {
         setErrors(data.errors || {});
         if (data.passwordStrength !== undefined) setPasswordStrength(data.passwordStrength);
+        return;
       }
+
+      // Step 2: Register the user (creates the account)
+      await base44.auth.register({ email, password });
+
+      // Step 3: Login immediately after registration
+      await base44.auth.loginViaEmailPassword(email, password);
+
+      // Step 4: Store pending data for Home page to save
+      if (data.pendingData) {
+        localStorage.setItem('pendingSignupData', JSON.stringify(data.pendingData));
+      }
+
+      // Step 5: Redirect to Home
+      window.location.href = createPageUrl('Home');
+
     } catch (e) {
-      setErrors({ general: 'Une erreur est survenue. Veuillez réessayer.' });
+      const msg = e?.response?.data?.message || e?.message || '';
+      if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('exist')) {
+        setErrors({ email: 'Cette adresse email est déjà utilisée.' });
+      } else {
+        setErrors({ general: 'Une erreur est survenue. Veuillez réessayer.' });
+      }
     } finally {
       setIsValidating(false);
     }
