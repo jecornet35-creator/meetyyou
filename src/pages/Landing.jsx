@@ -208,7 +208,57 @@ export default function Landing() {
       {/* Main Content */}
       <main className="relative z-10 flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
-          {!isSignup ? (
+          {showOtp ? (
+            <div className="bg-white rounded-lg p-6 shadow-xl space-y-4">
+              <div className="text-center">
+                <div className="text-4xl mb-3">📧</div>
+                <h2 className="text-xl font-bold text-gray-800">Vérifiez votre email</h2>
+                <p className="text-gray-500 text-sm mt-2">
+                  Un code de vérification a été envoyé à <strong>{email}</strong>
+                </p>
+              </div>
+
+              <div>
+                <label className="text-gray-700 text-sm mb-1 block">Code de vérification</label>
+                <Input
+                  type="text"
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value)}
+                  placeholder="123456"
+                  className="h-12 text-center text-xl tracking-widest border-gray-300"
+                  maxLength={6}
+                />
+              </div>
+
+              {otpError && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-600 text-sm">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  {otpError}
+                </div>
+              )}
+
+              <Button
+                onClick={handleVerifyOtp}
+                disabled={isVerifying || otpCode.length < 4}
+                className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg"
+              >
+                {isVerifying ? 'Vérification...' : 'Confirmer et voir les célibataires'}
+              </Button>
+
+              <div className="text-center text-sm text-gray-500">
+                Pas reçu le code ?{' '}
+                <button onClick={handleResendOtp} className="text-amber-600 hover:underline font-medium">
+                  Renvoyer
+                </button>
+              </div>
+
+              <div className="text-center">
+                <button onClick={() => { setShowOtp(false); setOtpCode(''); }} className="text-gray-400 hover:text-gray-600 text-sm">
+                  ← Retour
+                </button>
+              </div>
+            </div>
+          ) : !isSignup ? (
             <>
               <h1 className="text-3xl font-bold text-white text-center mb-8">
                 Connexion des Membres
