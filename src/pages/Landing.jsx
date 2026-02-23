@@ -370,28 +370,40 @@ export default function Landing() {
                 </div>
 
                 {/* Terms checkbox */}
-                <div className="flex items-start gap-3">
-                  <Checkbox
-                    id="terms"
-                    checked={acceptTerms}
-                    onCheckedChange={setAcceptTerms}
-                    className="mt-1 border-gray-400 data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500"
-                  />
-                  <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer">
-                    Oui, je confirme que j'ai plus de 18 et j'accepte les{' '}
-                    <a href="#" className="text-amber-600 hover:underline">conditions d'utilisation</a>
-                    {' '}et la{' '}
-                    <a href="#" className="text-amber-600 hover:underline">déclaration de confidentialité</a>
-                  </label>
+                <div>
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="terms"
+                      checked={acceptTerms}
+                      onCheckedChange={(v) => { setAcceptTerms(v); setErrors(e => ({ ...e, acceptTerms: null })); }}
+                      className={`mt-1 data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500 ${errors.acceptTerms ? 'border-red-500' : 'border-gray-400'}`}
+                    />
+                    <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer">
+                      Oui, je confirme que j'ai plus de 18 et j'accepte les{' '}
+                      <a href="#" className="text-amber-600 hover:underline">conditions d'utilisation</a>
+                      {' '}et la{' '}
+                      <a href="#" className="text-amber-600 hover:underline">déclaration de confidentialité</a>
+                    </label>
+                  </div>
+                  {errors.acceptTerms && <p className="text-red-500 text-xs mt-1 flex items-center gap-1 ml-7"><AlertCircle className="w-3 h-3" />{errors.acceptTerms}</p>}
                 </div>
+
+                {/* General error */}
+                {errors.general && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-600 text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    {errors.general}
+                  </div>
+                )}
 
                 {/* Submit Button */}
                 <Button
-                  onClick={handleLogin}
+                  onClick={handleSignup}
+                  disabled={isValidating}
                   className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg gap-2"
                 >
                   <Lock className="w-5 h-5" />
-                  Voir les Célibataires
+                  {isValidating ? 'Vérification...' : 'Voir les Célibataires'}
                 </Button>
 
                 {/* Trust badge */}
