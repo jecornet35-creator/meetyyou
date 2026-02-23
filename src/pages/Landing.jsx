@@ -230,19 +230,28 @@ export default function Landing() {
                   </div>
                 </div>
 
+                {/* Login error */}
+                {loginError && (
+                  <div className="bg-red-500/20 border border-red-400 rounded-lg p-3 flex items-center gap-2 text-white text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    {loginError}
+                  </div>
+                )}
+
                 {/* Login Button */}
                 <Button
                   onClick={handleLogin}
+                  disabled={isLoggingIn}
                   className="w-full h-12 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-lg"
                 >
-                  Connexion
+                  {isLoggingIn ? 'Connexion...' : 'Connexion'}
                 </Button>
 
                 <div className="text-center text-white text-sm">ou</div>
 
                 {/* Google Login */}
                 <Button
-                  onClick={handleLogin}
+                  onClick={() => base44.auth.redirectToLogin()}
                   variant="outline"
                   className="w-full h-12 bg-white hover:bg-gray-100 text-gray-700 border-0 gap-3"
                 >
