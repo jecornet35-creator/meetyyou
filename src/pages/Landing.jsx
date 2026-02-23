@@ -388,26 +388,23 @@ export default function Landing() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => setIAmGender('homme')}
-                        className={`flex-1 p-3 border rounded flex flex-col items-center gap-1 transition-colors ${
+                        title="Homme"
+                        className={`flex-1 py-2 px-1 border rounded flex flex-col items-center gap-1 transition-colors ${
                           iAmGender === 'homme' ? 'border-amber-500 bg-amber-50' : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
-                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke={iAmGender === 'homme' ? '#f59e0b' : '#9ca3af'} strokeWidth="2">
-                          <circle cx="12" cy="7" r="4"/>
-                          <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
-                        </svg>
+                        <span className="text-xl">👨</span>
+                        <span className={`text-xs font-medium ${iAmGender === 'homme' ? 'text-amber-600' : 'text-gray-500'}`}>Homme</span>
                       </button>
                       <button
                         onClick={() => setIAmGender('femme')}
-                        className={`flex-1 p-3 border rounded flex flex-col items-center gap-1 transition-colors ${
+                        title="Femme"
+                        className={`flex-1 py-2 px-1 border rounded flex flex-col items-center gap-1 transition-colors ${
                           iAmGender === 'femme' ? 'border-amber-500 bg-amber-50' : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
-                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke={iAmGender === 'femme' ? '#f59e0b' : '#9ca3af'} strokeWidth="2">
-                          <circle cx="12" cy="7" r="4"/>
-                          <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
-                          <path d="M12 14v7M9 18h6"/>
-                        </svg>
+                        <span className="text-xl">👩</span>
+                        <span className={`text-xs font-medium ${iAmGender === 'femme' ? 'text-amber-600' : 'text-gray-500'}`}>Femme</span>
                       </button>
                     </div>
                   </div>
@@ -417,26 +414,23 @@ export default function Landing() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => setLookingForGender('homme')}
-                        className={`flex-1 p-3 border rounded flex flex-col items-center gap-1 transition-colors ${
+                        title="Un homme"
+                        className={`flex-1 py-2 px-1 border rounded flex flex-col items-center gap-1 transition-colors ${
                           lookingForGender === 'homme' ? 'border-amber-500 bg-amber-50' : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
-                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke={lookingForGender === 'homme' ? '#f59e0b' : '#9ca3af'} strokeWidth="2">
-                          <circle cx="12" cy="7" r="4"/>
-                          <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
-                        </svg>
+                        <span className="text-xl">👨</span>
+                        <span className={`text-xs font-medium ${lookingForGender === 'homme' ? 'text-amber-600' : 'text-gray-500'}`}>Homme</span>
                       </button>
                       <button
                         onClick={() => setLookingForGender('femme')}
-                        className={`flex-1 p-3 border rounded flex flex-col items-center gap-1 transition-colors ${
+                        title="Une femme"
+                        className={`flex-1 py-2 px-1 border rounded flex flex-col items-center gap-1 transition-colors ${
                           lookingForGender === 'femme' ? 'border-amber-500 bg-amber-50' : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
-                        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke={lookingForGender === 'femme' ? '#f59e0b' : '#9ca3af'} strokeWidth="2">
-                          <circle cx="12" cy="7" r="4"/>
-                          <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
-                          <path d="M12 14v7M9 18h6"/>
-                        </svg>
+                        <span className="text-xl">👩</span>
+                        <span className={`text-xs font-medium ${lookingForGender === 'femme' ? 'text-amber-600' : 'text-gray-500'}`}>Femme</span>
                       </button>
                     </div>
                   </div>
