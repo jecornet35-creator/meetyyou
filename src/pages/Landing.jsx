@@ -53,6 +53,11 @@ export default function Landing() {
       });
       const data = res.data;
       if (data.valid) {
+        // Store pending profile/correspondance data in localStorage so Home page can save it after login
+        if (data.pendingData) {
+          localStorage.setItem('pendingSignupData', JSON.stringify(data.pendingData));
+        }
+        // Redirect to login - after login the user lands on Home which will save the data
         base44.auth.redirectToLogin();
       } else {
         setErrors(data.errors || {});
