@@ -21,9 +21,48 @@ export default function Landing() {
   const [lookingForGender, setLookingForGender] = useState('');
   const [age, setAge] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isValidating, setIsValidating] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
   const handleLogin = () => {
     base44.auth.redirectToLogin();
+  };
+
+  const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-400', 'bg-green-600'];
+  const strengthLabels = ['', 'Très faible', 'Faible', 'Moyen', 'Fort'];
+
+  const handlePasswordChange = (val) => {
+    setPassword(val);
+    // Live strength feedback
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    setPasswordStrength(score);
+    if (errors.password) setErrors(e => ({ ...e, password: null }));
+  };
+
+  const handleSignup = async () => {
+    setIsValidating(true);
+    setErrors({});
+    try {
+      const res = await base44.functions.invoke('validateRegistration', {
+        firstName, email, password, age, iAmGender, lookingForGender, acceptTerms
+      });
+      const data = res.data;
+      if (data.valid) {
+        base44.auth.redirectToLogin();
+      } else {
+        setErrors(data.errors || {});
+        if (data.passwordStrength !== undefined) setPasswordStrength(data.passwordStrength);
+      }
+    } catch (e) {
+      setErrors({ general: 'Une erreur est survenue. Veuillez réessayer.' });
+    } finally {
+      setIsValidating(false);
+    }
   };
 
   const [dismissedBanner, setDismissedBanner] = useState(false);
