@@ -33,10 +33,10 @@ export default function ConversationList({ conversations, currentUserEmail, sele
           return (
             <div
               key={conv.id}
-              onClick={() => onSelect(conv)}
-              className={`flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
+              className={`relative flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 transition-colors group ${
                 isSelected ? 'bg-amber-50 border-l-4 border-amber-500' : ''
               }`}
+              onClick={() => onSelect(conv)}
             >
               <div className="relative">
                 <img
