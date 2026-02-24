@@ -85,12 +85,16 @@ export default function Header({ user }) {
             <div className="flex items-center gap-3 ml-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="w-10 h-10 rounded-full bg-white/20 overflow-hidden border-2 border-white/50 cursor-pointer hover:border-white transition-colors">
-                    <img 
-                      src={user?.main_photo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'}
-                      alt="Mon profil"
-                      className="w-full h-full object-cover"
-                    />
+                  <button className="w-10 h-10 rounded-full bg-white/20 overflow-hidden border-2 border-white/50 cursor-pointer hover:border-white transition-colors flex items-center justify-center">
+                    {(user?.main_photo || (user?.accepted_photos && user.accepted_photos[0]) || (user?.photos && user.photos[0])) ? (
+                      <img 
+                        src={user.main_photo || user.accepted_photos?.[0] || user.photos?.[0]}
+                        alt="Mon profil"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-6 h-6 text-white/80" />
+                    )}
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-64 bg-white p-2 shadow-xl rounded-lg border-0">
