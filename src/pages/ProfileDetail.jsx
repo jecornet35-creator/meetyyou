@@ -184,6 +184,8 @@ export default function ProfileDetail() {
   const [activePhoto, setActivePhoto] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
+  const [liked, setLiked] = useState(false);
+  const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get('id');
 
