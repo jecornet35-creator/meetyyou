@@ -124,6 +124,7 @@ export default function Messages() {
                   currentUserEmail={currentUser?.email}
                   selectedId={selectedConversation?.id}
                   onSelect={handleSelectConversation}
+                  onHide={hideConversation}
                 />
               </div>
             </div>
