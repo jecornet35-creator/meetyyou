@@ -73,10 +73,17 @@ export default function Messages() {
             {/* Conversations List */}
             <div className={`w-full md:w-96 border-r bg-white ${showChat ? 'hidden md:block' : ''}`}>
               <div className="p-4 border-b bg-gradient-to-r from-amber-600 to-amber-500 text-white">
-                <h1 className="text-xl font-bold flex items-center gap-2">
-                  <MessageCircle className="w-5 h-5" />
-                  Messages
-                </h1>
+                <div className="flex items-center justify-between">
+                  <h1 className="text-xl font-bold flex items-center gap-2">
+                    <MessageCircle className="w-5 h-5" />
+                    Messages
+                  </h1>
+                  <Link to={createPageUrl('Home')}>
+                    <button className="p-1 rounded-full hover:bg-white/20 transition-colors" title="Fermer les messages">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </Link>
+                </div>
                 <p className="text-sm text-white/80 mt-1">
                   {conversations.length} conversation{conversations.length > 1 ? 's' : ''}
                 </p>

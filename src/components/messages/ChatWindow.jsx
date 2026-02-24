@@ -223,7 +223,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     <div className="flex-1 flex flex-col h-full" onClick={() => setShowEmojiPicker(false)}>
       {/* Header */}
       <div className="bg-white border-b px-4 py-3 flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="md:hidden" onClick={onBack}>
+        <Button variant="ghost" size="icon" onClick={onBack}>
           <ArrowLeft className="w-5 h-5" />
         </Button>
         <div className="relative">
