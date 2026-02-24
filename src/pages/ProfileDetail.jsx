@@ -363,10 +363,18 @@ export default function ProfileDetail() {
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <button className="w-10 h-10 rounded-full border-2 border-red-200 flex items-center justify-center hover:bg-red-50 transition-colors">
-                    <Heart className="w-5 h-5 text-red-400" />
+                  <button
+                    onClick={() => !liked && sendLikeMutation.mutate()}
+                    disabled={liked || sendLikeMutation.isPending}
+                    className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-colors ${liked ? 'border-red-400 bg-red-50' : 'border-red-200 hover:bg-red-50'}`}
+                  >
+                    <Heart className={`w-5 h-5 ${liked ? 'text-red-500 fill-red-500' : 'text-red-400'}`} />
                   </button>
-                  <button className="w-10 h-10 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-colors">
+                  <button
+                    onClick={() => startConversationMutation.mutate()}
+                    disabled={startConversationMutation.isPending}
+                    className="w-10 h-10 rounded-full border-2 border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-colors"
+                  >
                     <MessageCircle className="w-5 h-5 text-slate-400" />
                   </button>
                 </div>
