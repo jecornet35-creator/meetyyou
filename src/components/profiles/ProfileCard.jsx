@@ -65,6 +65,13 @@ export default function ProfileCard({ profile, currentUser }) {
     }
   });
 
+  const isReallyOnline = (profile) => {
+    if (!profile.is_online) return false;
+    if (!profile.last_seen) return false;
+    const diffMin = (Date.now() - new Date(profile.last_seen).getTime()) / 60000;
+    return diffMin < 5;
+  };
+
   const formatLastSeen = (lastSeen) => {
     if (!lastSeen) return '';
     const diff = Math.floor((Date.now() - new Date(lastSeen).getTime()) / 60000);
