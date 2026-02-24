@@ -427,8 +427,8 @@ export default function ProfileDetail() {
               <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
                 <Button
                   className={`flex-1 gap-2 h-9 ${liked ? 'bg-red-500 hover:bg-red-600' : 'bg-amber-500 hover:bg-amber-600'}`}
-                  onClick={() => !liked && sendLikeMutation.mutate()}
-                  disabled={liked || sendLikeMutation.isPending}
+                  onClick={() => !liked && sendLikeWithProfileMutation.mutate()}
+                  disabled={liked || sendLikeWithProfileMutation.isPending}
                 >
                   <Heart className={`w-4 h-4 ${liked ? 'fill-white' : ''}`} />
                   {liked ? 'Liké !' : "J'aime"}
