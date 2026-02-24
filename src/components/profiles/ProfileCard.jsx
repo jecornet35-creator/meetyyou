@@ -97,7 +97,7 @@ export default function ProfileCard({ profile, currentUser }) {
           )}
           
           {/* Online indicator */}
-          {profile.is_online && (
+          {isReallyOnline(profile) && (
             <div className="absolute top-3 right-3 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-lg" />
           )}
           
