@@ -4,7 +4,9 @@ import { base44 } from '@/api/base44Client';
 import Header from '@/components/layout/Header';
 import ConversationList from '@/components/messages/ConversationList';
 import ChatWindow from '@/components/messages/ChatWindow';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, X, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 export default function Messages() {
   const [selectedConversation, setSelectedConversation] = useState(null);
