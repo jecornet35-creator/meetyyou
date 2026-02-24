@@ -13,7 +13,7 @@ function formatMessageDate(dateString) {
   return format(date, 'dd/MM/yy');
 }
 
-export default function ConversationList({ conversations, currentUserEmail, selectedId, onSelect }) {
+export default function ConversationList({ conversations, currentUserEmail, selectedId, onSelect, onHide }) {
   return (
     <div className="divide-y">
       {conversations.length === 0 ? (
