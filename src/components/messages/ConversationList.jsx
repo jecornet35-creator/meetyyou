@@ -59,9 +59,18 @@ export default function ConversationList({ conversations, currentUserEmail, sele
                   <h3 className={`font-semibold truncate ${unreadCount > 0 ? 'text-gray-900' : 'text-gray-700'}`}>
                     {otherParticipant.display_name || 'Utilisateur'}
                   </h3>
-                  <span className="text-xs text-gray-500">
-                    {formatMessageDate(conv.last_message_date)}
-                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-gray-500">
+                      {formatMessageDate(conv.last_message_date)}
+                    </span>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onHide(conv.id); }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-red-100 text-gray-400 hover:text-red-500"
+                      title="Fermer cette conversation"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-center gap-1 mt-1">
                   {isSentByMe && (
