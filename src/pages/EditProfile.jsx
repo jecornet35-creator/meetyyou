@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { Camera, Eye, Upload, X } from 'lucide-react';
+import LocationSelector from '@/components/location/LocationSelector';
+import { base44 } from '@/api/base44Client';
 
 const SectionTitle = ({ children }) => (
   <h2 className="text-xl font-semibold text-amber-700 mb-4 mt-8 first:mt-0">{children}</h2>
