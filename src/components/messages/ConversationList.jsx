@@ -2,7 +2,7 @@ import React from 'react';
 import { format, isToday, isYesterday } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
-import { Check, CheckCheck } from 'lucide-react';
+import { Check, CheckCheck, X } from 'lucide-react';
 import OnlineIndicator from './OnlineIndicator';
 
 function formatMessageDate(dateString) {
