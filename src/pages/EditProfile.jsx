@@ -94,6 +94,17 @@ export default function EditProfile() {
   useEffect(() => {
     if (existingProfile) {
       setProfile(existingProfile);
+      // Auto-detect country from IP only if empty
+      if (!existingProfile.country) {
+        base44.functions.invoke('detectCountryFromIP').then(res => {
+          if (res.data?.country) {
+            setProfile(prev => ({ ...prev, country: res.data.country }));
+            setCountryLocked(true);
+          }
+        }).catch(() => {});
+      } else {
+        setCountryLocked(true); // Already set, lock it
+      }
     }
   }, [existingProfile]);
 
