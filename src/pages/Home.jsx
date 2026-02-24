@@ -55,6 +55,15 @@ export default function Home() {
     enabled: !!currentUser,
   });
 
+  const { data: myProfile } = useQuery({
+    queryKey: ['myProfile', currentUser?.email],
+    queryFn: async () => {
+      const results = await base44.entities.Profile.filter({ created_by: currentUser.email });
+      return results[0] || null;
+    },
+    enabled: !!currentUser,
+  });
+
   const { data: profiles, isLoading } = useQuery({
     queryKey: ['profiles'],
     queryFn: () => base44.entities.Profile.list('-last_seen', 100),
