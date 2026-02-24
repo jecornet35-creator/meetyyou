@@ -125,12 +125,12 @@ export default function ProfileCard({ profile, currentUser }) {
                 Recherche : {profile.looking_for}
               </p>
             )}
-            {!profile.is_online && profile.last_seen && (
+            {!isReallyOnline(profile) && profile.last_seen && (
               <p className="text-xs text-white/70 mt-1">
                 {formatLastSeen(profile.last_seen)}
               </p>
             )}
-            {profile.is_online && (
+            {isReallyOnline(profile) && (
               <p className="text-xs text-green-400 mt-1">En ligne</p>
             )}
           </div>
