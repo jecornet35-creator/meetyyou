@@ -16,15 +16,21 @@ export default function ProfileCard({ profile, currentUser }) {
   const sendLikeMutation = useMutation({
     mutationFn: async () => {
       const user = await base44.auth.me();
+      // Fetch sender's profile to get their real photo and display name
+      const myProfiles = await base44.entities.Profile.filter({ created_by: user.email });
+      const myProfile = myProfiles[0];
+      const senderName = myProfile?.display_name || myProfile?.first_name || user.full_name || user.email;
+      const senderPhoto = myProfile?.main_photo || myProfile?.accepted_photos?.[0] || myProfile?.photos?.[0] || null;
       await base44.entities.Notification.create({
         user_email: profile.created_by,
         type: 'like',
-        title: `${user.full_name || 'Quelqu\'un'} vous a liké !`,
+        title: `${senderName} vous a liké !`,
         message: 'A aimé votre profil',
-        from_profile_name: user.full_name,
-        from_profile_photo: currentUser?.main_photo,
+        from_profile_name: senderName,
+        from_profile_photo: senderPhoto,
+        from_profile_id: myProfile?.id,
         is_read: false,
-        link: `/ProfileDetail?id=${profile.id}`,
+        link: `/ProfileDetail?id=${myProfile?.id || ''}`,
       });
     },
     onSuccess: () => setLiked(true),
