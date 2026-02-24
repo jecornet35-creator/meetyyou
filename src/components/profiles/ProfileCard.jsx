@@ -10,6 +10,25 @@ import { usePlan } from '@/components/premium/usePlan';
 export default function ProfileCard({ profile, currentUser }) {
   const queryClient = useQueryClient();
   const { canMessage, isFree } = usePlan();
+  const [liked, setLiked] = useState(false);
+  const [favorited, setFavorited] = useState(false);
+
+  const sendLikeMutation = useMutation({
+    mutationFn: async () => {
+      const user = await base44.auth.me();
+      await base44.entities.Notification.create({
+        user_email: profile.created_by,
+        type: 'like',
+        title: `${user.full_name || 'Quelqu\'un'} vous a liké !`,
+        message: 'A aimé votre profil',
+        from_profile_name: user.full_name,
+        from_profile_photo: currentUser?.main_photo,
+        is_read: false,
+        link: `/ProfileDetail?id=${profile.id}`,
+      });
+    },
+    onSuccess: () => setLiked(true),
+  });
 
   const startConversationMutation = useMutation({
     mutationFn: async () => {
@@ -107,8 +126,12 @@ export default function ProfileCard({ profile, currentUser }) {
       
       {/* Action buttons */}
       <div className="flex items-center justify-between px-2 py-1.5 bg-white border-t">
-        <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
-          <Heart className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
+        <button
+          onClick={() => !liked && sendLikeMutation.mutate()}
+          disabled={liked || sendLikeMutation.isPending}
+          className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
+        >
+          <Heart className={`w-4 h-4 transition-colors ${liked ? 'text-red-500 fill-red-500' : 'text-gray-400 group-hover/btn:text-amber-500'}`} />
         </button>
         {canMessage ? (
           <button
