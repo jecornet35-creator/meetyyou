@@ -73,6 +73,7 @@ export default function EditProfile() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('profile');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [countryLocked, setCountryLocked] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
