@@ -359,32 +359,15 @@ export default function EditProfile() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-4 mb-6">
-              <div>
-                <FieldLabel>Country</FieldLabel>
-                <Input
-                  value={profile.country || ''}
-                  onChange={(e) => updateField('country', e.target.value)}
-                  placeholder="Country"
-                />
-              </div>
-              <div>
-                <FieldLabel>State/Province</FieldLabel>
-                <Input
-                  value={profile.state || ''}
-                  onChange={(e) => updateField('state', e.target.value)}
-                  placeholder="State/Province"
-                />
-              </div>
-              <div>
-                <FieldLabel>City</FieldLabel>
-                <Input
-                  value={profile.city || ''}
-                  onChange={(e) => updateField('city', e.target.value)}
-                  placeholder="City"
-                />
-              </div>
-            </div>
+            <LocationSelector
+              country={profile.country || ''}
+              state={profile.state || ''}
+              city={profile.city || ''}
+              countryLocked={countryLocked}
+              onChange={({ country, state, city }) => {
+                setProfile(prev => ({ ...prev, country, state, city }));
+              }}
+            />
 
             {/* Appearance */}
             <SectionTitle>Your appearance</SectionTitle>
