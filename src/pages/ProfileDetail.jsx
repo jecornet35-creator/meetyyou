@@ -386,8 +386,8 @@ export default function ProfileDetail() {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => !liked && sendLikeMutation.mutate()}
-                    disabled={liked || sendLikeMutation.isPending}
+                    onClick={() => !liked && sendLikeWithProfileMutation.mutate()}
+                    disabled={liked || sendLikeWithProfileMutation.isPending}
                     className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-colors ${liked ? 'border-red-400 bg-red-50' : 'border-red-200 hover:bg-red-50'}`}
                   >
                     <Heart className={`w-5 h-5 ${liked ? 'text-red-500 fill-red-500' : 'text-red-400'}`} />
