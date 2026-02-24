@@ -116,6 +116,7 @@ export default function Correspondances() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['correspondance'] });
+      window.location.href = createPageUrl('Home');
     },
   });
 
