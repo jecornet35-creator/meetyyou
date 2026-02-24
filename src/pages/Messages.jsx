@@ -31,7 +31,21 @@ export default function Messages() {
     }
   }, []);
 
-  const { data: conversations = [] } = useQuery({
+  const [hiddenConvIds, setHiddenConvIds] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('hiddenConvIds') || '[]'); } catch { return []; }
+  });
+
+  const hideConversation = (convId) => {
+    const updated = [...hiddenConvIds, convId];
+    setHiddenConvIds(updated);
+    localStorage.setItem('hiddenConvIds', JSON.stringify(updated));
+    if (selectedConversation?.id === convId) {
+      setSelectedConversation(null);
+      setShowChat(false);
+    }
+  };
+
+  const { data: allConversations = [] } = useQuery({
     queryKey: ['conversations'],
     queryFn: async () => {
       const user = await base44.auth.me();
@@ -40,6 +54,22 @@ export default function Messages() {
     },
     enabled: !!currentUser,
   });
+
+  // Un-hide conversation when a new message arrives
+  useEffect(() => {
+    if (!currentUser || allConversations.length === 0) return;
+    const toUnhide = hiddenConvIds.filter(id => {
+      const conv = allConversations.find(c => c.id === id);
+      return conv && conv.last_message_sender !== currentUser.email;
+    });
+    if (toUnhide.length > 0) {
+      const updated = hiddenConvIds.filter(id => !toUnhide.includes(id));
+      setHiddenConvIds(updated);
+      localStorage.setItem('hiddenConvIds', JSON.stringify(updated));
+    }
+  }, [allConversations]);
+
+  const conversations = allConversations.filter(c => !hiddenConvIds.includes(c.id));
 
   // Real-time subscription for conversations
   useEffect(() => {
