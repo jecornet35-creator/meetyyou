@@ -190,8 +190,49 @@ export default function ProfileDetail() {
   const profileId = urlParams.get('id');
 
   useEffect(() => {
-    base44.auth.me().then(setCurrentUser).catch(() => {});
+    base44.auth.me().then(u => {
+      setCurrentUser(u);
+    }).catch(() => {});
   }, []);
+
+  const sendLikeMutation = useMutation({
+    mutationFn: async () => {
+      const user = await base44.auth.me();
+      await base44.entities.Notification.create({
+        user_email: profile.created_by,
+        type: 'like',
+        title: `${user.full_name || 'Quelqu\'un'} vous a liké !`,
+        message: 'A aimé votre profil',
+        from_profile_name: user.full_name,
+        is_read: false,
+        link: `/ProfileDetail?id=${profile.id}`,
+      });
+    },
+    onSuccess: () => setLiked(true),
+  });
+
+  const startConversationMutation = useMutation({
+    mutationFn: async () => {
+      const user = await base44.auth.me();
+      const allConvs = await base44.entities.Conversation.list();
+      const existing = allConvs.find(c =>
+        c.participants?.includes(user.email) && c.participants?.includes(profile.created_by)
+      );
+      if (existing) {
+        window.location.href = createPageUrl('Messages') + `?conv=${existing.id}`;
+        return;
+      }
+      const conv = await base44.entities.Conversation.create({
+        participants: [user.email, profile.created_by],
+        participant_profiles: [
+          { email: user.email, display_name: user.full_name },
+          { email: profile.created_by, display_name: profile.display_name, photo: profile.main_photo }
+        ],
+        unread_count: { [user.email]: 0, [profile.created_by]: 0 }
+      });
+      window.location.href = createPageUrl('Messages') + `?conv=${conv.id}`;
+    },
+  });
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile', profileId],
