@@ -38,16 +38,17 @@ export default function FilterBar({ activeFilter, onFilterChange }) {
 
           <div className="h-6 w-px bg-gray-200 mx-2" />
 
-          {/* Correspondances button (no dropdown) */}
-          <Button
-            variant={activeFilter === 'correspondences' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => onFilterChange('correspondences')}
-            className={`shrink-0 gap-2 ${activeFilter === 'correspondences' ? 'bg-amber-500 hover:bg-amber-600 border-amber-500' : 'hover:border-amber-300'}`}
-          >
-            <Heart className="w-4 h-4" />
-            Correspondances
-          </Button>
+          {/* Correspondances button → page édition */}
+          <Link to={createPageUrl('Correspondances')}>
+            <Button
+              variant="default"
+              size="sm"
+              className="shrink-0 gap-2 bg-amber-500 hover:bg-amber-600 border-amber-500"
+            >
+              <Heart className="w-4 h-4" />
+              Correspondances
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
