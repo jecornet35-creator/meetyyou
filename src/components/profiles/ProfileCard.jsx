@@ -148,8 +148,11 @@ export default function ProfileCard({ profile, currentUser }) {
             </span>
           </Link>
         )}
-        <button className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn">
-          <Star className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
+        <button
+          onClick={() => setFavorited(v => !v)}
+          className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
+        >
+          <Star className={`w-4 h-4 transition-colors ${favorited ? 'text-amber-500 fill-amber-400' : 'text-gray-400 group-hover/btn:text-amber-500'}`} />
         </button>
         <div className="flex items-center gap-1 text-gray-400 text-xs">
           <Camera className="w-3.5 h-3.5" />
