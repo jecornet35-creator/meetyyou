@@ -135,10 +135,10 @@ export default function ProfilVu() {
                 >
                   <div className="flex gap-4">
                     {notification.from_profile_photo ? (
-                      <img src={notification.from_profile_photo} alt={notification.from_profile_name} className="w-12 h-12 rounded-full object-cover" />
+                      <img src={notification.from_profile_photo} alt={notification.from_profile_name} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
                     ) : (
-                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-gray-500 bg-gray-50">
-                        <Eye className="w-6 h-6" />
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-white bg-blue-400 font-bold text-lg flex-shrink-0">
+                        {notification.from_profile_name?.[0]?.toUpperCase() || '?'}
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
@@ -153,8 +153,8 @@ export default function ProfilVu() {
                         {!notification.is_read && <Badge className="bg-amber-500 shrink-0">Nouveau</Badge>}
                       </div>
                       <div className="flex gap-2 mt-3">
-                        {notification.link && (
-                          <Link to={notification.link}>
+                        {(notification.from_profile_id || notification.link) && (
+                          <Link to={`/ProfileDetail?id=${notification.from_profile_id || ''}`}>
                             <Button size="sm" variant="outline" className="text-xs">Voir le profil</Button>
                           </Link>
                         )}
