@@ -36,8 +36,8 @@ export default function QuickSearchModal({ isOpen, onClose }) {
     },
     onSuccess: (_, data) => {
       sessionStorage.setItem('quickFilter', JSON.stringify(data));
+      window.dispatchEvent(new Event('quickFilterUpdated'));
       queryClient.invalidateQueries({ queryKey: ['myCorrespondance'] });
-      queryClient.invalidateQueries({ queryKey: ['quickFilter'] });
       queryClient.invalidateQueries({ queryKey: ['correspondance'] });
       onClose();
     },
