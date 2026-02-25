@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LocationSelector from '@/components/location/LocationSelector';
 
 export default function QuickSearchModal({ isOpen, onClose }) {
   const [criteria, setCriteria] = useState(() => {
