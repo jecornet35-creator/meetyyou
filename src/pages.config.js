@@ -61,6 +61,7 @@ import AdminSubscriptions from './pages/AdminSubscriptions';
 import AdminTickets from './pages/AdminTickets';
 import AdminUsers from './pages/AdminUsers';
 import AdminVerification from './pages/AdminVerification';
+import AdvancedFilter from './pages/AdvancedFilter';
 import BlockedUsers from './pages/BlockedUsers';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
@@ -78,7 +79,6 @@ import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import Settings from './pages/Settings';
 import SubscriptionPlans from './pages/SubscriptionPlans';
-import AdvancedFilter from './pages/AdvancedFilter';
 import __Layout from './Layout.jsx';
 
 
@@ -97,6 +97,7 @@ export const PAGES = {
     "AdminTickets": AdminTickets,
     "AdminUsers": AdminUsers,
     "AdminVerification": AdminVerification,
+    "AdvancedFilter": AdvancedFilter,
     "BlockedUsers": BlockedUsers,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
@@ -114,7 +115,6 @@ export const PAGES = {
     "ProfileVerification": ProfileVerification,
     "Settings": Settings,
     "SubscriptionPlans": SubscriptionPlans,
-    "AdvancedFilter": AdvancedFilter,
 }
 
 export const pagesConfig = {

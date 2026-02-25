@@ -95,6 +95,26 @@ export default function Home() {
     initialData: [],
   });
 
+  // Ephemeral quick filter from sessionStorage
+  const [quickFilter, setQuickFilter] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('quickFilter');
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  });
+
+  // Listen for quick filter updates
+  useEffect(() => {
+    const handleStorage = () => {
+      try {
+        const saved = sessionStorage.getItem('quickFilter');
+        setQuickFilter(saved ? JSON.parse(saved) : null);
+      } catch { setQuickFilter(null); }
+    };
+    window.addEventListener('quickFilterUpdated', handleStorage);
+    return () => window.removeEventListener('quickFilterUpdated', handleStorage);
+  }, []);
+
   // Use advanced filter if set, fallback to correspondance for gender
   const af = advancedFilter;
   const lookingFor = af?.looking_for || myCorrespondance?.looking_for;
