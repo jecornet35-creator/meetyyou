@@ -93,16 +93,13 @@ export default function EditProfile() {
   useEffect(() => {
     if (existingProfile) {
       setProfile(existingProfile);
-      // Auto-detect country from IP only if empty
+      // Auto-detect country from IP only if empty (but country is now editable)
       if (!existingProfile.country) {
         base44.functions.invoke('detectCountryFromIP').then(res => {
           if (res.data?.country) {
             setProfile(prev => ({ ...prev, country: res.data.country }));
-            setCountryLocked(true);
           }
         }).catch(() => {});
-      } else {
-        setCountryLocked(true); // Already set, lock it
       }
     }
   }, [existingProfile]);
@@ -362,7 +359,7 @@ export default function EditProfile() {
               country={profile.country || ''}
               state={profile.state || ''}
               city={profile.city || ''}
-              countryLocked={countryLocked}
+              countryLocked={false}
               onChange={({ country, state, city }) => {
                 setProfile(prev => ({ ...prev, country, state, city }));
               }}

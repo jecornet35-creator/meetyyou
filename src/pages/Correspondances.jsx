@@ -197,34 +197,17 @@ export default function Correspondances() {
 
           {/* Living in */}
           <Section title="Living in">
-            <div className="grid grid-cols-4 gap-4">
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">Country</label>
-                <Select value={criteria.country} onValueChange={(v) => setCriteria(prev => ({ ...prev, country: v }))}>
-                  <SelectTrigger><SelectValue placeholder="All Countries" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Countries</SelectItem>
-                    <SelectItem value="france">France</SelectItem>
-                    <SelectItem value="usa">USA</SelectItem>
-                    <SelectItem value="canada">Canada</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">State/Province</label>
-                <Input placeholder="Any state" value={criteria.state_province} onChange={(e) => setCriteria(prev => ({ ...prev, state_province: e.target.value }))} />
-              </div>
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">City</label>
-                <Input placeholder="Any City" value={criteria.city} onChange={(e) => setCriteria(prev => ({ ...prev, city: e.target.value }))} />
-              </div>
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">between</label>
-                <div className="flex items-center gap-2">
-                  <Input placeholder="-" className="w-16" value={criteria.distance_km} onChange={(e) => setCriteria(prev => ({ ...prev, distance_km: e.target.value }))} />
-                  <span className="text-gray-500">kms</span>
-                </div>
-              </div>
+            <LocationSelector
+              country={criteria.country || ''}
+              state={criteria.state_province || ''}
+              city={criteria.city || ''}
+              countryLocked={false}
+              onChange={({ country, state, city }) => setCriteria(prev => ({ ...prev, country, state_province: state, city }))}
+            />
+            <div className="mt-2 flex items-center gap-2">
+              <label className="text-sm text-gray-600">Dans un rayon de</label>
+              <Input placeholder="-" className="w-16" value={criteria.distance_km} onChange={(e) => setCriteria(prev => ({ ...prev, distance_km: e.target.value }))} />
+              <span className="text-gray-500">kms</span>
             </div>
           </Section>
 

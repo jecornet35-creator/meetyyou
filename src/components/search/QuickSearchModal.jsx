@@ -150,40 +150,15 @@ export default function QuickSearchModal({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                {/* Vivant en */}
+                {/* Localisation */}
                 <div>
                   <label className="text-sm text-gray-600 mb-2 block">Vivant en</label>
-                  <Select value={criteria.country} onValueChange={(v) => setCriteria(prev => ({ ...prev, country: v }))}>
-                    <SelectTrigger className="w-full h-12 rounded-lg border-gray-200">
-                      <SelectValue placeholder="Tous Pays" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {countries.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* État */}
-                <div>
-                  <Select value={criteria.state_province} onValueChange={(v) => setCriteria(prev => ({ ...prev, state_province: v }))}>
-                    <SelectTrigger className="w-full h-12 rounded-lg border-gray-200">
-                      <SelectValue placeholder="N'importe quel Etat" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">N'importe quel Etat</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Ville */}
-                <div>
-                  <label className="text-sm text-gray-600 mb-2 block">Ville</label>
-                  <input
-                    type="text"
-                    value={criteria.city}
-                    onChange={e => setCriteria(prev => ({ ...prev, city: e.target.value }))}
-                    placeholder="N'importe quelle ville"
-                    className="w-full h-12 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+                  <LocationSelector
+                    country={criteria.country || ''}
+                    state={criteria.state_province || ''}
+                    city={criteria.city || ''}
+                    countryLocked={false}
+                    onChange={({ country, state, city }) => setCriteria(prev => ({ ...prev, country, state_province: state, city }))}
                   />
                 </div>
               </div>

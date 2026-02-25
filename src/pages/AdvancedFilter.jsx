@@ -188,20 +188,13 @@ export default function AdvancedFilter() {
 
           {/* Location */}
           <Section title="Localisation">
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">Pays</label>
-                <Input placeholder="Tous les pays" value={filter.country} onChange={e => setFilter(p => ({ ...p, country: e.target.value }))} />
-              </div>
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">État / Province</label>
-                <Input placeholder="Tous" value={filter.state} onChange={e => setFilter(p => ({ ...p, state: e.target.value }))} />
-              </div>
-              <div>
-                <label className="text-sm text-gray-600 mb-1 block">Ville</label>
-                <Input placeholder="Toutes" value={filter.city} onChange={e => setFilter(p => ({ ...p, city: e.target.value }))} />
-              </div>
-            </div>
+            <LocationSelector
+              country={filter.country || ''}
+              state={filter.state || ''}
+              city={filter.city || ''}
+              countryLocked={false}
+              onChange={({ country, state, city }) => setFilter(p => ({ ...p, country, state, city }))}
+            />
           </Section>
 
           {/* Apparence */}
