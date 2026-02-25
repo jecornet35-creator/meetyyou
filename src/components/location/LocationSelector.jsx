@@ -96,15 +96,15 @@ export default function LocationSelector({ country, state, city, onChange, count
 
   const filteredCountries = countries.filter(c =>
     c.name.toLowerCase().includes(countrySearch.toLowerCase())
-  ).slice(0, 8);
+  ).slice(0, 50);
 
   const filteredStates = states.filter(s =>
     s.toLowerCase().includes(stateSearch.toLowerCase())
-  ).slice(0, 8);
+  ).slice(0, 50);
 
   const filteredCities = cities.filter(c =>
     c.toLowerCase().includes(citySearch.toLowerCase())
-  ).slice(0, 8);
+  ).slice(0, 50);
 
   const handleSelectCountry = (c) => {
     setCountrySearch(c.name);
