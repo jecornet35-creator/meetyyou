@@ -24,24 +24,11 @@ export default function QuickSearchModal({ isOpen, onClose }) {
     }
   });
 
-  const saveMutation = useMutation({
-    mutationFn: async (data) => {
-      const user = await base44.auth.me();
-      const existing = await base44.entities.Correspondance.filter({ created_by: user.email });
-      if (existing[0]) {
-        return base44.entities.Correspondance.update(existing[0].id, data);
-      } else {
-        return base44.entities.Correspondance.create(data);
-      }
-    },
-    onSuccess: (_, data) => {
-      sessionStorage.setItem('quickFilter', JSON.stringify(data));
-      window.dispatchEvent(new Event('quickFilterUpdated'));
-      queryClient.invalidateQueries({ queryKey: ['myCorrespondance'] });
-      queryClient.invalidateQueries({ queryKey: ['correspondance'] });
-      onClose();
-    },
-  });
+  const handleSave = () => {
+    sessionStorage.setItem('quickFilter', JSON.stringify(criteria));
+    window.dispatchEvent(new Event('quickFilterUpdated'));
+    onClose();
+  };
 
   const ages = Array.from({ length: 63 }, (_, i) => i + 18);
 
