@@ -8,12 +8,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function QuickSearchModal({ isOpen, onClose }) {
   const queryClient = useQueryClient();
-  const [criteria, setCriteria] = useState({
-    looking_for: '',
-    age_min: '25',
-    age_max: '35',
-    country: '',
-    state_province: '',
+  const [criteria, setCriteria] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('quickFilter');
+      return saved ? JSON.parse(saved) : {
+        looking_for: '',
+        age_min: '25',
+        age_max: '35',
+        country: '',
+        state_province: '',
+        city: '',
+      };
+    } catch {
+      return { looking_for: '', age_min: '25', age_max: '35', country: '', state_province: '', city: '' };
+    }
   });
 
   const saveMutation = useMutation({
@@ -26,8 +34,10 @@ export default function QuickSearchModal({ isOpen, onClose }) {
         return base44.entities.Correspondance.create(data);
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, data) => {
+      sessionStorage.setItem('quickFilter', JSON.stringify(data));
       queryClient.invalidateQueries({ queryKey: ['myCorrespondance'] });
+      queryClient.invalidateQueries({ queryKey: ['quickFilter'] });
       queryClient.invalidateQueries({ queryKey: ['correspondance'] });
       onClose();
     },
