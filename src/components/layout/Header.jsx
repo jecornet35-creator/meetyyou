@@ -182,7 +182,6 @@ export default function Header({ user }) {
             <Link to={createPageUrl('Messages')}>
               <Button variant="ghost" className="text-white hover:bg-white/10 relative">
                 Messages
-                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">56</Badge>
               </Button>
             </Link>
             <Link to={createPageUrl('Likes')}>
