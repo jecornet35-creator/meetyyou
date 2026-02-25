@@ -77,7 +77,7 @@ export default function Header({ user }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo & User */}
           <div className="flex items-center gap-4">
-            <Link to={createPageUrl('Home')} className="flex items-center gap-2">
+            <Link to={createPageUrl('Home')} className="flex items-center gap-2" onClick={() => { sessionStorage.removeItem('quickFilter'); window.dispatchEvent(new Event('quickFilterUpdated')); }}>
               <Heart className="w-8 h-8 fill-white" />
               <span className="font-bold text-xl hidden sm:block">Meetyyou</span>
             </Link>
