@@ -186,6 +186,18 @@ export default function QuickSearchModal({ isOpen, onClose }) {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* Ville */}
+                <div>
+                  <label className="text-sm text-gray-600 mb-2 block">Ville</label>
+                  <input
+                    type="text"
+                    value={criteria.city}
+                    onChange={e => setCriteria(prev => ({ ...prev, city: e.target.value }))}
+                    placeholder="N'importe quelle ville"
+                    className="w-full h-12 rounded-lg border border-gray-200 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-400"
+                  />
+                </div>
               </div>
 
               {/* Buttons */}
