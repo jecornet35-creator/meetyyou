@@ -135,10 +135,13 @@ export default function Home() {
     if (hasValue(af.age_min) && p.age && p.age < Number(af.age_min)) return false;
     if (hasValue(af.age_max) && p.age && p.age > Number(af.age_max)) return false;
 
-    // Location
+    // Location (advanced filter)
     if (hasValue(af.country) && p.country && !p.country.toLowerCase().includes(af.country.toLowerCase())) return false;
     if (hasValue(af.state) && p.state && !p.state.toLowerCase().includes(af.state.toLowerCase())) return false;
     if (hasValue(af.city) && p.city && !p.city.toLowerCase().includes(af.city.toLowerCase())) return false;
+
+    // Quick filter city (ephemeral)
+    if (quickFilter?.city && quickFilter.city.trim() !== '' && p.city && !p.city.toLowerCase().includes(quickFilter.city.toLowerCase())) return false;
 
     // Body type
     if (arrHasValue(af.body_type) && p.body_type && !af.body_type.includes(p.body_type)) return false;
