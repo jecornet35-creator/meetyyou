@@ -114,6 +114,14 @@ export default function Landing() {
     setIsValidating(true);
     setErrors({});
     try {
+      // Check for disposable email
+      const disposableCheck = await base44.functions.invoke('checkDisposableEmail', { email });
+      if (disposableCheck?.data?.isDisposable) {
+        setErrors({ email: 'Les adresses email temporaires ou jetables ne sont pas autorisées. Veuillez utiliser une adresse email permanente.' });
+        setIsValidating(false);
+        return;
+      }
+
       // Register the user
       await base44.auth.register({ email, password });
 
