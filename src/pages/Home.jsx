@@ -95,14 +95,74 @@ export default function Home() {
     initialData: [],
   });
 
-  // Map looking_for value to gender enum used in Profile
-  const genderFilter = myCorrespondance?.looking_for === 'men' ? 'homme'
-    : myCorrespondance?.looking_for === 'women' ? 'femme'
-    : null; // 'both' or not set = show all
+  // Use advanced filter if set, fallback to correspondance for gender
+  const af = advancedFilter;
+  const lookingFor = af?.looking_for || myCorrespondance?.looking_for;
+  const genderFilter = lookingFor === 'men' ? 'homme'
+    : lookingFor === 'women' ? 'femme'
+    : null;
+
+  const hasValue = (v) => v && v !== '' && v !== 'no_preference';
+  const arrHasValue = (arr) => arr && arr.length > 0 && !arr.includes('no_preference');
 
   const visibleProfiles = profiles.filter(p => {
     if (blockedEmails.includes(p.created_by)) return false;
     if (genderFilter && p.gender && p.gender !== genderFilter) return false;
+
+    if (!af) return true;
+
+    // Age
+    if (hasValue(af.age_min) && p.age && p.age < Number(af.age_min)) return false;
+    if (hasValue(af.age_max) && p.age && p.age > Number(af.age_max)) return false;
+
+    // Location
+    if (hasValue(af.country) && p.country && !p.country.toLowerCase().includes(af.country.toLowerCase())) return false;
+    if (hasValue(af.state) && p.state && !p.state.toLowerCase().includes(af.state.toLowerCase())) return false;
+    if (hasValue(af.city) && p.city && !p.city.toLowerCase().includes(af.city.toLowerCase())) return false;
+
+    // Body type
+    if (arrHasValue(af.body_type) && p.body_type && !af.body_type.includes(p.body_type)) return false;
+    // Ethnicity
+    if (arrHasValue(af.ethnicity) && p.ethnicity && !af.ethnicity.includes(p.ethnicity)) return false;
+    // Appearance
+    if (arrHasValue(af.appearance) && p.appearance && !af.appearance.includes(p.appearance)) return false;
+    // Smoking
+    if (arrHasValue(af.smoking) && p.smoking && !af.smoking.includes(p.smoking)) return false;
+    // Drinking
+    if (arrHasValue(af.drinking) && p.drinking && !af.drinking.includes(p.drinking)) return false;
+    // Ready to move
+    if (arrHasValue(af.ready_to_move) && p.ready_to_move && !af.ready_to_move.includes(p.ready_to_move)) return false;
+    // Religion
+    if (arrHasValue(af.religion) && p.religion && !af.religion.includes(p.religion)) return false;
+    // Astrological sign
+    if (arrHasValue(af.astrological_sign) && p.astrological_sign && !af.astrological_sign.includes(p.astrological_sign)) return false;
+    // Relationship looking for
+    if (arrHasValue(af.relationship_looking_for) && p.relationship_looking_for) {
+      const match = p.relationship_looking_for.some(r => af.relationship_looking_for.includes(r));
+      if (!match) return false;
+    }
+    // Education
+    if (hasValue(af.education_level) && p.education_level) {
+      const levels = ['primary_elementary','college','high_school','vocational_education','license','mastery','doctorate'];
+      const minIdx = levels.indexOf(af.education_level);
+      const pIdx = levels.indexOf(p.education_level);
+      if (minIdx >= 0 && pIdx >= 0 && pIdx < minIdx) return false;
+    }
+    // English proficiency
+    if (hasValue(af.english_proficiency) && p.english_proficiency) {
+      const levels = ['dont_speak','average','good','very_good','good_command'];
+      const minIdx = levels.indexOf(af.english_proficiency);
+      const pIdx = levels.indexOf(p.english_proficiency);
+      if (minIdx >= 0 && pIdx >= 0 && pIdx < minIdx) return false;
+    }
+    // French proficiency
+    if (hasValue(af.french_proficiency) && p.french_proficiency) {
+      const levels = ['dont_speak','average','good','very_good','good_command'];
+      const minIdx = levels.indexOf(af.french_proficiency);
+      const pIdx = levels.indexOf(p.french_proficiency);
+      if (minIdx >= 0 && pIdx >= 0 && pIdx < minIdx) return false;
+    }
+
     return true;
   });
 
