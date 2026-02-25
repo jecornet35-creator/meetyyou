@@ -33,27 +33,6 @@ export default function QuickSearchModal({ isOpen, onClose }) {
 
   const ages = Array.from({ length: 63 }, (_, i) => i + 18);
 
-  const countries = [
-    { value: 'all', label: 'Tous Pays' },
-    { value: 'france', label: 'France' },
-    { value: 'senegal', label: 'Sénégal' },
-    { value: 'cote_ivoire', label: "Côte d'Ivoire" },
-    { value: 'cameroun', label: 'Cameroun' },
-    { value: 'mali', label: 'Mali' },
-    { value: 'guinee', label: 'Guinée' },
-    { value: 'congo', label: 'Congo' },
-    { value: 'gabon', label: 'Gabon' },
-    { value: 'benin', label: 'Bénin' },
-    { value: 'togo', label: 'Togo' },
-    { value: 'burkina_faso', label: 'Burkina Faso' },
-    { value: 'niger', label: 'Niger' },
-    { value: 'usa', label: 'USA' },
-    { value: 'canada', label: 'Canada' },
-    { value: 'belgique', label: 'Belgique' },
-    { value: 'suisse', label: 'Suisse' },
-    { value: 'uk', label: 'Royaume-Uni' },
-  ];
-
   if (!isOpen) return null;
 
   return (
