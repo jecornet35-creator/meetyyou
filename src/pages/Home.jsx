@@ -125,9 +125,23 @@ export default function Home() {
   const hasValue = (v) => v && v !== '' && v !== 'no_preference';
   const arrHasValue = (arr) => arr && arr.length > 0 && !arr.includes('no_preference');
 
+  // Quick filter gender (overrides advanced filter if set)
+  const quickLookingFor = quickFilter?.looking_for;
+  const effectiveLookingFor = quickLookingFor || lookingFor;
+  const effectiveGenderFilter = effectiveLookingFor === 'men' ? 'homme'
+    : effectiveLookingFor === 'women' ? 'femme'
+    : null;
+
   const visibleProfiles = profiles.filter(p => {
     if (blockedEmails.includes(p.created_by)) return false;
-    if (genderFilter && p.gender && p.gender !== genderFilter) return false;
+    if (effectiveGenderFilter && p.gender && p.gender !== effectiveGenderFilter) return false;
+
+    // Quick filter age (ephemeral)
+    if (quickFilter?.age_min && p.age && p.age < Number(quickFilter.age_min)) return false;
+    if (quickFilter?.age_max && p.age && p.age > Number(quickFilter.age_max)) return false;
+
+    // Quick filter country (ephemeral)
+    if (quickFilter?.country && quickFilter.country !== 'all' && p.country && !p.country.toLowerCase().includes(quickFilter.country.toLowerCase())) return false;
 
     if (!af) return true;
 
