@@ -8,7 +8,6 @@ import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function QuickSearchModal({ isOpen, onClose }) {
-  const queryClient = useQueryClient();
   const [criteria, setCriteria] = useState(() => {
     try {
       const saved = sessionStorage.getItem('quickFilter');
