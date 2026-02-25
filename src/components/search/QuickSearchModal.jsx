@@ -197,11 +197,10 @@ export default function QuickSearchModal({ isOpen, onClose }) {
                   Annuler
                 </Button>
                 <Button
-                  onClick={() => saveMutation.mutate(criteria)}
-                  disabled={saveMutation.isPending}
+                  onClick={handleSave}
                   className="flex-1 h-12 rounded-full bg-amber-500 hover:bg-amber-600 text-white"
                 >
-                  {saveMutation.isPending ? 'Enregistrement...' : 'Enregistrer'}
+                  Enregistrer
                 </Button>
               </div>
             </div>
