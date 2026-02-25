@@ -170,7 +170,7 @@ export default function Header({ user }) {
                   </Link>
                   <DropdownMenuItem
                     className="py-3 px-4 cursor-pointer hover:bg-red-50 rounded text-red-500"
-                    onClick={() => base44.auth.logout()}
+                    onClick={() => { sessionStorage.removeItem('quickFilter'); base44.auth.logout(); }}
                   >
                     Déconnexion
                   </DropdownMenuItem>
