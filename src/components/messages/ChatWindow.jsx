@@ -88,10 +88,24 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     const unsubscribe = base44.entities.Message.subscribe((event) => {
       if (event.data.conversation_id === conversation.id) {
         queryClient.invalidateQueries({ queryKey: ['messages', conversation.id] });
+
+        // Browser push notification for incoming messages (when tab is in background)
+        if (
+          event.type === 'create' &&
+          event.data.sender_email !== currentUser?.email
+        ) {
+          const senderName = event.data.sender_name || 'Quelqu\'un';
+          const preview = event.data.content
+            ? event.data.content.replace(/\[IMAGE:.*?\]/g, '📷 Image').substring(0, 80)
+            : '📷 Image';
+          sendNotification(`💬 ${senderName}`, preview, {
+            tag: `msg-${conversation.id}`,
+          });
+        }
       }
     });
     return unsubscribe;
-  }, [conversation?.id, queryClient]);
+  }, [conversation?.id, queryClient, currentUser?.email, sendNotification]);
 
   useEffect(() => {
     if (!messages.length || !currentUser?.email) return;
