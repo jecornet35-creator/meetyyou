@@ -9,6 +9,10 @@ import { fr } from 'date-fns/locale';
 import BlockButton from '@/components/block/BlockButton';
 import EmojiPicker from './EmojiPicker';
 import OnlineIndicator from './OnlineIndicator';
+import { usePlan } from '@/components/premium/usePlan';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { Lock } from 'lucide-react';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [newMessage, setNewMessage] = useState('');
