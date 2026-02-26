@@ -167,6 +167,13 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         link: `/Messages?conv=${conversation.id}`
       });
 
+      // Send email notification (non-blocking)
+      base44.functions.invoke('sendMessageEmailNotification', {
+        recipient_email: otherEmail,
+        sender_name: currentUser.full_name || 'Quelqu\'un',
+        message_preview: imageUrl && !content ? '📷 Image envoyée' : content,
+      }).catch(() => {});
+
       return message;
     },
     onSuccess: () => {
