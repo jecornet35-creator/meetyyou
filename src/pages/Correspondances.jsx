@@ -48,6 +48,7 @@ export default function Correspondances() {
   const urlParams = new URLSearchParams(window.location.search);
   const filterType = urlParams.get('type') || 'simple';
   const queryClient = useQueryClient();
+  const { isPremium, isLoading: planLoading } = usePlan();
   
   const [currentUser, setCurrentUser] = useState(null);
   const [criteria, setCriteria] = useState({
