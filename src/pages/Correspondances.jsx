@@ -144,6 +144,37 @@ export default function Correspondances() {
 
   const ages = Array.from({ length: 63 }, (_, i) => i + 18);
 
+  if (!planLoading && !isPremium) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <Header />
+        <div className="max-w-2xl mx-auto px-4 py-20 text-center">
+          <div className="bg-white rounded-2xl shadow-lg p-10">
+            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Lock className="w-10 h-10 text-amber-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">Fonctionnalité Premium</h2>
+            <p className="text-gray-500 mb-8">
+              Les critères de correspondance sont réservés aux membres Premium et VIP. 
+              Passez à un abonnement supérieur pour définir vos critères de recherche détaillés.
+            </p>
+            <Link to={createPageUrl('SubscriptionPlans')}>
+              <Button className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 text-lg gap-2">
+                <Zap className="w-5 h-5" />
+                Passer à Premium
+              </Button>
+            </Link>
+            <div className="mt-4">
+              <Link to={createPageUrl('Home')} className="text-sm text-gray-400 hover:text-gray-600">
+                Retour à l'accueil
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
