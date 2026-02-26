@@ -15,6 +15,7 @@ import { createPageUrl } from '@/utils';
 import { Lock } from 'lucide-react';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
+  const { isPremium } = usePlan();
   const [newMessage, setNewMessage] = useState('');
   const [translations, setTranslations] = useState({});
   const [translating, setTranslating] = useState({});
