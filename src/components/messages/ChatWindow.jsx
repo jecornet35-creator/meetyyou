@@ -413,7 +413,20 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
       )}
 
       {/* Input */}
-      <form onSubmit={handleSend} className="bg-white border-t p-3 relative">
+      {!isPremium && (
+        <div className="bg-amber-50 border-t border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-amber-700 text-sm">
+            <Lock className="w-4 h-4" />
+            <span>Passez à Premium pour envoyer des messages</span>
+          </div>
+          <Link to={createPageUrl('SubscriptionPlans')}>
+            <button className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap">
+              ✈ Upgrade Now
+            </button>
+          </Link>
+        </div>
+      )}
+      <form onSubmit={handleSend} className="bg-white border-t p-3 relative" style={!isPremium ? {pointerEvents: 'none', opacity: 0.4} : {}}>
         {/* Emoji picker */}
         {showEmojiPicker && (
           <div className="absolute bottom-16 left-3 z-50">
