@@ -5,8 +5,9 @@ import Header from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
-import { Bell, MessageCircle, Heart, Eye, Star, UserCheck, Mail, Moon, Gift, Save, Check } from 'lucide-react';
+import { Bell, MessageCircle, Heart, Eye, Star, UserCheck, Mail, Moon, Gift, Save, Check, BellRing, BellOff } from 'lucide-react';
 import { toast } from 'sonner';
+import { usePushNotifications } from '@/components/notifications/usePushNotifications';
 
 const SettingRow = ({ icon: Icon, iconColor, title, description, checked, onCheckedChange }) => (
   <div className="flex items-center justify-between py-4 border-b border-gray-100">
