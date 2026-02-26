@@ -27,6 +27,7 @@ const SettingRow = ({ icon: Icon, iconColor, title, description, checked, onChec
 export default function NotificationSettings() {
   const queryClient = useQueryClient();
   const [currentUser, setCurrentUser] = useState(null);
+  const { permission, requestPermission } = usePushNotifications();
   const [settings, setSettings] = useState({
     push_enabled: true,
     new_messages: true,
