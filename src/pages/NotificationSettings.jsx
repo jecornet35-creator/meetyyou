@@ -98,6 +98,42 @@ export default function NotificationSettings() {
           </div>
 
           <div className="p-6">
+            {/* Browser permission banner */}
+            {permission === 'default' && (
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <BellRing className="w-6 h-6 text-blue-500 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold text-blue-900">Activer les notifications navigateur</p>
+                    <p className="text-sm text-blue-700">Recevez des alertes même quand l'onglet est en arrière-plan.</p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={async () => {
+                    const result = await requestPermission();
+                    if (result === 'granted') toast.success('Notifications navigateur activées !');
+                    else if (result === 'denied') toast.error('Notifications bloquées par le navigateur.');
+                  }}
+                  className="bg-blue-500 hover:bg-blue-600 whitespace-nowrap"
+                >
+                  Autoriser
+                </Button>
+              </div>
+            )}
+            {permission === 'granted' && (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+                <Check className="w-5 h-5 text-green-500" />
+                <p className="text-sm text-green-800 font-medium">Notifications navigateur autorisées</p>
+              </div>
+            )}
+            {permission === 'denied' && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+                <BellOff className="w-5 h-5 text-red-500" />
+                <p className="text-sm text-red-800">Notifications bloquées par le navigateur. Modifiez les permissions dans les paramètres de votre navigateur.</p>
+              </div>
+            )}
+
             {/* Master toggle */}
             <div className="bg-amber-50 rounded-lg p-4 mb-6">
               <div className="flex items-center justify-between">
