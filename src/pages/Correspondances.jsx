@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ChevronUp, ArrowLeft, Lock, Zap } from 'lucide-react';
 import LocationSelector from '@/components/location/LocationSelector';
+import { usePlan } from '@/components/premium/usePlan';
 
 const Section = ({ title, children, defaultOpen = true, showMore = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
