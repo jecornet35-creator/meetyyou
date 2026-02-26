@@ -149,9 +149,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
       return message;
     },
     onSuccess: () => {
-      setNewMessage('');
-      setImagePreview(null);
-      setImageFile(null);
       queryClient.invalidateQueries({ queryKey: ['messages', conversation.id] });
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
     }
