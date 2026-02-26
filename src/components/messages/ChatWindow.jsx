@@ -322,6 +322,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         {messages.map((message) => {
           const isMe = message.sender_email === currentUser?.email;
           const { text, images } = parseMessageContent(message.content);
+          const isBlurred = !isPremium && !isMe;
           return (
             <div key={message.id} className={`flex group ${isMe ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[70%] ${isMe ? 'order-2' : ''}`}>
@@ -334,21 +335,34 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                 )}
                 {/* Images */}
                 {images.map((imgUrl, idx) => (
-                  <div key={idx} className="mb-1">
+                  <div key={idx} className={`mb-1 ${isBlurred ? 'blur-md select-none pointer-events-none' : ''}`}>
                     <img
                       src={imgUrl}
                       alt="Image partagée"
                       className="max-w-full rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
                       style={{ maxHeight: '250px', objectFit: 'cover' }}
-                      onClick={() => window.open(imgUrl, '_blank')}
+                      onClick={() => !isBlurred && window.open(imgUrl, '_blank')}
                     />
                   </div>
                 ))}
                 {/* Text */}
                 {text && (
-                  <div className={`rounded-2xl px-4 py-2 ${isMe ? 'bg-amber-500 text-white rounded-br-md' : 'bg-white text-gray-900 rounded-bl-md shadow-sm'}`}>
-                    <p className="text-sm whitespace-pre-wrap">{text}</p>
-                    {translations[message.id] && (
+                  <div className={`rounded-2xl px-4 py-2 ${isMe ? 'bg-amber-500 text-white rounded-br-md' : 'bg-white text-gray-900 rounded-bl-md shadow-sm'} ${isBlurred ? 'relative' : ''}`}>
+                    <p className={`text-sm whitespace-pre-wrap ${isBlurred ? 'blur-sm select-none' : ''}`}>{text}</p>
+                    {isBlurred && (
+                      <div className="mt-2 flex flex-col items-start gap-1">
+                        <div className="flex items-center gap-1 text-gray-400 text-xs">
+                          <Lock className="w-3 h-3" />
+                          <span>Message réservé aux membres Premium</span>
+                        </div>
+                        <Link to={createPageUrl('SubscriptionPlans')}>
+                          <button className="mt-1 bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
+                            ✈ Upgrade Now To Read
+                          </button>
+                        </Link>
+                      </div>
+                    )}
+                    {translations[message.id] && !isBlurred && (
                       <p className={`text-sm mt-1 pt-1 border-t italic ${isMe ? 'border-amber-400 text-amber-100' : 'border-gray-200 text-gray-500'}`}>
                         {translations[message.id]}
                       </p>
@@ -356,7 +370,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                   </div>
                 )}
                 {/* Translate button */}
-                {text && (
+                {text && !isBlurred && (
                   <button
                     onClick={() => translateMessage(message.id, text)}
                     disabled={translating[message.id]}
