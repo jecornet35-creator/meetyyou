@@ -17,6 +17,7 @@ import { usePushNotifications } from '@/components/notifications/usePushNotifica
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const { isPremium } = usePlan();
+  const { sendNotification } = usePushNotifications();
   const [newMessage, setNewMessage] = useState('');
   const [translations, setTranslations] = useState({});
   const [translating, setTranslating] = useState({});
