@@ -169,7 +169,11 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
       setUploadingImage(false);
     }
 
-    sendMutation.mutate({ content: newMessage.trim(), imageUrl });
+    const content = newMessage.trim();
+    setNewMessage('');
+    setImagePreview(null);
+    setImageFile(null);
+    sendMutation.mutate({ content, imageUrl });
   };
 
   const isPending = sendMutation.isPending || uploadingImage;
