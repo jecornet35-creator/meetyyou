@@ -13,6 +13,7 @@ import { usePlan } from '@/components/premium/usePlan';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Lock } from 'lucide-react';
+import { usePushNotifications } from '@/components/notifications/usePushNotifications';
 
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const { isPremium } = usePlan();
