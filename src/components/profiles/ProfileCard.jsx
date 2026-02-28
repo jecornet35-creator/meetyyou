@@ -142,6 +142,7 @@ export default function ProfileCard({ profile, currentUser }) {
         <button
           onClick={() => !liked && sendLikeMutation.mutate()}
           disabled={liked || sendLikeMutation.isPending}
+          title={liked ? "Déjà liké" : "J'aime ce profil"}
           className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
         >
           <Heart className={`w-4 h-4 transition-colors ${liked ? 'text-red-500 fill-red-500' : 'text-gray-400 group-hover/btn:text-amber-500'}`} />
@@ -150,24 +151,27 @@ export default function ProfileCard({ profile, currentUser }) {
           <button
             onClick={() => startConversationMutation.mutate()}
             disabled={startConversationMutation.isPending}
+            title="Envoyer un message"
             className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
           >
             <MessageCircle className="w-4 h-4 text-gray-400 group-hover/btn:text-amber-500 transition-colors" />
           </button>
         ) : (
-          <Link to={createPageUrl('SubscriptionPlans')} title="Premium requis">
-            <span className="p-1.5 flex items-center justify-center hover:bg-amber-50 rounded-full transition-colors">
-              <Lock className="w-4 h-4 text-amber-400" />
+          <Link to={createPageUrl('SubscriptionPlans')} title="Passer en Premium pour envoyer des messages">
+            <span className="p-1.5 flex items-center justify-center hover:bg-amber-50 rounded-full transition-colors relative">
+              <MessageCircle className="w-4 h-4 text-gray-300" />
+              <Lock className="w-2.5 h-2.5 text-amber-400 absolute -bottom-0.5 -right-0.5" />
             </span>
           </Link>
         )}
         <button
           onClick={() => setFavorited(v => !v)}
+          title={favorited ? "Retirer des favoris" : "Ajouter aux favoris"}
           className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
         >
           <Star className={`w-4 h-4 transition-colors ${favorited ? 'text-amber-500 fill-amber-400' : 'text-gray-400 group-hover/btn:text-amber-500'}`} />
         </button>
-        <div className="flex items-center gap-1 text-gray-400 text-xs">
+        <div className="flex items-center gap-1 text-gray-400 text-xs" title={`${profile.photos?.length || 1} photo(s)`}>
           <Camera className="w-3.5 h-3.5" />
           <span>{profile.photos?.length || 1}</span>
         </div>
