@@ -135,7 +135,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
       const currentUnread = conversation.unread_count?.[otherEmail] || 0;
 
       await base44.entities.Conversation.update(conversation.id, {
-        last_message: imageUrl && !content ? '📷 Image' : content,
+        last_message: content,
         last_message_date: new Date().toISOString(),
         last_message_sender: currentUser.email,
         unread_count: { ...conversation.unread_count, [otherEmail]: currentUnread + 1 }
@@ -145,7 +145,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         user_email: otherEmail,
         type: 'message',
         title: `Nouveau message de ${currentUser.full_name || 'Quelqu\'un'}`,
-        message: imageUrl && !content ? '📷 Image envoyée' : content.substring(0, 100),
+        message: content.substring(0, 100),
         from_profile_name: currentUser.full_name,
         from_profile_photo: currentUser.main_photo,
         is_read: false,
@@ -156,7 +156,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
       base44.functions.invoke('sendMessageEmailNotification', {
         recipient_email: otherEmail,
         sender_name: currentUser.full_name || 'Quelqu\'un',
-        message_preview: imageUrl && !content ? '📷 Image envoyée' : content,
+        message_preview: content,
       }).catch(() => {});
 
       return message;
