@@ -79,8 +79,8 @@ const FAQ_CATEGORIES = [
       },
 
       {
-        q: 'Comment se désabonner ?',
-        a: 'Il n\'y a pas de possibilité de désabonnement car il n\'y a pas de récurrence (réabonnement automatique). À la fin de chaque abonnement, vous devrez vous réabonner si vous souhaitez continuer à profiter des fonctionnalités Premium ou VIP.'
+        q: 'Comment se désabonner ou annuler mon abonnement ?',
+        a: 'Il n\'y a pas de possibilité de désabonnement car il n\'y a pas de récurrence (réabonnement automatique). Votre abonnement n\'est donc pas renouvelé automatiquement. À la fin de chaque période, vous devez simplement vous réabonner si vous souhaitez continuer à profiter des fonctionnalités Premium ou VIP.'
       },
       {
         q: 'Les paiements sont-ils sécurisés ?',
