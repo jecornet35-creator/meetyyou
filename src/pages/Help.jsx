@@ -77,10 +77,7 @@ const FAQ_CATEGORIES = [
         q: 'Quels sont les différents plans disponibles ?',
         a: 'Nous proposons 3 plans : Gratuit (accès de base), Premium (messagerie illimitée, filtres avancés, etc.), et VIP (toutes les fonctionnalités Premium + boosts mensuels + avantages exclusifs). Vous pouvez aussi acheter des packs de boosts à la carte.'
       },
-      {
-        q: 'Comment annuler mon abonnement ?',
-        a: 'Vous pouvez gérer votre abonnement dans la section "Paramètres" > "Abonnement". L\'annulation prendra effet à la fin de votre période de facturation actuelle.'
-      },
+
       {
         q: 'Comment se désabonner ?',
         a: 'Il n\'y a pas de possibilité de désabonnement car il n\'y a pas de récurrence (réabonnement automatique). À la fin de chaque abonnement, vous devrez vous réabonner si vous souhaitez continuer à profiter des fonctionnalités Premium ou VIP.'
