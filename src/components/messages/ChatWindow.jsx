@@ -169,24 +169,13 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
 
   const handleSend = async (e) => {
     e.preventDefault();
-    if (!newMessage.trim() && !imageFile) return;
-
-    let imageUrl = null;
-    if (imageFile) {
-      setUploadingImage(true);
-      const result = await base44.integrations.Core.UploadFile({ file: imageFile });
-      imageUrl = result.file_url;
-      setUploadingImage(false);
-    }
-
+    if (!newMessage.trim()) return;
     const content = newMessage.trim();
     setNewMessage('');
-    setImagePreview(null);
-    setImageFile(null);
-    sendMutation.mutate({ content, imageUrl });
+    sendMutation.mutate({ content });
   };
 
-  const isPending = sendMutation.isPending || uploadingImage;
+  const isPending = sendMutation.isPending;
 
   // Parse message content for images
   const parseMessageContent = (content) => {
