@@ -120,19 +120,8 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleImageSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onload = (ev) => setImagePreview(ev.target.result);
-    reader.readAsDataURL(file);
-  };
-
   const sendMutation = useMutation({
-    mutationFn: async ({ content, imageUrl }) => {
-      const finalContent = imageUrl ? (content ? `${content}\n[IMAGE:${imageUrl}]` : `[IMAGE:${imageUrl}]`) : content;
-
+    mutationFn: async ({ content }) => {
       const message = await base44.entities.Message.create({
         conversation_id: conversation.id,
         sender_email: currentUser.email,
