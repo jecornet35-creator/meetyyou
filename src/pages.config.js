@@ -65,6 +65,7 @@ import AdvancedFilter from './pages/AdvancedFilter';
 import BlockedUsers from './pages/BlockedUsers';
 import Correspondances from './pages/Correspondances';
 import EditProfile from './pages/EditProfile';
+import Help from './pages/Help';
 import Home from './pages/Home';
 import Interests from './pages/Interests';
 import Landing from './pages/Landing';
@@ -79,7 +80,6 @@ import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import Settings from './pages/Settings';
 import SubscriptionPlans from './pages/SubscriptionPlans';
-import Help from './pages/Help';
 import __Layout from './Layout.jsx';
 
 
@@ -102,6 +102,7 @@ export const PAGES = {
     "BlockedUsers": BlockedUsers,
     "Correspondances": Correspondances,
     "EditProfile": EditProfile,
+    "Help": Help,
     "Home": Home,
     "Interests": Interests,
     "Landing": Landing,
@@ -116,7 +117,6 @@ export const PAGES = {
     "ProfileVerification": ProfileVerification,
     "Settings": Settings,
     "SubscriptionPlans": SubscriptionPlans,
-    "Help": Help,
 }
 
 export const pagesConfig = {

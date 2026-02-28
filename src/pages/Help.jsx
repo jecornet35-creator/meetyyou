@@ -82,6 +82,10 @@ const FAQ_CATEGORIES = [
         a: 'Vous pouvez gérer votre abonnement dans la section "Paramètres" > "Abonnement". L\'annulation prendra effet à la fin de votre période de facturation actuelle.'
       },
       {
+        q: 'Comment se désabonner ?',
+        a: 'Il n\'y a pas de possibilité de désabonnement car il n\'y a pas de récurrence (réabonnement automatique). À la fin de chaque abonnement, vous devrez vous réabonner si vous souhaitez continuer à profiter des fonctionnalités Premium ou VIP.'
+      },
+      {
         q: 'Les paiements sont-ils sécurisés ?',
         a: 'Oui, tous les paiements sont traités de manière sécurisée via Stripe, un leader mondial du paiement en ligne. Nous ne stockons jamais vos informations de carte bancaire.'
       },
