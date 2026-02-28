@@ -382,21 +382,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Image preview */}
-      {imagePreview && (
-        <div className="bg-white border-t px-4 pt-3">
-          <div className="relative inline-block">
-            <img src={imagePreview} alt="Aperçu" className="h-20 rounded-lg object-cover" />
-            <button
-              onClick={() => { setImagePreview(null); setImageFile(null); }}
-              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Input */}
       {!isPremium && (
         <div className="bg-amber-50 border-t border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
