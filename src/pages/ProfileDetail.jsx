@@ -188,6 +188,7 @@ export default function ProfileDetail() {
   const [activeTab, setActiveTab] = useState('profile');
   const [liked, setLiked] = useState(false);
   const queryClient = useQueryClient();
+  const { plan } = usePlan();
   const urlParams = new URLSearchParams(window.location.search);
   const profileId = urlParams.get('id');
 
