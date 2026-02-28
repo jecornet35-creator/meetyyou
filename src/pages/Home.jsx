@@ -7,6 +7,7 @@ import ProfileCard from '@/components/profiles/ProfileCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import NotificationToast from '@/components/notifications/NotificationToast';
 import QuickSearchModal from '@/components/search/QuickSearchModal';
+import FeaturedProfiles from '@/components/boost/FeaturedProfiles';
 
 
 export default function Home() {
