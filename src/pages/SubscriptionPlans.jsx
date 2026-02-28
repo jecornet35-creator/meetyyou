@@ -98,11 +98,28 @@ export default function SubscriptionPlans() {
   const subscribeMutation = useMutation({
     mutationFn: async (planId) => {
       const user = await base44.auth.me();
-      // Cancel existing if any
+
+      // Booster pack: add 10 boosts to user's pack
+      if (planId === 'booster') {
+        const packs = await base44.entities.BoosterPack.filter({ user_email: user.email });
+        if (packs[0]) {
+          return base44.entities.BoosterPack.update(packs[0].id, {
+            boosts_remaining: (packs[0].boosts_remaining || 0) + 10,
+            total_purchased: (packs[0].total_purchased || 0) + 10,
+          });
+        } else {
+          return base44.entities.BoosterPack.create({
+            user_email: user.email,
+            boosts_remaining: 10,
+            total_purchased: 10,
+          });
+        }
+      }
+
+      // Cancel existing subscription if any
       if (subscription?.id) {
         await base44.entities.Subscription.update(subscription.id, { status: 'cancelled' });
       }
-      if (planId === 'free') return null;
       const now = new Date();
       const end = new Date(now);
       end.setMonth(end.getMonth() + (billing === 'annual' ? 12 : 1));
@@ -121,7 +138,8 @@ export default function SubscriptionPlans() {
     },
     onSuccess: (_, planId) => {
       queryClient.invalidateQueries({ queryKey: ['mySubscription'] });
-      toast.success(planId === 'free' ? 'Retour au plan gratuit' : `Abonnement ${planId} activé avec succès !`);
+      queryClient.invalidateQueries({ queryKey: ['boosterPack'] });
+      toast.success(planId === 'booster' ? '10 boosts ajoutés à votre compte !' : `Abonnement ${planId} activé avec succès !`);
     },
   });
 
