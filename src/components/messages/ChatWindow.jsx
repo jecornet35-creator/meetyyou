@@ -318,7 +318,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
         {messages.map((message) => {
           const isMe = message.sender_email === currentUser?.email;
-          const { text, images } = parseMessageContent(message.content);
+          const { text } = parseMessageContent(message.content);
           const isBlurred = !isPremium && !isMe;
           return (
             <div key={message.id} className={`flex group ${isMe ? 'justify-end' : 'justify-start'}`}>
