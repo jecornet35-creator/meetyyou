@@ -186,14 +186,12 @@ export default function SubscriptionPlans() {
                         <span className="text-4xl font-bold text-white">5€</span>
                         <span className="text-sm text-white/70"> / 10 boosts</span>
                       </div>
-                    ) : plan.price === 0 ? (
-                      <span className="text-4xl font-bold text-gray-800">Gratuit</span>
                     ) : (
                       <div>
-                        <span className={`text-4xl font-bold ${plan.id === 'free' ? 'text-gray-800' : 'text-white'}`}>{price}€</span>
-                        <span className={`text-sm ${plan.id === 'free' ? 'text-gray-500' : 'text-white/70'}`}>{plan.period}</span>
-                        {billing === 'annual' && (
-                          <p className="text-xs text-white/70 mt-1">facturé {(price * 12).toFixed(0)}€/an</p>
+                        <span className="text-4xl font-bold text-white">{plan.price}€</span>
+                        <span className="text-sm text-white/70">{plan.period}</span>
+                        {plan.id === 'vip' && (
+                          <p className="text-xs text-green-300 mt-1 font-semibold">Économie 10€ vs mensuel</p>
                         )}
                       </div>
                     )}
