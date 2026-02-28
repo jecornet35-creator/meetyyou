@@ -427,31 +427,37 @@ export default function ProfileDetail() {
               )}
 
               {/* Actions */}
-              <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
-                <Button
-                  className={`flex-1 gap-2 h-9 ${liked ? 'bg-red-500 hover:bg-red-600' : 'bg-amber-500 hover:bg-amber-600'}`}
-                  onClick={() => !liked && sendLikeWithProfileMutation.mutate()}
-                  disabled={liked || sendLikeWithProfileMutation.isPending}
-                >
-                  <Heart className={`w-4 h-4 ${liked ? 'fill-white' : ''}`} />
-                  {liked ? 'Liké !' : "J'aime"}
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex-1 gap-2 h-9 border-slate-300"
-                  onClick={() => startConversationMutation.mutate()}
-                  disabled={startConversationMutation.isPending}
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Message
-                </Button>
-                <BlockButton
-                  targetProfile={profile}
-                  currentUserEmail={currentUser?.email}
-                  variant="outline"
-                  size="icon"
-                />
-              </div>
+              {currentUser?.email !== profile?.created_by ? (
+                <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
+                  <Button
+                    className={`flex-1 gap-2 h-9 ${liked ? 'bg-red-500 hover:bg-red-600' : 'bg-amber-500 hover:bg-amber-600'}`}
+                    onClick={() => !liked && sendLikeWithProfileMutation.mutate()}
+                    disabled={liked || sendLikeWithProfileMutation.isPending}
+                  >
+                    <Heart className={`w-4 h-4 ${liked ? 'fill-white' : ''}`} />
+                    {liked ? 'Liké !' : "J'aime"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1 gap-2 h-9 border-slate-300"
+                    onClick={() => startConversationMutation.mutate()}
+                    disabled={startConversationMutation.isPending}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Message
+                  </Button>
+                  <BlockButton
+                    targetProfile={profile}
+                    currentUserEmail={currentUser?.email}
+                    variant="outline"
+                    size="icon"
+                  />
+                </div>
+              ) : (
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <BoostButton profile={profile} currentUser={currentUser} plan={plan} />
+                </div>
+              )}
             </div>
           </div>
         </div>
