@@ -36,8 +36,7 @@ const PLANS = [
   {
     id: 'premium',
     name: 'Premium',
-    price: 9.99,
-    priceAnnual: 7.99,
+    price: 5,
     period: '/ mois',
     color: 'border-amber-400 shadow-amber-100 shadow-xl',
     headerColor: 'bg-gradient-to-br from-amber-500 to-amber-600',
@@ -59,9 +58,8 @@ const PLANS = [
   {
     id: 'vip',
     name: 'VIP',
-    price: 19.99,
-    priceAnnual: 15.99,
-    period: '/ mois',
+    price: 50,
+    period: '/ an',
     color: 'border-purple-400 shadow-purple-100 shadow-lg',
     headerColor: 'bg-gradient-to-br from-purple-600 to-purple-800',
     badge: 'Tout inclus',
