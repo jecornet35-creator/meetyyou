@@ -156,22 +156,7 @@ export default function SubscriptionPlans() {
           <h1 className="text-4xl font-bold text-gray-900 mb-3">Choisissez votre offre</h1>
           <p className="text-gray-500 text-lg">Trouvez l'amour plus facilement avec nos fonctionnalités premium</p>
 
-          {/* Billing toggle */}
-          <div className="inline-flex items-center gap-3 mt-6 bg-white rounded-full px-2 py-2 shadow-sm border border-gray-200">
-            <button
-              onClick={() => setBilling('monthly')}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${billing === 'monthly' ? 'bg-amber-500 text-white shadow' : 'text-gray-600 hover:text-gray-900'}`}
-            >
-              Mensuel
-            </button>
-            <button
-              onClick={() => setBilling('annual')}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${billing === 'annual' ? 'bg-amber-500 text-white shadow' : 'text-gray-600 hover:text-gray-900'}`}
-            >
-              Annuel
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-semibold">-20%</span>
-            </button>
-          </div>
+
         </div>
 
         {/* Plans */}
