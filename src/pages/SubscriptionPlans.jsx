@@ -277,7 +277,7 @@ export default function SubscriptionPlans() {
           <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">Questions fréquentes</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { q: 'Puis-je annuler à tout moment ?', r: 'Oui, vous pouvez annuler votre abonnement à tout moment depuis votre espace personnel.' },
+              { q: 'Y a-t-il un renouvellement automatique ?', r: 'Non, il n\'y a pas de renouvellement automatique. À la fin de votre abonnement, vous devrez vous réabonner si vous souhaitez continuer.' },
               { q: 'Comment fonctionne le boost de profil ?', r: 'Votre profil apparaît en tête des résultats de recherche pendant 24h, vous offrant une visibilité maximale.' },
               { q: 'Mes données sont-elles sécurisées ?', r: 'Oui, toutes vos données sont chiffrées et sécurisées conformément au RGPD.' },
               { q: 'Y a-t-il une période d\'essai ?', r: 'Actuellement nous n\'offrons pas de période d\'essai, mais vous pouvez commencer gratuitement.' },
