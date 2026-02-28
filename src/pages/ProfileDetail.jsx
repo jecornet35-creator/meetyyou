@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Heart, MessageCircle, Star, Flag, MapPin, CheckCircle, Ban, Camera, Smile, Music, Plane, Dumbbell, Palette, Leaf, Cpu, Users, Apple, MoreHorizontal, Brain, Target, Quote } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BlockButton from '@/components/block/BlockButton';
+import BoostButton from '@/components/boost/BoostButton';
+import { usePlan } from '@/components/premium/usePlan';
 
 const INTEREST_CATEGORIES = [
   { key: 'sports', label: 'Sports', icon: Dumbbell, color: 'bg-orange-100 text-orange-700' },
