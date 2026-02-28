@@ -208,6 +208,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100">
       <Header user={myProfile} />
       <QuickSearchModal isOpen={isQuickSearchOpen} onClose={() => setIsQuickSearchOpen(false)} />
+      <FeaturedProfiles />
       <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
       
       <main className="max-w-7xl mx-auto px-4 py-6">
