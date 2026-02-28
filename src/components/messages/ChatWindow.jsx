@@ -424,7 +424,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           <Button
             type="submit"
             className="bg-amber-500 hover:bg-amber-600 flex-shrink-0"
-            disabled={(!newMessage.trim() && !imageFile) || isPending}
+            disabled={!newMessage.trim() || isPending}
           >
             {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
           </Button>
