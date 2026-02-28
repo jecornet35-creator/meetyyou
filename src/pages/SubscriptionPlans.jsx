@@ -198,8 +198,13 @@ export default function SubscriptionPlans() {
                   <h2 className={`text-2xl font-bold ${plan.id === 'free' ? 'text-gray-800' : 'text-white'}`}>{plan.name}</h2>
                   <p className={`text-sm mt-1 ${plan.id === 'free' ? 'text-gray-500' : 'text-white/80'}`}>{plan.description}</p>
                   <div className="mt-4">
-                    {plan.price === 0 ? (
-                      <span className={`text-4xl font-bold ${plan.id === 'free' ? 'text-gray-800' : 'text-white'}`}>Gratuit</span>
+                    {plan.isOneTime ? (
+                      <div>
+                        <span className="text-4xl font-bold text-white">5€</span>
+                        <span className="text-sm text-white/70"> / 10 boosts</span>
+                      </div>
+                    ) : plan.price === 0 ? (
+                      <span className="text-4xl font-bold text-gray-800">Gratuit</span>
                     ) : (
                       <div>
                         <span className={`text-4xl font-bold ${plan.id === 'free' ? 'text-gray-800' : 'text-white'}`}>{price}€</span>
