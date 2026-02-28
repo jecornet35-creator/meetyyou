@@ -28,7 +28,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [reportDetails, setReportDetails] = useState('');
   const [reportSubmitting, setReportSubmitting] = useState(false);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
   const queryClient = useQueryClient();
 
   const otherParticipant = conversation?.participant_profiles?.find(
