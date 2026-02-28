@@ -414,20 +414,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           >
             <Smile className="w-6 h-6" />
           </button>
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="text-gray-400 hover:text-amber-500 transition-colors flex-shrink-0"
-          >
-            <ImageIcon className="w-6 h-6" />
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageSelect}
-          />
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
