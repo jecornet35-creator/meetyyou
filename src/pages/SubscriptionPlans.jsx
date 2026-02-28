@@ -120,7 +120,7 @@ export default function SubscriptionPlans() {
       }
       const now = new Date();
       const end = new Date(now);
-      end.setMonth(end.getMonth() + (billing === 'annual' ? 12 : 1));
+      end.setMonth(end.getMonth() + (planId === 'vip' ? 12 : 1));
       return base44.entities.Subscription.create({
         user_email: user.email,
         plan: planId,
