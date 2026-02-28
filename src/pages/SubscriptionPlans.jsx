@@ -89,7 +89,7 @@ const FEATURE_HIGHLIGHTS = [
 ];
 
 export default function SubscriptionPlans() {
-  const [billing, setBilling] = useState('monthly');
+  const billing = 'monthly';
   const queryClient = useQueryClient();
   const { plan: currentPlan, subscription } = usePlan();
 
