@@ -127,9 +127,7 @@ export default function SubscriptionPlans() {
         status: 'active',
         start_date: now.toISOString(),
         end_date: end.toISOString(),
-        amount: billing === 'annual'
-          ? (planId === 'premium' ? 7.99 : 15.99) * 12
-          : (planId === 'premium' ? 9.99 : 19.99),
+        amount: planId === 'vip' ? 50 : 5,
         currency: 'EUR',
         auto_renew: true,
       });
