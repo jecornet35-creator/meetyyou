@@ -230,7 +230,16 @@ export default function SubscriptionPlans() {
 
                 {/* CTA */}
                 <div className="px-6 pb-6">
-                  {isActive ? (
+                  {plan.isOneTime ? (
+                    <Button
+                      onClick={() => subscribeMutation.mutate(plan.id)}
+                      disabled={subscribeMutation.isPending}
+                      className="w-full bg-orange-500 hover:bg-orange-600 text-white gap-2"
+                    >
+                      <Rocket className="w-4 h-4" />
+                      Acheter 10 boosts — 5€
+                    </Button>
+                  ) : isActive ? (
                     <Button disabled className="w-full bg-green-500 text-white cursor-default">
                       <Check className="w-4 h-4 mr-2" /> Plan actuel
                     </Button>
@@ -241,12 +250,10 @@ export default function SubscriptionPlans() {
                       className={`w-full ${
                         plan.id === 'vip'
                           ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                          : plan.id === 'premium'
-                          ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          : 'bg-amber-500 hover:bg-amber-600 text-white'
                       }`}
                     >
-                      {plan.id === 'free' ? 'Rester gratuit' : `Passer à ${plan.name}`}
+                      {`Passer à ${plan.name}`}
                     </Button>
                   )}
                 </div>
