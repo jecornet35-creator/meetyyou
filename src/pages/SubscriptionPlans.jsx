@@ -75,7 +75,7 @@ const PLANS = [
       { label: 'Voir qui vous a liké', included: true },
       { label: 'Filtres de recherche avancés', included: true },
       { label: 'Profil mis en avant', included: true },
-      { label: '3 boosts de profil / semaine', included: true },
+      { label: '2 boosts de profil / mois inclus', included: true },
       { label: 'Badge VIP exclusif', included: true },
     ],
   },
