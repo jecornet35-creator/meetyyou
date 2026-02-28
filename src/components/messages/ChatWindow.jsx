@@ -22,9 +22,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
   const [translations, setTranslations] = useState({});
   const [translating, setTranslating] = useState({});
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [uploadingImage, setUploadingImage] = useState(false);
   const [otherUserProfile, setOtherUserProfile] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState('harassment');
