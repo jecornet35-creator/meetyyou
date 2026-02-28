@@ -160,7 +160,7 @@ export default function SubscriptionPlans() {
         </div>
 
         {/* Plans */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 items-start">
           {PLANS.map((plan) => {
             const Icon = plan.icon;
             const isActive = currentPlan === plan.id;
