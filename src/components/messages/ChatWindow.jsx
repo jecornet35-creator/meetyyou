@@ -127,7 +127,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         sender_email: currentUser.email,
         sender_name: currentUser.full_name,
         sender_photo: currentUser.main_photo,
-        content: finalContent,
+        content: content,
         is_read: false
       });
 
