@@ -330,18 +330,6 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                     className="w-8 h-8 rounded-full object-cover mb-1"
                   />
                 )}
-                {/* Images */}
-                {images.map((imgUrl, idx) => (
-                  <div key={idx} className={`mb-1 ${isBlurred ? 'blur-md select-none pointer-events-none' : ''}`}>
-                    <img
-                      src={imgUrl}
-                      alt="Image partagée"
-                      className="max-w-full rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
-                      style={{ maxHeight: '250px', objectFit: 'cover' }}
-                      onClick={() => !isBlurred && window.open(imgUrl, '_blank')}
-                    />
-                  </div>
-                ))}
                 {/* Text */}
                 {text && (
                   <div className={`rounded-2xl px-4 py-2 ${isMe ? 'bg-amber-500 text-white rounded-br-md' : 'bg-white text-gray-900 rounded-bl-md shadow-sm'} ${isBlurred ? 'relative' : ''}`}>
