@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Heart, Eye, EyeOff, Facebook, Twitter, Instagram, Youtube, Lock, ShieldCheck, X, AlertCircle } from 'lucide-react';
+import Sitemap from '@/components/layout/Sitemap';
 import { isWithinInterval } from 'date-fns';
 import { createPageUrl } from '@/utils';
 
