@@ -13,6 +13,28 @@ export default function ProfileCard({ profile, currentUser }) {
   const [liked, setLiked] = useState(false);
   const [favorited, setFavorited] = useState(false);
 
+  const sendFavoriteMutation = useMutation({
+    mutationFn: async () => {
+      const user = await base44.auth.me();
+      const myProfiles = await base44.entities.Profile.filter({ created_by: user.email });
+      const myProfile = myProfiles[0];
+      const senderName = myProfile?.display_name || myProfile?.first_name || user.full_name || user.email;
+      const senderPhoto = myProfile?.main_photo || myProfile?.accepted_photos?.[0] || myProfile?.photos?.[0] || null;
+      await base44.entities.Notification.create({
+        user_email: profile.created_by,
+        type: 'favorite',
+        title: `${senderName} vous a ajouté en favori !`,
+        message: 'A ajouté votre profil en favori',
+        from_profile_name: senderName,
+        from_profile_photo: senderPhoto,
+        from_profile_id: myProfile?.id,
+        is_read: false,
+        link: `/ProfileDetail?id=${myProfile?.id || ''}`,
+      });
+    },
+    onSuccess: () => setFavorited(true),
+  });
+
   const sendLikeMutation = useMutation({
     mutationFn: async () => {
       const user = await base44.auth.me();
