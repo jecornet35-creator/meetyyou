@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Star, Trash2 } from 'lucide-react';
+import { startOfDay, startOfWeek } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
+const TIME_FILTERS = [
+  { value: 'today', label: 'Ce jour' },
+  { value: 'week', label: 'Cette semaine' },
+  { value: 'all', label: 'Tous' },
+];
 
 export default function Favoris() {
   const queryClient = useQueryClient();
   const [user, setUser] = useState(null);
+  const [timeFilter, setTimeFilter] = useState('today');
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -23,6 +32,18 @@ export default function Favoris() {
     initialData: [],
   });
 
+  const filtered = useMemo(() => {
+    const now = new Date();
+    if (timeFilter === 'today') {
+      const start = startOfDay(now);
+      return favorites.filter(n => new Date(n.created_date) >= start);
+    } else if (timeFilter === 'week') {
+      const start = startOfWeek(now, { locale: fr });
+      return favorites.filter(n => new Date(n.created_date) >= start);
+    }
+    return favorites;
+  }, [favorites, timeFilter]);
+
   const deleteNotificationMutation = useMutation({
     mutationFn: (id) => base44.entities.Notification.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['favorites'] }),
@@ -30,7 +51,7 @@ export default function Favoris() {
 
   const deleteAllMutation = useMutation({
     mutationFn: async () => {
-      await Promise.all(favorites.map(n => base44.entities.Notification.delete(n.id)));
+      await Promise.all(filtered.map(n => base44.entities.Notification.delete(n.id)));
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['favorites'] }),
   });
@@ -40,14 +61,29 @@ export default function Favoris() {
       <Header />
 
       <main className="max-w-3xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
+        {/* Time filter bar */}
+        <div className="flex gap-1 bg-white rounded-xl shadow p-1 mb-6">
+          {TIME_FILTERS.map(f => (
+            <button
+              key={f.value}
+              onClick={() => setTimeFilter(f.value)}
+              className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-colors ${
+                timeFilter === f.value ? 'bg-amber-500 text-white shadow' : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Favoris</h1>
-            {favorites.length > 0 && (
-              <p className="text-gray-500 text-sm mt-0.5">{favorites.length} favori{favorites.length > 1 ? 's' : ''}</p>
+            {filtered.length > 0 && (
+              <p className="text-gray-500 text-sm mt-0.5">{filtered.length} favori{filtered.length > 1 ? 's' : ''}</p>
             )}
           </div>
-          {favorites.length > 0 && (
+          {filtered.length > 0 && (
             <Button
               variant="outline"
               size="sm"
