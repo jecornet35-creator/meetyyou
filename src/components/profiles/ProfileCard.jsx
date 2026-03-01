@@ -187,8 +187,9 @@ export default function ProfileCard({ profile, currentUser }) {
           </Link>
         )}
         <button
-          onClick={() => setFavorited(v => !v)}
-          title={favorited ? "Retirer des favoris" : "Ajouter aux favoris"}
+          onClick={() => !favorited && sendFavoriteMutation.mutate()}
+          disabled={favorited || sendFavoriteMutation.isPending}
+          title={favorited ? "Ajouté en favori" : "Ajouter aux favoris"}
           className="p-1.5 hover:bg-amber-50 rounded-full transition-colors group/btn"
         >
           <Star className={`w-4 h-4 transition-colors ${favorited ? 'text-amber-500 fill-amber-400' : 'text-gray-400 group-hover/btn:text-amber-500'}`} />
