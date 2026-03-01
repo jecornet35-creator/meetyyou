@@ -206,6 +206,12 @@ export default function Header({ user }) {
                     <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{profileViewsCount}</Badge>
                   </Button>
                 </Link>
+                <Link to={createPageUrl('Favoris')}>
+                  <Button variant="ghost" className="text-white hover:bg-white/10 relative">
+                    Favoris
+                    <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5">{favoritesCount}</Badge>
+                  </Button>
+                </Link>
           </nav>
 
           {/* Stats circles */}
