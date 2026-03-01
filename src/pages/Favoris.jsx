@@ -100,7 +100,7 @@ export default function Favoris() {
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           {isLoading ? (
             <div className="p-8 text-center text-gray-500">Chargement...</div>
-          ) : favorites.length === 0 ? (
+          ) : filtered.length === 0 ? (
             <div className="p-12 text-center">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Star className="w-8 h-8 text-gray-400" />
