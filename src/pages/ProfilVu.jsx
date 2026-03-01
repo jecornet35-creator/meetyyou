@@ -154,7 +154,10 @@ export default function ProfilVu() {
                       </div>
                       <div className="flex gap-2 mt-3">
                         {(notification.from_profile_id || notification.link) && (
-                          <Link to={`/ProfileDetail?id=${notification.from_profile_id || ''}`}>
+                          <Link
+                            to={`/ProfileDetail?id=${notification.from_profile_id || ''}`}
+                            onClick={() => deleteNotificationMutation.mutate(notification.id)}
+                          >
                             <Button size="sm" variant="outline" className="text-xs">Voir le profil</Button>
                           </Link>
                         )}
