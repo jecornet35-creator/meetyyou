@@ -110,7 +110,7 @@ export default function Favoris() {
             </div>
           ) : (
             <div className="divide-y">
-              {favorites.map((notif) => (
+              {filtered.map((notif) => (
                 <div key={notif.id} className="p-4 hover:bg-gray-50 transition-colors flex gap-4">
                   {notif.from_profile_photo ? (
                     <img src={notif.from_profile_photo} alt={notif.from_profile_name} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
