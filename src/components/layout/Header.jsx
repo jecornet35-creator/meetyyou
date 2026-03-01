@@ -75,6 +75,7 @@ export default function Header({ user }) {
           queryClient.invalidateQueries({ queryKey: ['unreadNotifications'] });
           queryClient.invalidateQueries({ queryKey: ['likesCount'] });
           queryClient.invalidateQueries({ queryKey: ['profileViewsCount'] });
+          queryClient.invalidateQueries({ queryKey: ['favoritesCount'] });
         }
       });
 
