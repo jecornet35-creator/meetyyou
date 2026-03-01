@@ -590,19 +590,8 @@ export default function Landing() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-gray-900/90 text-gray-400 py-6 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs mb-4">
-            {footerLinks.map((link, i) => (
-              <a key={i} href="#" className="hover:text-white transition-colors">
-                {link}
-              </a>
-            ))}
-          </div>
-          <p className="text-center text-xs">
-            This website is operated by SDL Networks Limited located at 71 Tower Road, SLM 1609, Sliema, Malta, reg. number C70898.
-          </p>
-        </div>
+      <footer className="relative z-10">
+        <Sitemap />
       </footer>
     </div>
   );
