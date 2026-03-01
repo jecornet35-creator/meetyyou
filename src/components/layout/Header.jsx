@@ -55,6 +55,17 @@ export default function Header({ user }) {
     initialData: 0,
   });
 
+  const { data: favoritesCount = 0 } = useQuery({
+    queryKey: ['favoritesCount'],
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      const notifications = await base44.entities.Notification.filter({ user_email: user.email, type: 'favorite', is_read: false });
+      return notifications.length;
+    },
+    enabled: !!currentUser,
+    initialData: 0,
+  });
+
   // Real-time subscription for notifications
   useEffect(() => {
     if (!currentUser) return;
