@@ -394,7 +394,7 @@ export default function Correspondances() {
           </Section>
 
           {/* Their lifestyle */}
-          <Section title="Their lifestyle" showMore defaultOpen={false}>
+          <Section title="Their lifestyle" showMore defaultOpen={true}>
                 <div className="space-y-4">
                   <div>
                     <label className="text-amber-700 text-sm mb-2 block">Do they smoke?</label>
