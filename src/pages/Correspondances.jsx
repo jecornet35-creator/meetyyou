@@ -369,7 +369,7 @@ export default function Correspondances() {
           </Section>
 
           {/* Body art */}
-          <Section title="Body art" defaultOpen={false}>
+          <Section title="Body art" defaultOpen={true}>
             <div className="grid grid-cols-5 gap-3">
               <CheckboxField label="No preference" checked={isChecked('body_art', 'no_preference')} onChange={() => handleCheckboxArray('body_art', 'no_preference')} />
               <CheckboxField label="Brand" checked={isChecked('body_art', 'brand')} onChange={() => handleCheckboxArray('body_art', 'brand')} />
