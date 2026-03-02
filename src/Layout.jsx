@@ -84,6 +84,10 @@ export default function Layout({ children, currentPageName }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    injectSEO(currentPageName);
+  }, [currentPageName]);
+
+  useEffect(() => {
     base44.auth.isAuthenticated().then(auth => {
       setIsAuthenticated(auth);
       setAuthChecked(true);
