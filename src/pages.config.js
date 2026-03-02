@@ -81,6 +81,7 @@ import ProfileDetail from './pages/ProfileDetail';
 import ProfileVerification from './pages/ProfileVerification';
 import Settings from './pages/Settings';
 import SubscriptionPlans from './pages/SubscriptionPlans';
+import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
 
@@ -119,6 +120,7 @@ export const PAGES = {
     "ProfileVerification": ProfileVerification,
     "Settings": Settings,
     "SubscriptionPlans": SubscriptionPlans,
+    "TermsOfService": TermsOfService,
 }
 
 export const pagesConfig = {
