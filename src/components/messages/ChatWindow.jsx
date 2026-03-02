@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Send, Check, CheckCheck, ArrowLeft, Languages, Loader2, Smile, Flag } from 'lucide-react';
+import { Send, Check, CheckCheck, ArrowLeft, Languages, Loader2, Smile, Flag, Heart, ThumbsUp } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import BlockButton from '@/components/block/BlockButton';
@@ -15,19 +15,26 @@ import { createPageUrl } from '@/utils';
 import { Lock } from 'lucide-react';
 import { usePushNotifications } from '@/components/notifications/usePushNotifications';
 
+const QUICK_REACTIONS = ['❤️', '😂', '😮', '😢', '👏', '🔥'];
+
 export default function ChatWindow({ conversation, currentUser, onBack }) {
   const { isPremium } = usePlan();
   const { sendNotification } = usePushNotifications();
   const [newMessage, setNewMessage] = useState('');
   const [translations, setTranslations] = useState({});
   const [translating, setTranslating] = useState({});
+  const [autoTranslate, setAutoTranslate] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [reactionPickerFor, setReactionPickerFor] = useState(null);
   const [otherUserProfile, setOtherUserProfile] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState('harassment');
   const [reportDetails, setReportDetails] = useState('');
   const [reportSubmitting, setReportSubmitting] = useState(false);
+  const [isTyping, setIsTyping] = useState(false); // other person typing
+  const [typingTimeout, setTypingTimeout] = useState(null);
   const messagesEndRef = useRef(null);
+  const typingChannelRef = useRef(null);
   const queryClient = useQueryClient();
 
   const otherParticipant = conversation?.participant_profiles?.find(
@@ -59,6 +66,46 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     return () => clearInterval(interval);
   }, [currentUser?.email]);
 
+  // --- TYPING INDICATOR via real-time subscription on a TypingStatus entity ---
+  // We simulate typing by subscribing to Notification entity with a special type
+  // Using a simple approach: update a field on Conversation to track typing
+  const broadcastTyping = useCallback(async () => {
+    if (!conversation?.id || !currentUser?.email) return;
+    try {
+      await base44.entities.Conversation.update(conversation.id, {
+        [`typing_${currentUser.email.replace('@', '_').replace('.', '_')}`]: new Date().toISOString()
+      });
+    } catch (_) {}
+  }, [conversation?.id, currentUser?.email]);
+
+  // Subscribe to conversation changes for typing indicator
+  useEffect(() => {
+    if (!conversation?.id || !otherParticipant?.email) return;
+    const otherKey = `typing_${otherParticipant.email.replace('@', '_').replace('.', '_')}`;
+
+    const unsubscribe = base44.entities.Conversation.subscribe((event) => {
+      if (event.id === conversation.id && event.data?.[otherKey]) {
+        const lastTyped = new Date(event.data[otherKey]);
+        const now = new Date();
+        if (now - lastTyped < 4000) {
+          setIsTyping(true);
+          if (typingChannelRef.current) clearTimeout(typingChannelRef.current);
+          typingChannelRef.current = setTimeout(() => setIsTyping(false), 3000);
+        }
+      }
+    });
+    return () => {
+      unsubscribe();
+      if (typingChannelRef.current) clearTimeout(typingChannelRef.current);
+    };
+  }, [conversation?.id, otherParticipant?.email]);
+
+  const handleInputChange = (e) => {
+    setNewMessage(e.target.value);
+    broadcastTyping();
+  };
+
+  // Translation
   const translateMessage = async (messageId, content) => {
     if (translations[messageId]) {
       setTranslations(prev => { const n = { ...prev }; delete n[messageId]; return n; });
@@ -72,6 +119,16 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     setTranslating(prev => { const n = { ...prev }; delete n[messageId]; return n; });
   };
 
+  // Auto-translate incoming messages
+  const autoTranslateMessages = useCallback(async (msgs) => {
+    if (!autoTranslate) return;
+    for (const msg of msgs) {
+      if (msg.sender_email !== currentUser?.email && !translations[msg.id] && !translating[msg.id]) {
+        translateMessage(msg.id, parseMessageContent(msg.content).text);
+      }
+    }
+  }, [autoTranslate, currentUser?.email, translations]);
+
   const { data: messages = [] } = useQuery({
     queryKey: ['messages', conversation?.id],
     queryFn: () => base44.entities.Message.filter({ conversation_id: conversation.id }, 'created_date', 100),
@@ -80,23 +137,20 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
   });
 
   useEffect(() => {
+    if (messages.length) autoTranslateMessages(messages);
+  }, [messages, autoTranslate]);
+
+  useEffect(() => {
     if (!conversation?.id) return;
     const unsubscribe = base44.entities.Message.subscribe((event) => {
       if (event.data.conversation_id === conversation.id) {
         queryClient.invalidateQueries({ queryKey: ['messages', conversation.id] });
-
-        // Browser push notification for incoming messages (when tab is in background)
-        if (
-          event.type === 'create' &&
-          event.data.sender_email !== currentUser?.email
-        ) {
+        if (event.type === 'create' && event.data.sender_email !== currentUser?.email) {
           const senderName = event.data.sender_name || 'Quelqu\'un';
           const preview = event.data.content
             ? event.data.content.replace(/\[IMAGE:.*?\]/g, '📷 Image').substring(0, 80)
             : '📷 Image';
-          sendNotification(`💬 ${senderName}`, preview, {
-            tag: `msg-${conversation.id}`,
-          });
+          sendNotification(`💬 ${senderName}`, preview, { tag: `msg-${conversation.id}` });
         }
       }
     });
@@ -118,7 +172,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isTyping]);
 
   const sendMutation = useMutation({
     mutationFn: async ({ content }) => {
@@ -130,17 +184,14 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         content: content,
         is_read: false
       });
-
       const otherEmail = conversation.participants.find(p => p !== currentUser.email);
       const currentUnread = conversation.unread_count?.[otherEmail] || 0;
-
       await base44.entities.Conversation.update(conversation.id, {
         last_message: content,
         last_message_date: new Date().toISOString(),
         last_message_sender: currentUser.email,
         unread_count: { ...conversation.unread_count, [otherEmail]: currentUnread + 1 }
       });
-
       await base44.entities.Notification.create({
         user_email: otherEmail,
         type: 'message',
@@ -151,14 +202,11 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         is_read: false,
         link: `/Messages?conv=${conversation.id}`
       });
-
-      // Send email notification (non-blocking)
       base44.functions.invoke('sendMessageEmailNotification', {
         recipient_email: otherEmail,
         sender_name: currentUser.full_name || 'Quelqu\'un',
         message_preview: content,
       }).catch(() => {});
-
       return message;
     },
     onSuccess: () => {
@@ -175,17 +223,38 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     sendMutation.mutate({ content });
   };
 
+  // Send quick like ❤️
+  const handleQuickLike = () => {
+    sendMutation.mutate({ content: '❤️' });
+  };
+
+  // Add reaction to a message (stored as suffix in content or via update)
+  const addReaction = async (messageId, emoji) => {
+    setReactionPickerFor(null);
+    const msg = messages.find(m => m.id === messageId);
+    if (!msg) return;
+    const currentReactions = msg.reactions || {};
+    const userReactions = currentReactions[currentUser.email] || [];
+    let newUserReactions;
+    if (userReactions.includes(emoji)) {
+      newUserReactions = userReactions.filter(e => e !== emoji);
+    } else {
+      newUserReactions = [...userReactions, emoji];
+    }
+    await base44.entities.Message.update(messageId, {
+      reactions: { ...currentReactions, [currentUser.email]: newUserReactions }
+    });
+    queryClient.invalidateQueries({ queryKey: ['messages', conversation.id] });
+  };
+
   const isPending = sendMutation.isPending;
 
-  // Parse message content for images
   const parseMessageContent = (content) => {
     if (!content) return { text: '', images: [] };
     const imageRegex = /\[IMAGE:(.*?)\]/g;
     const images = [];
     let match;
-    while ((match = imageRegex.exec(content)) !== null) {
-      images.push(match[1]);
-    }
+    while ((match = imageRegex.exec(content)) !== null) images.push(match[1]);
     const text = content.replace(imageRegex, '').trim();
     return { text, images };
   };
@@ -211,6 +280,22 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
     ? formatDistanceToNow(new Date(otherUserProfile.last_seen), { addSuffix: true, locale: fr })
     : null;
 
+  // Aggregate reactions for display
+  const getReactionSummary = (msg) => {
+    const reactions = msg.reactions || {};
+    const summary = {};
+    Object.values(reactions).forEach(userEmojis => {
+      userEmojis.forEach(emoji => {
+        summary[emoji] = (summary[emoji] || 0) + 1;
+      });
+    });
+    return Object.entries(summary);
+  };
+
+  const myReactions = (msg) => {
+    return (msg.reactions || {})[currentUser?.email] || [];
+  };
+
   if (!conversation) {
     return (
       <div className="flex-1 flex items-center justify-center bg-gray-50">
@@ -223,7 +308,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full" onClick={() => setShowEmojiPicker(false)}>
+    <div className="flex-1 flex flex-col h-full" onClick={() => { setShowEmojiPicker(false); setReactionPickerFor(null); }}>
       {/* Header */}
       <div className="bg-white border-b px-4 py-3 flex items-center gap-3">
         <Button variant="ghost" size="icon" onClick={onBack}>
@@ -242,13 +327,23 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
         <div className="flex-1">
           <h2 className="font-semibold">{otherParticipant.display_name || 'Utilisateur'}</h2>
           <p className="text-xs text-gray-500">
-            {isOnline ? (
+            {isTyping ? (
+              <span className="text-amber-500 font-medium animate-pulse">● tape en cours...</span>
+            ) : isOnline ? (
               <span className="text-green-500 font-medium">● En ligne</span>
             ) : lastSeen ? (
               `Vu ${lastSeen}`
             ) : 'Hors ligne'}
           </p>
         </div>
+        {/* Auto-translate toggle */}
+        <button
+          onClick={() => setAutoTranslate(v => !v)}
+          title={autoTranslate ? 'Traduction auto activée' : 'Activer la traduction auto'}
+          className={`p-2 rounded-lg transition-colors ${autoTranslate ? 'bg-amber-100 text-amber-600' : 'text-gray-400 hover:text-amber-500'}`}
+        >
+          <Languages className="w-4 h-4" />
+        </button>
         <BlockButton
           targetProfile={{ created_by: otherParticipant.email, id: null, display_name: otherParticipant.display_name, main_photo: otherParticipant.photo }}
           currentUserEmail={currentUser?.email}
@@ -295,17 +390,10 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
               />
             </div>
             <div className="flex gap-3">
-              <button
-                onClick={() => setShowReportModal(false)}
-                className="flex-1 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
-              >
+              <button onClick={() => setShowReportModal(false)} className="flex-1 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
                 Annuler
               </button>
-              <button
-                onClick={handleReport}
-                disabled={reportSubmitting}
-                className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 disabled:opacity-50 flex items-center justify-center gap-2"
-              >
+              <button onClick={handleReport} disabled={reportSubmitting} className="flex-1 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 disabled:opacity-50 flex items-center justify-center gap-2">
                 {reportSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Flag className="w-4 h-4" />}
                 Signaler
               </button>
@@ -320,6 +408,9 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           const isMe = message.sender_email === currentUser?.email;
           const { text } = parseMessageContent(message.content);
           const isBlurred = !isPremium && !isMe;
+          const isQuickEmoji = text && text.length <= 2 && /\p{Emoji}/u.test(text) && !text.match(/[a-zA-Z0-9]/);
+          const reactionSummary = getReactionSummary(message);
+
           return (
             <div key={message.id} className={`flex group ${isMe ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[70%] ${isMe ? 'order-2' : ''}`}>
@@ -330,32 +421,88 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                     className="w-8 h-8 rounded-full object-cover mb-1"
                   />
                 )}
-                {/* Text */}
+                {/* Text bubble */}
                 {text && (
-                  <div className={`rounded-2xl px-4 py-2 ${isMe ? 'bg-amber-500 text-white rounded-br-md' : 'bg-white text-gray-900 rounded-bl-md shadow-sm'} ${isBlurred ? 'relative' : ''}`}>
-                    <p className={`text-sm whitespace-pre-wrap ${isBlurred ? 'blur-sm select-none' : ''}`}>{text}</p>
-                    {isBlurred && (
-                      <div className="mt-2 flex flex-col items-start gap-1">
-                        <div className="flex items-center gap-1 text-gray-400 text-xs">
-                          <Lock className="w-3 h-3" />
-                          <span>Message réservé aux membres Premium</span>
+                  <div className="relative">
+                    <div
+                      className={`rounded-2xl px-4 py-2 ${
+                        isQuickEmoji ? 'bg-transparent px-0 text-3xl' :
+                        isMe ? 'bg-amber-500 text-white rounded-br-md' : 'bg-white text-gray-900 rounded-bl-md shadow-sm'
+                      } ${isBlurred ? 'relative' : ''}`}
+                    >
+                      <p className={`text-sm whitespace-pre-wrap ${isBlurred ? 'blur-sm select-none' : ''}`}>{text}</p>
+                      {isBlurred && (
+                        <div className="mt-2 flex flex-col items-start gap-1">
+                          <div className="flex items-center gap-1 text-gray-400 text-xs">
+                            <Lock className="w-3 h-3" />
+                            <span>Message réservé aux membres Premium</span>
+                          </div>
+                          <Link to={createPageUrl('SubscriptionPlans')}>
+                            <button className="mt-1 bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
+                              ✈ Upgrade Now To Read
+                            </button>
+                          </Link>
                         </div>
-                        <Link to={createPageUrl('SubscriptionPlans')}>
-                          <button className="mt-1 bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium flex items-center gap-1">
-                            ✈ Upgrade Now To Read
-                          </button>
-                        </Link>
-                      </div>
+                      )}
+                      {translations[message.id] && !isBlurred && (
+                        <p className={`text-sm mt-1 pt-1 border-t italic ${isMe ? 'border-amber-400 text-amber-100' : 'border-gray-200 text-gray-500'}`}>
+                          {translations[message.id]}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Reaction picker trigger */}
+                    {!isBlurred && !isQuickEmoji && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setReactionPickerFor(reactionPickerFor === message.id ? null : message.id); }}
+                        className={`absolute ${isMe ? '-left-7' : '-right-7'} top-1 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-amber-500 text-lg`}
+                      >
+                        😊
+                      </button>
                     )}
-                    {translations[message.id] && !isBlurred && (
-                      <p className={`text-sm mt-1 pt-1 border-t italic ${isMe ? 'border-amber-400 text-amber-100' : 'border-gray-200 text-gray-500'}`}>
-                        {translations[message.id]}
-                      </p>
+
+                    {/* Reaction quick-picker */}
+                    {reactionPickerFor === message.id && (
+                      <div
+                        onClick={e => e.stopPropagation()}
+                        className={`absolute z-20 flex gap-1 bg-white border border-gray-200 rounded-full shadow-lg px-2 py-1 ${isMe ? 'right-0' : 'left-0'} -top-10`}
+                      >
+                        {QUICK_REACTIONS.map(emoji => (
+                          <button
+                            key={emoji}
+                            onClick={() => addReaction(message.id, emoji)}
+                            className={`text-lg hover:scale-125 transition-transform ${myReactions(message).includes(emoji) ? 'opacity-100' : 'opacity-70'}`}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
                     )}
                   </div>
                 )}
-                {/* Translate button */}
-                {text && !isBlurred && (
+
+                {/* Reactions display */}
+                {reactionSummary.length > 0 && (
+                  <div className={`flex flex-wrap gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
+                    {reactionSummary.map(([emoji, count]) => (
+                      <button
+                        key={emoji}
+                        onClick={() => addReaction(message.id, emoji)}
+                        className={`flex items-center gap-0.5 text-xs px-1.5 py-0.5 rounded-full border transition-colors ${
+                          myReactions(message).includes(emoji)
+                            ? 'bg-amber-100 border-amber-300 text-amber-700'
+                            : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                        }`}
+                      >
+                        <span>{emoji}</span>
+                        {count > 1 && <span>{count}</span>}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Translate button (manual) */}
+                {text && !isBlurred && !isQuickEmoji && (
                   <button
                     onClick={() => translateMessage(message.id, text)}
                     disabled={translating[message.id]}
@@ -365,6 +512,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
                     {translations[message.id] ? 'Masquer' : 'Traduire'}
                   </button>
                 )}
+
                 <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : ''}`}>
                   <span className="text-xs text-gray-400">
                     {format(new Date(message.created_date), 'HH:mm')}
@@ -379,10 +527,29 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
             </div>
           );
         })}
+
+        {/* Typing indicator */}
+        {isTyping && (
+          <div className="flex justify-start">
+            <div className="flex items-center gap-2">
+              <img
+                src={otherParticipant.photo || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100'}
+                alt=""
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <div className="bg-white rounded-2xl rounded-bl-md shadow-sm px-4 py-3 flex items-center gap-1">
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input area */}
       {!isPremium && (
         <div className="bg-amber-50 border-t border-amber-200 px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-amber-700 text-sm">
@@ -396,8 +563,7 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           </Link>
         </div>
       )}
-      <form onSubmit={handleSend} className="bg-white border-t p-3 relative" style={!isPremium ? {pointerEvents: 'none', opacity: 0.4} : {}}>
-        {/* Emoji picker */}
+      <form onSubmit={handleSend} className="bg-white border-t p-3 relative" style={!isPremium ? { pointerEvents: 'none', opacity: 0.4 } : {}}>
         {showEmojiPicker && (
           <div className="absolute bottom-16 left-3 z-50">
             <EmojiPicker
@@ -416,11 +582,21 @@ export default function ChatWindow({ conversation, currentUser, onBack }) {
           </button>
           <Input
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={handleInputChange}
             placeholder="Écrivez votre message..."
             className="flex-1"
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(e); } }}
           />
+          {/* Quick like button */}
+          <button
+            type="button"
+            onClick={handleQuickLike}
+            disabled={isPending}
+            className="text-red-400 hover:text-red-500 transition-colors flex-shrink-0 hover:scale-110"
+            title="Envoyer un ❤️"
+          >
+            <Heart className="w-6 h-6" />
+          </button>
           <Button
             type="submit"
             className="bg-amber-500 hover:bg-amber-600 flex-shrink-0"
