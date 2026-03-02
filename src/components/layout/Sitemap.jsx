@@ -56,9 +56,15 @@ export default function Sitemap() {
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link}>
-                    <a href="#" className="text-xs text-gray-500 hover:text-amber-400 transition-colors">
-                      {link}
-                    </a>
+                    {LINK_MAP[link] ? (
+                      <Link to={LINK_MAP[link]} className="text-xs text-gray-500 hover:text-amber-400 transition-colors">
+                        {link}
+                      </Link>
+                    ) : (
+                      <a href="#" className="text-xs text-gray-500 hover:text-amber-400 transition-colors">
+                        {link}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
