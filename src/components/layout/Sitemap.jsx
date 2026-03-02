@@ -1,5 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
+import { createPageUrl } from '@/utils';
+
+const LINK_MAP = {
+  "Conditions d'utilisation": createPageUrl('TermsOfService'),
+  "Centre d'aide": createPageUrl('Help'),
+  "Contacter nous": createPageUrl('Help'),
+  "Plans & tarifs": createPageUrl('SubscriptionPlans'),
+  "Premium": createPageUrl('SubscriptionPlans'),
+  "VIP": createPageUrl('SubscriptionPlans'),
+};
 
 const SITEMAP = [
   {
