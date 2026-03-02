@@ -12,7 +12,7 @@ export default function Layout({ children, currentPageName }) {
       setAuthChecked(true);
 
       // Pages accessibles sans connexion
-      const publicPages = ['Landing'];
+      const publicPages = ['Landing', 'TermsOfService'];
 
       if (!auth && !publicPages.includes(currentPageName)) {
         window.location.href = createPageUrl('Landing');
