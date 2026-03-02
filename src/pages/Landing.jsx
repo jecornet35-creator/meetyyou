@@ -518,7 +518,7 @@ export default function Landing() {
                     />
                     <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer">
                       Oui, je confirme que j'ai plus de 18 et j'accepte les{' '}
-                      <a href="#" className="text-amber-600 hover:underline">conditions d'utilisation</a>
+                      <Link to={createPageUrl('TermsOfService')} className="text-amber-600 hover:underline">conditions d'utilisation</Link>
                       {' '}et la{' '}
                       <a href="#" className="text-amber-600 hover:underline">déclaration de confidentialité</a>
                     </label>
