@@ -329,9 +329,9 @@ export default function Landing() {
                     </button>
                   </div>
                   <div className="text-right mt-1">
-                    <a href="#" className="text-amber-400 text-sm hover:underline">
+                    <button onClick={() => { setShowForgotPassword(true); setForgotEmail(email); setForgotSent(false); setForgotError(''); }} className="text-amber-400 text-sm hover:underline">
                       Mot De Passe Oublié
-                    </a>
+                    </button>
                   </div>
                 </div>
 
