@@ -216,6 +216,17 @@ export default function Landing() {
           </div>
         </div>
       )}
+      {/* Info Banner */}
+      <div className="relative z-20 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+        <div className="max-w-3xl mx-auto px-4 py-4 text-center space-y-1">
+          <p className="text-base font-bold">🚀 Meetyyou est un tout nouveau site de rencontre !</p>
+          <p className="text-sm text-blue-100 leading-relaxed">
+            Nous n'utilisons <strong className="text-white">aucun faux profil</strong> — c'est pourquoi l'inscription est <strong className="text-white">100% gratuite avec toutes les options</strong> pendant la phase de lancement.
+            Nous avons besoin de vous pour tester la plateforme, signaler les bugs et partager vos suggestions afin de vous offrir la meilleure expérience possible. Merci de faire partie de l'aventure ! 💙
+          </p>
+        </div>
+      </div>
+
       {/* Background with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
