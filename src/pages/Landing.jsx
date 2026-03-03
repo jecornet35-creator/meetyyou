@@ -612,6 +612,59 @@ export default function Landing() {
         </div>
       </main>
 
+      {/* Forgot Password Modal */}
+      {showForgotPassword && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 space-y-4">
+            {forgotSent ? (
+              <>
+                <div className="text-center">
+                  <div className="text-5xl mb-3">📧</div>
+                  <h2 className="text-xl font-bold text-gray-800">Email envoyé !</h2>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Un lien de réinitialisation a été envoyé à <strong>{forgotEmail}</strong>. Vérifiez votre boîte mail.
+                  </p>
+                </div>
+                <Button onClick={() => setShowForgotPassword(false)} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+                  Fermer
+                </Button>
+              </>
+            ) : (
+              <>
+                <div className="text-center">
+                  <h2 className="text-xl font-bold text-gray-800">Mot de passe oublié ?</h2>
+                  <p className="text-gray-500 text-sm mt-1">Entrez votre email pour recevoir un lien de réinitialisation.</p>
+                </div>
+                <div>
+                  <label className="text-gray-700 text-sm mb-1 block">Email</label>
+                  <Input
+                    type="email"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    placeholder="votre@email.com"
+                    className="h-11 border-gray-300"
+                  />
+                </div>
+                {forgotError && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-600 text-sm">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    {forgotError}
+                  </div>
+                )}
+                <div className="flex gap-3">
+                  <Button variant="outline" onClick={() => setShowForgotPassword(false)} className="flex-1">
+                    Annuler
+                  </Button>
+                  <Button onClick={handleForgotPassword} disabled={forgotLoading} className="flex-1 bg-amber-500 hover:bg-amber-600 text-white">
+                    {forgotLoading ? 'Envoi...' : 'Envoyer'}
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="relative z-10">
         <Sitemap />
