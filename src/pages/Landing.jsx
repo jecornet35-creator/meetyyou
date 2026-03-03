@@ -30,6 +30,28 @@ export default function Landing() {
 
   const [loginError, setLoginError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState('');
+
+  const handleForgotPassword = async () => {
+    if (!forgotEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotEmail)) {
+      setForgotError('Veuillez saisir une adresse email valide.');
+      return;
+    }
+    setForgotLoading(true);
+    setForgotError('');
+    try {
+      await base44.auth.forgotPassword(forgotEmail);
+      setForgotSent(true);
+    } catch (e) {
+      setForgotError('Une erreur est survenue. Vérifiez votre email et réessayez.');
+    } finally {
+      setForgotLoading(false);
+    }
+  };
 
   // OTP verification step
   const [showOtp, setShowOtp] = useState(false);
