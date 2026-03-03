@@ -31,7 +31,7 @@ const SITEMAP = [
   },
   {
     title: 'À propos',
-    links: ['Qui sommes-nous', 'Notre histoire', 'Témoignages', 'Affiliés', 'Autres sites', 'Compagnie'],
+    links: ['Qui sommes-nous', 'Témoignages'],
   },
 ];
 
