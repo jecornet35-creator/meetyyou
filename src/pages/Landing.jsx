@@ -676,6 +676,71 @@ export default function Landing() {
         </div>
       )}
 
+      {/* Marketing Section */}
+      <section className="relative z-10 bg-white/95 backdrop-blur-sm py-16 px-4">
+        <div className="max-w-5xl mx-auto space-y-16">
+
+          {/* Offer Banner */}
+          <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-8 text-white text-center shadow-xl">
+            <div className="text-4xl mb-3">🏆</div>
+            <h2 className="text-2xl font-bold mb-2">Offre de lancement exclusive</h2>
+            <p className="text-amber-100 text-lg mb-4">
+              Les <strong className="text-white">500 premiers inscrits</strong> bénéficient de <strong className="text-white">3 mois PREMIUM gratuits</strong> et reçoivent le badge exclusif <strong className="text-white">🥇 Pionnier</strong>
+            </p>
+            <p className="text-amber-200 text-sm">Ne manquez pas cette opportunité unique — rejoignez l'aventure dès maintenant !</p>
+          </div>
+
+          {/* Why Meetyyou */}
+          <div>
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Pourquoi Meetyyou ?</h2>
+            <p className="text-gray-500 text-center mb-10">Une plateforme conçue pour des rencontres authentiques et sécurisées</p>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-gray-50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="text-4xl mb-4">🚫</div>
+                <h3 className="font-bold text-gray-800 text-lg mb-2">Zéro faux profil</h3>
+                <p className="text-gray-500 text-sm">Chaque profil est réel. Nous ne créons pas de faux comptes pour simuler l'activité — une pratique malheureusement courante ailleurs.</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="text-4xl mb-4">🔒</div>
+                <h3 className="font-bold text-gray-800 text-lg mb-2">Site sécurisé</h3>
+                <p className="text-gray-500 text-sm">Vos données sont protégées. Notre plateforme est sécurisée avec vérification des profils et modération active.</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="text-4xl mb-4">🚀</div>
+                <h3 className="font-bold text-gray-800 text-lg mb-2">En évolution constante</h3>
+                <p className="text-gray-500 text-sm">Meetyyou évolue chaque semaine grâce aux retours de nos membres. Vos suggestions façonnent directement la plateforme.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Why affordable */}
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-10 border border-blue-100">
+            <h2 className="text-3xl font-bold text-gray-800 text-center mb-2">Un prix bas ≠ une plateforme bas de gamme</h2>
+            <p className="text-gray-500 text-center mb-10 max-w-2xl mx-auto">
+              Nous offrons toutes les fonctionnalités des grandes plateformes — et même plus — à un tarif accessible. Voici pourquoi c'est possible :
+            </p>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-blue-100 text-center">
+                <div className="text-4xl mb-3">💎</div>
+                <h3 className="font-bold text-gray-800 mb-2">Toutes les options incluses</h3>
+                <p className="text-gray-500 text-sm">Messagerie, filtres avancés, boost de profil, vérification, favoris… tout ce que proposent les autres sites, et davantage.</p>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-blue-100 text-center">
+                <div className="text-4xl mb-3">❤️</div>
+                <h3 className="font-bold text-gray-800 mb-2">Une philosophie équitable</h3>
+                <p className="text-gray-500 text-sm">Nous croyons qu'une rencontre sérieuse ne devrait pas coûter une fortune. L'amour n'a pas de prix, mais l'accès à la plateforme oui.</p>
+              </div>
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-blue-100 text-center">
+                <div className="text-4xl mb-3">🌍</div>
+                <h3 className="font-bold text-gray-800 mb-2">Basé à Madagascar</h3>
+                <p className="text-gray-500 text-sm">Notre équipe est installée à Madagascar, où le coût de la vie est bien inférieur à l'Europe. Ces économies, nous vous les répercutons directement.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="relative z-10">
         <Sitemap />
