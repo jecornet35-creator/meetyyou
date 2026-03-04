@@ -73,7 +73,7 @@ export default function Sitemap() {
         </div>
 
         <div className="border-t border-gray-800 pt-6 text-center text-xs text-gray-600">
-          © {new Date().getFullYear()} Meetyyou — SDL Networks Limited, 71 Tower Road, SLM 1609, Sliema, Malta, reg. C70898
+          © {new Date().getFullYear()} Meetyyou — SPHERE Sarl, Lot 0422 Bis ML 201, Antsiranana Diègo Suarez, Madagascar
         </div>
       </div>
     </div>
