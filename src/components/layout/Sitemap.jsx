@@ -10,6 +10,7 @@ const LINK_MAP = {
   "Plans & tarifs": createPageUrl('SubscriptionPlans'),
   "Premium": createPageUrl('SubscriptionPlans'),
   "VIP": createPageUrl('SubscriptionPlans'),
+  "Qui sommes-nous": createPageUrl('AboutUs'),
 };
 
 const SITEMAP = [
