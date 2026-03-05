@@ -235,10 +235,33 @@ export default function Header({ user }) {
                 )}
               </Button>
             </Link>
-
           </div>
         </div>
       </div>
+
+      {/* Mobile bottom nav */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 flex items-center justify-around h-14 shadow-lg">
+        <Link to={createPageUrl('Messages')} className="relative flex flex-col items-center justify-center flex-1 h-full text-gray-500 hover:text-amber-600">
+          <MessageCircle className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5">Messages</span>
+          <Badge className="absolute top-1 right-2 bg-red-500 text-white text-[10px] px-1 min-w-[16px] h-4 flex items-center justify-center">0</Badge>
+        </Link>
+        <Link to={createPageUrl('Likes')} className="relative flex flex-col items-center justify-center flex-1 h-full text-gray-500 hover:text-amber-600">
+          <Heart className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5">Likes</span>
+          {likesCount > 0 && <Badge className="absolute top-1 right-2 bg-red-500 text-white text-[10px] px-1 min-w-[16px] h-4 flex items-center justify-center">{likesCount}</Badge>}
+        </Link>
+        <Link to={createPageUrl('ProfilVu')} className="relative flex flex-col items-center justify-center flex-1 h-full text-gray-500 hover:text-amber-600">
+          <Users className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5">Vus</span>
+          {profileViewsCount > 0 && <Badge className="absolute top-1 right-2 bg-red-500 text-white text-[10px] px-1 min-w-[16px] h-4 flex items-center justify-center">{profileViewsCount}</Badge>}
+        </Link>
+        <Link to={createPageUrl('Favoris')} className="relative flex flex-col items-center justify-center flex-1 h-full text-gray-500 hover:text-amber-600">
+          <Mail className="w-5 h-5" />
+          <span className="text-[10px] mt-0.5">Favoris</span>
+          {favoritesCount > 0 && <Badge className="absolute top-1 right-2 bg-red-500 text-white text-[10px] px-1 min-w-[16px] h-4 flex items-center justify-center">{favoritesCount}</Badge>}
+        </Link>
+      </nav>
     </header>
   );
 }
