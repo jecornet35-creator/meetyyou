@@ -93,53 +93,73 @@ export default function NotificationToast({ duration = 5000 }) {
     setToasts(prev => prev.filter(t => t.id !== id));
   };
 
+  // Show only the latest toast at bottom
+  const latestToast = toasts[toasts.length - 1];
+
   return (
-    <div className="fixed top-20 right-4 z-50 space-y-2 max-w-sm">
+    <div className="fixed bottom-20 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
       <AnimatePresence>
-        {toasts.map((toast) => {
-          const Icon = iconMap[toast.type] || MessageCircle;
-          const bgColor = colorMap[toast.type] || 'bg-gray-500';
-          
-          return (
-            <motion.div
-              key={toast.id}
-              initial={{ opacity: 0, x: 100, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 100, scale: 0.9 }}
-              className="bg-white rounded-lg shadow-xl border overflow-hidden"
+        {latestToast && (
+          <motion.div
+            key={latestToast.id}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 60 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="pointer-events-auto w-full max-w-lg bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
+          >
+            <Link
+              to={latestToast.link || '#'}
+              onClick={() => removeToast(latestToast.id)}
+              className="flex items-center gap-3 px-4 py-3"
             >
-              <div className="flex items-start gap-3 p-4">
-                <div className={`${bgColor} p-2 rounded-full`}>
-                  <Icon className="w-4 h-4 text-white" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 text-sm">{toast.title}</p>
-                  <p className="text-gray-600 text-xs mt-1 truncate">{toast.message}</p>
-                  {toast.from_profile_name && (
-                    <div className="flex items-center gap-2 mt-2">
-                      {toast.from_profile_photo && (
-                        <img src={toast.from_profile_photo} alt="" className="w-6 h-6 rounded-full object-cover" />
-                      )}
-                      <span className="text-xs text-gray-500">{toast.from_profile_name}</span>
-                    </div>
-                  )}
-                </div>
-                <button onClick={() => removeToast(toast.id)} className="text-gray-400 hover:text-gray-600">
+              {/* Avatar */}
+              <div className="flex-shrink-0">
+                {latestToast.from_profile_photo ? (
+                  <img
+                    src={latestToast.from_profile_photo}
+                    alt=""
+                    className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+                  />
+                ) : (
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${colorMap[latestToast.type] || 'bg-gray-400'}`}>
+                    {React.createElement(iconMap[latestToast.type] || MessageCircle, { className: 'w-5 h-5 text-white' })}
+                  </div>
+                )}
+              </div>
+
+              {/* Text */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-800 leading-tight">{latestToast.title}</p>
+                <p className="text-xs text-gray-500 mt-0.5 line-clamp-2 leading-snug">{latestToast.message}</p>
+              </div>
+
+              {/* Icon */}
+              <div className="flex-shrink-0 flex items-center gap-2">
+                {latestToast.type === 'like' && (
+                  <Heart className="w-5 h-5 text-red-400" />
+                )}
+                {latestToast.type === 'favorite' && (
+                  <Star className="w-5 h-5 text-amber-400" />
+                )}
+                <button
+                  onClick={(e) => { e.preventDefault(); removeToast(latestToast.id); }}
+                  className="text-gray-300 hover:text-gray-500 ml-1"
+                >
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              {toast.link && (
-                <Link 
-                  to={toast.link}
-                  onClick={() => removeToast(toast.id)}
-                  className="block px-4 py-2 bg-gray-50 text-amber-600 text-xs font-medium hover:bg-gray-100"
-                >
-                  Voir →
-                </Link>
-              )}
-            </motion.div>
-          );
-        })}
+            </Link>
+
+            {/* Progress bar */}
+            <motion.div
+              className={`h-0.5 ${colorMap[latestToast.type] || 'bg-gray-400'}`}
+              initial={{ scaleX: 1, originX: 0 }}
+              animate={{ scaleX: 0 }}
+              transition={{ duration: duration / 1000, ease: 'linear' }}
+            />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );
