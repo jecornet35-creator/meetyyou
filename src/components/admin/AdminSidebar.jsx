@@ -79,6 +79,7 @@ const menuItems = [
       { label: 'Pages CMS', page: 'AdminCMS' },
       { label: 'Notifications push', page: 'AdminPushNotifications' },
       { label: 'Emails', page: 'AdminEmails' },
+      { label: 'Automatisations', page: 'AdminAutomations' },
     ]
   },
   {
