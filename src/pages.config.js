@@ -51,6 +51,7 @@ import AboutUs from './pages/AboutUs';
 import AccountEmail from './pages/AccountEmail';
 import AccountPassword from './pages/AccountPassword';
 import Activities from './pages/Activities';
+import AdminAutomations from './pages/AdminAutomations';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminEmails from './pages/AdminEmails';
 import AdminFlaggedMessages from './pages/AdminFlaggedMessages';
@@ -83,7 +84,6 @@ import ProfileVerification from './pages/ProfileVerification';
 import Settings from './pages/Settings';
 import SubscriptionPlans from './pages/SubscriptionPlans';
 import TermsOfService from './pages/TermsOfService';
-import AdminAutomations from './pages/AdminAutomations';
 import __Layout from './Layout.jsx';
 
 
@@ -92,6 +92,7 @@ export const PAGES = {
     "AccountEmail": AccountEmail,
     "AccountPassword": AccountPassword,
     "Activities": Activities,
+    "AdminAutomations": AdminAutomations,
     "AdminDashboard": AdminDashboard,
     "AdminEmails": AdminEmails,
     "AdminFlaggedMessages": AdminFlaggedMessages,
@@ -124,7 +125,6 @@ export const PAGES = {
     "Settings": Settings,
     "SubscriptionPlans": SubscriptionPlans,
     "TermsOfService": TermsOfService,
-    "AdminAutomations": AdminAutomations,
 }
 
 export const pagesConfig = {

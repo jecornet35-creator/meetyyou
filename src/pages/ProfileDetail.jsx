@@ -268,6 +268,33 @@ export default function ProfileDetail() {
     enabled: !!profileId,
   });
 
+  // Send profile_view notification when visiting someone else's profile
+  useEffect(() => {
+    if (!profile || !currentUser) return;
+    if (profile.created_by === currentUser.email) return; // don't notify yourself
+
+    const sendView = async () => {
+      const myProfiles = await base44.entities.Profile.filter({ created_by: currentUser.email });
+      const myProfile = myProfiles[0];
+      const senderName = myProfile?.display_name || myProfile?.first_name || currentUser.full_name || currentUser.email;
+      const senderPhoto = myProfile?.main_photo || myProfile?.accepted_photos?.[0] || myProfile?.photos?.[0] || null;
+
+      await base44.entities.Notification.create({
+        user_email: profile.created_by,
+        type: 'profile_view',
+        title: `${senderName} a consulté votre profil`,
+        message: 'A regardé votre profil',
+        from_profile_name: senderName,
+        from_profile_photo: senderPhoto,
+        from_profile_id: myProfile?.id,
+        is_read: false,
+        link: `/ProfileDetail?id=${myProfile?.id || ''}`,
+      });
+    };
+
+    sendView().catch(() => {});
+  }, [profile?.id, currentUser?.email]);
+
   const { data: correspondance } = useQuery({
     queryKey: ['correspondance', profile?.created_by],
     queryFn: async () => {
