@@ -1,0 +1,465 @@
+{
+  "name": "Correspondance",
+  "type": "object",
+  "properties": {
+    "looking_for": {
+      "type": "string",
+      "enum": [
+        "women",
+        "men",
+        "both"
+      ],
+      "description": "Genre recherch\u00e9"
+    },
+    "age_min": {
+      "type": "number",
+      "description": "\u00c2ge minimum recherch\u00e9"
+    },
+    "age_max": {
+      "type": "number",
+      "description": "\u00c2ge maximum recherch\u00e9"
+    },
+    "country": {
+      "type": "string",
+      "description": "Pays"
+    },
+    "state_province": {
+      "type": "string",
+      "description": "\u00c9tat/Province"
+    },
+    "city": {
+      "type": "string",
+      "description": "Ville"
+    },
+    "distance_km": {
+      "type": "number",
+      "description": "Distance en km"
+    },
+    "nationality": {
+      "type": "string",
+      "description": "Nationalit\u00e9"
+    },
+    "height_min": {
+      "type": "string",
+      "description": "Taille minimum"
+    },
+    "height_max": {
+      "type": "string",
+      "description": "Taille maximum"
+    },
+    "weight_min": {
+      "type": "string",
+      "description": "Poids minimum"
+    },
+    "weight_max": {
+      "type": "string",
+      "description": "Poids maximum"
+    },
+    "body_type": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "little",
+          "thin",
+          "sporty",
+          "average",
+          "few_extra_kilos",
+          "round",
+          "large_magnificent"
+        ]
+      },
+      "description": "Type de corps"
+    },
+    "ethnicity": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "african",
+          "african_american",
+          "afro_caribbean",
+          "arabic",
+          "asian",
+          "caucasian",
+          "hispanic_latino",
+          "indian",
+          "metis",
+          "pacific_islander",
+          "other",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Ethnicit\u00e9"
+    },
+    "appearance": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "below_average",
+          "average",
+          "attractive",
+          "very_attractive"
+        ]
+      },
+      "description": "Apparence"
+    },
+    "hair_color": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "bald_shaved",
+          "black",
+          "blond",
+          "brown",
+          "grey_white",
+          "chestnut",
+          "redhead",
+          "change_often",
+          "other"
+        ]
+      },
+      "description": "Couleur de cheveux"
+    },
+    "eye_color": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "black",
+          "blue",
+          "brown",
+          "green",
+          "gray",
+          "hazelnut",
+          "other"
+        ]
+      },
+      "description": "Couleur des yeux"
+    },
+    "body_art": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "brand",
+          "earrings",
+          "piercing",
+          "tattoo",
+          "none",
+          "other",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Art corporel"
+    },
+    "smoking": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "smoke",
+          "dont_smoke",
+          "smoke_occasionally"
+        ]
+      },
+      "description": "Fumeur"
+    },
+    "drinking": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "drink",
+          "dont_drink",
+          "drink_occasionally"
+        ]
+      },
+      "description": "Alcool"
+    },
+    "ready_to_move": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "only_within_country",
+          "to_another_country",
+          "do_not_wish_to_move",
+          "not_sure"
+        ]
+      },
+      "description": "Pr\u00eat \u00e0 d\u00e9m\u00e9nager"
+    },
+    "family_situation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "bachelor",
+          "separated",
+          "widower",
+          "divorce",
+          "other",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Situation familiale"
+    },
+    "has_children": {
+      "type": "string",
+      "description": "A des enfants"
+    },
+    "number_of_children_max": {
+      "type": "number",
+      "description": "Nombre d'enfants max"
+    },
+    "youngest_child_age": {
+      "type": "string",
+      "description": "\u00c2ge minimum du plus jeune enfant"
+    },
+    "oldest_child_age": {
+      "type": "string",
+      "description": "\u00c2ge maximum de l'a\u00een\u00e9"
+    },
+    "want_children": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "yes",
+          "not_sure",
+          "no"
+        ]
+      },
+      "description": "Veut des enfants"
+    },
+    "occupation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "entertainment_media",
+          "hairdresser_beauty",
+          "independent",
+          "transportation",
+          "administrative_office",
+          "advertising_media",
+          "artistic_creative",
+          "building_commerce",
+          "home_help",
+          "teaching_university",
+          "executive_management",
+          "livestock_farming",
+          "finance_banking",
+          "firefighters_police",
+          "information_technology",
+          "farm_worker",
+          "legal",
+          "medical_dental",
+          "military",
+          "nanny_babysitter",
+          "unemployed_homemaker",
+          "nonprofit_clergy",
+          "politics_government",
+          "retail_food",
+          "retirement",
+          "sales_marketing",
+          "sports_leisure",
+          "student",
+          "technology_science",
+          "tourism_hospitality",
+          "unemployed",
+          "other"
+        ]
+      },
+      "description": "Profession"
+    },
+    "professional_status": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "student",
+          "part_time",
+          "full_time",
+          "homemaker",
+          "retirement",
+          "unemployed",
+          "other",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Statut professionnel"
+    },
+    "annual_income_min": {
+      "type": "string",
+      "description": "Revenu annuel minimum"
+    },
+    "living_situation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "live_alone",
+          "live_with_friends",
+          "live_with_family",
+          "live_with_children",
+          "live_with_partner",
+          "other",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Situation de vie"
+    },
+    "education_level": {
+      "type": "string",
+      "enum": [
+        "no_preference",
+        "primary_elementary",
+        "college",
+        "high_school",
+        "vocational_education",
+        "license",
+        "mastery",
+        "doctorate"
+      ],
+      "description": "Niveau d'\u00e9ducation minimum"
+    },
+    "languages_spoken": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Langues parl\u00e9es"
+    },
+    "english_proficiency": {
+      "type": "string",
+      "enum": [
+        "no_preference",
+        "dont_speak",
+        "average",
+        "good",
+        "very_good",
+        "good_command"
+      ],
+      "description": "Niveau d'anglais minimum"
+    },
+    "french_proficiency": {
+      "type": "string",
+      "enum": [
+        "no_preference",
+        "dont_speak",
+        "average",
+        "good",
+        "very_good",
+        "good_command"
+      ],
+      "description": "Niveau de fran\u00e7ais minimum"
+    },
+    "religion": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "baptist",
+          "buddhist",
+          "christian",
+          "hindu",
+          "islam",
+          "jainism",
+          "jewish",
+          "parsi",
+          "shintoism",
+          "sikhism",
+          "taoism",
+          "other",
+          "atheist",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Religion"
+    },
+    "religious_values": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "not_religious",
+          "average",
+          "very_religious",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Valeurs religieuses"
+    },
+    "polygamy": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "accept",
+          "against",
+          "might_accept"
+        ]
+      },
+      "description": "Polygamie"
+    },
+    "astrological_sign": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "aquarius",
+          "aries",
+          "cancer",
+          "capricorn",
+          "gemini",
+          "leo",
+          "libra",
+          "pisces",
+          "sagittarius",
+          "scorpio",
+          "taurus",
+          "virgo",
+          "dont_know"
+        ]
+      },
+      "description": "Signe astrologique"
+    },
+    "relationship_looking_for": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "no_preference",
+          "corresponding",
+          "friendship",
+          "love_dating",
+          "long_term_relationship"
+        ]
+      },
+      "description": "Type de relation recherch\u00e9e"
+    }
+  },
+  "required": []
+}
