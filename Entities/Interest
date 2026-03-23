@@ -1,0 +1,74 @@
+{
+  "name": "Interest",
+  "type": "object",
+  "properties": {
+    "sports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Sports et activit\u00e9s physiques"
+    },
+    "music": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Musique"
+    },
+    "arts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Arts et culture"
+    },
+    "travel": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Voyages"
+    },
+    "food": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Cuisine et gastronomie"
+    },
+    "nature": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Nature et plein air"
+    },
+    "tech": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Technologie et jeux"
+    },
+    "social": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Social et divertissement"
+    },
+    "wellness": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Bien-\u00eatre et sant\u00e9"
+    },
+    "other_interests": {
+      "type": "string",
+      "description": "Autres int\u00e9r\u00eats (texte libre)"
+    }
+  },
+  "required": []
+}
