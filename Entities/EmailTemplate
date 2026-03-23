@@ -1,0 +1,42 @@
+{
+  "name": "EmailTemplate",
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string",
+      "description": "Nom du mod\u00e8le d'email"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "inscription",
+        "premium",
+        "vip",
+        "moderation",
+        "promotion",
+        "reactivation",
+        "autre"
+      ],
+      "description": "Cat\u00e9gorie d'utilisation du mod\u00e8le"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Sujet de l'email"
+    },
+    "body": {
+      "type": "string",
+      "description": "Corps de l'email"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Mod\u00e8le actif"
+    }
+  },
+  "required": [
+    "label",
+    "category",
+    "subject",
+    "body"
+  ]
+}
