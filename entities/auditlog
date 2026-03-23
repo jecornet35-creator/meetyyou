@@ -1,0 +1,53 @@
+{
+  "name": "AuditLog",
+  "type": "object",
+  "properties": {
+    "admin_email": {
+      "type": "string",
+      "description": "Email de l'admin"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "user_banned",
+        "user_suspended",
+        "user_activated",
+        "user_deleted",
+        "profile_verified",
+        "photo_removed",
+        "report_resolved",
+        "ticket_closed",
+        "settings_changed"
+      ],
+      "description": "Action effectu\u00e9e"
+    },
+    "target_type": {
+      "type": "string",
+      "enum": [
+        "user",
+        "profile",
+        "report",
+        "ticket",
+        "subscription",
+        "settings"
+      ],
+      "description": "Type de cible"
+    },
+    "target_id": {
+      "type": "string",
+      "description": "ID de la cible"
+    },
+    "details": {
+      "type": "string",
+      "description": "D\u00e9tails de l'action"
+    },
+    "ip_address": {
+      "type": "string",
+      "description": "Adresse IP"
+    }
+  },
+  "required": [
+    "admin_email",
+    "action"
+  ]
+}
