@@ -1,0 +1,55 @@
+{
+  "name": "PromoAccess",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nom de la promotion (ex: No\u00ebl 2025)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description interne de la promo"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de d\u00e9but de la promotion"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de fin de la promotion"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Promotion activ\u00e9e"
+    },
+    "banner_message": {
+      "type": "string",
+      "description": "Message affich\u00e9 sur la page de connexion"
+    },
+    "banner_emoji": {
+      "type": "string",
+      "description": "Emoji affich\u00e9 avec le message (ex: \ud83c\udf84)"
+    },
+    "banner_color": {
+      "type": "string",
+      "enum": [
+        "amber",
+        "red",
+        "green",
+        "blue",
+        "purple",
+        "pink"
+      ],
+      "default": "amber",
+      "description": "Couleur du banner"
+    }
+  },
+  "required": [
+    "name",
+    "start_date",
+    "end_date"
+  ]
+}
