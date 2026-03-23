@@ -1,0 +1,126 @@
+{
+  "name": "AdvancedFilter",
+  "type": "object",
+  "properties": {
+    "looking_for": {
+      "type": "string",
+      "enum": [
+        "women",
+        "men",
+        "both"
+      ],
+      "description": "Genre recherch\u00e9"
+    },
+    "age_min": {
+      "type": "number",
+      "description": "\u00c2ge minimum"
+    },
+    "age_max": {
+      "type": "number",
+      "description": "\u00c2ge maximum"
+    },
+    "country": {
+      "type": "string",
+      "description": "Pays"
+    },
+    "state": {
+      "type": "string",
+      "description": "\u00c9tat/Province"
+    },
+    "city": {
+      "type": "string",
+      "description": "Ville"
+    },
+    "body_type": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Type de corps"
+    },
+    "ethnicity": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Ethnicit\u00e9"
+    },
+    "appearance": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Apparence"
+    },
+    "smoking": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Fumeur"
+    },
+    "drinking": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Alcool"
+    },
+    "ready_to_move": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pr\u00eat \u00e0 d\u00e9m\u00e9nager"
+    },
+    "has_children": {
+      "type": "string",
+      "description": "A des enfants"
+    },
+    "annual_income_min": {
+      "type": "string",
+      "description": "Revenu annuel minimum"
+    },
+    "education_level": {
+      "type": "string",
+      "description": "Niveau d'\u00e9ducation minimum"
+    },
+    "languages_spoken": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Langues parl\u00e9es"
+    },
+    "english_proficiency": {
+      "type": "string",
+      "description": "Niveau d'anglais"
+    },
+    "french_proficiency": {
+      "type": "string",
+      "description": "Niveau de fran\u00e7ais"
+    },
+    "religion": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Religion"
+    },
+    "astrological_sign": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Signe astrologique"
+    },
+    "relationship_looking_for": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Type de relation recherch\u00e9e"
+    }
+  },
+  "required": []
+}
