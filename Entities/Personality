@@ -1,0 +1,87 @@
+{
+  "name": "Personality",
+  "type": "object",
+  "properties": {
+    "personality_q1": {
+      "type": "string",
+      "description": "Comment vos amis vous d\u00e9criraient-ils ?"
+    },
+    "personality_q2": {
+      "type": "string",
+      "description": "\u00cates-vous plut\u00f4t introverti(e) ou extraverti(e) ?"
+    },
+    "personality_q3": {
+      "type": "string",
+      "description": "Comment g\u00e9rez-vous les conflits ?"
+    },
+    "personality_q4": {
+      "type": "string",
+      "description": "Qu'est-ce qui vous rend heureux(se) au quotidien ?"
+    },
+    "personality_q5": {
+      "type": "string",
+      "description": "Quelle est votre plus grande qualit\u00e9 ?"
+    },
+    "personality_q6": {
+      "type": "string",
+      "description": "Quel est votre plus grand d\u00e9faut ?"
+    },
+    "personality_q7": {
+      "type": "string",
+      "description": "Comment r\u00e9agissez-vous face au stress ?"
+    },
+    "personality_q8": {
+      "type": "string",
+      "description": "\u00cates-vous plut\u00f4t t\u00eate ou c\u0153ur ?"
+    },
+    "life_goal_q1": {
+      "type": "string",
+      "description": "Quel est votre objectif principal dans les 5 prochaines ann\u00e9es ?"
+    },
+    "life_goal_q2": {
+      "type": "string",
+      "description": "Comment imaginez-vous votre vie id\u00e9ale ?"
+    },
+    "life_goal_q3": {
+      "type": "string",
+      "description": "Quelle place occupe la famille dans votre vie ?"
+    },
+    "life_goal_q4": {
+      "type": "string",
+      "description": "Qu'est-ce que le succ\u00e8s signifie pour vous ?"
+    },
+    "life_goal_q5": {
+      "type": "string",
+      "description": "Quel h\u00e9ritage souhaitez-vous laisser ?"
+    },
+    "life_goal_q6": {
+      "type": "string",
+      "description": "Quelle est votre vision d'une relation \u00e9panouissante ?"
+    },
+    "quote1": {
+      "type": "string",
+      "description": "Citation favorite 1"
+    },
+    "quote2": {
+      "type": "string",
+      "description": "Citation favorite 2"
+    },
+    "quote3": {
+      "type": "string",
+      "description": "Citation favorite 3"
+    },
+    "quote_author1": {
+      "type": "string",
+      "description": "Auteur de la citation 1"
+    },
+    "quote_author2": {
+      "type": "string",
+      "description": "Auteur de la citation 2"
+    },
+    "quote_author3": {
+      "type": "string",
+      "description": "Auteur de la citation 3"
+    }
+  },
+  "required": []
+}
