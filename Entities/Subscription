@@ -1,0 +1,63 @@
+{
+  "name": "Subscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur"
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "free",
+        "premium",
+        "vip"
+      ],
+      "default": "free",
+      "description": "Type d'abonnement"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "cancelled",
+        "expired",
+        "pending"
+      ],
+      "default": "active",
+      "description": "Statut"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de d\u00e9but"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de fin"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Montant pay\u00e9"
+    },
+    "currency": {
+      "type": "string",
+      "default": "EUR",
+      "description": "Devise"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "M\u00e9thode de paiement"
+    },
+    "auto_renew": {
+      "type": "boolean",
+      "default": true,
+      "description": "Renouvellement automatique"
+    }
+  },
+  "required": [
+    "user_email",
+    "plan"
+  ]
+}
