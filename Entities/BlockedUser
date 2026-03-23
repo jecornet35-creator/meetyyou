@@ -1,0 +1,30 @@
+{
+  "name": "BlockedUser",
+  "type": "object",
+  "properties": {
+    "blocker_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur qui bloque"
+    },
+    "blocked_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur bloqu\u00e9"
+    },
+    "blocked_profile_id": {
+      "type": "string",
+      "description": "ID du profil bloqu\u00e9"
+    },
+    "blocked_display_name": {
+      "type": "string",
+      "description": "Nom affich\u00e9 du profil bloqu\u00e9"
+    },
+    "blocked_photo": {
+      "type": "string",
+      "description": "Photo du profil bloqu\u00e9"
+    }
+  },
+  "required": [
+    "blocker_email",
+    "blocked_email"
+  ]
+}
