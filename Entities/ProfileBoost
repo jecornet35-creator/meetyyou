@@ -1,0 +1,37 @@
+{
+  "name": "ProfileBoost",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur qui booste"
+    },
+    "profile_id": {
+      "type": "string",
+      "description": "ID du profil boost\u00e9"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date d'expiration du boost"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Boost actif"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "vip_monthly",
+        "purchased"
+      ],
+      "description": "Source du boost (VIP mensuel ou achat)"
+    }
+  },
+  "required": [
+    "user_email",
+    "profile_id",
+    "expires_at"
+  ]
+}
