@@ -1,0 +1,56 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur qui re\u00e7oit la notification"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "like",
+        "message",
+        "match",
+        "profile_view",
+        "favorite"
+      ],
+      "description": "Type de notification"
+    },
+    "title": {
+      "type": "string",
+      "description": "Titre de la notification"
+    },
+    "message": {
+      "type": "string",
+      "description": "Message de la notification"
+    },
+    "from_profile_id": {
+      "type": "string",
+      "description": "ID du profil source"
+    },
+    "from_profile_name": {
+      "type": "string",
+      "description": "Nom du profil source"
+    },
+    "from_profile_photo": {
+      "type": "string",
+      "description": "Photo du profil source"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false,
+      "description": "Notification lue ou non"
+    },
+    "link": {
+      "type": "string",
+      "description": "Lien vers l'action"
+    }
+  },
+  "required": [
+    "user_email",
+    "type",
+    "title",
+    "message"
+  ]
+}
