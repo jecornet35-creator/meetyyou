@@ -1,0 +1,46 @@
+{
+  "name": "EmailAutomation",
+  "type": "object",
+  "properties": {
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "new_registration",
+        "premium_subscription",
+        "vip_subscription",
+        "subscription_expired",
+        "profile_verified",
+        "inactive_7days",
+        "inactive_30days"
+      ],
+      "description": "D\u00e9clencheur de l'automatisation"
+    },
+    "template_id": {
+      "type": "string",
+      "description": "ID du mod\u00e8le d'email \u00e0 envoyer"
+    },
+    "template_label": {
+      "type": "string",
+      "description": "Nom du mod\u00e8le (pour affichage)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Automatisation active"
+    },
+    "delay_hours": {
+      "type": "number",
+      "default": 0,
+      "description": "D\u00e9lai en heures avant envoi (0 = imm\u00e9diat)"
+    },
+    "emails_sent": {
+      "type": "number",
+      "default": 0,
+      "description": "Nombre d'emails envoy\u00e9s"
+    }
+  },
+  "required": [
+    "trigger",
+    "template_id"
+  ]
+}
