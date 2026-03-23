@@ -1,0 +1,57 @@
+{
+  "name": "FlaggedConversation",
+  "type": "object",
+  "properties": {
+    "conversation_id": {
+      "type": "string",
+      "description": "ID de la conversation signal\u00e9e"
+    },
+    "reporter_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur qui signale"
+    },
+    "reported_user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur signal\u00e9"
+    },
+    "reported_user_name": {
+      "type": "string",
+      "description": "Nom de l'utilisateur signal\u00e9"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "harassment",
+        "spam",
+        "inappropriate",
+        "scam",
+        "other"
+      ],
+      "description": "Raison du signalement"
+    },
+    "details": {
+      "type": "string",
+      "description": "D\u00e9tails suppl\u00e9mentaires"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewing",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "pending",
+      "description": "Statut du signalement"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Notes de l'administrateur"
+    }
+  },
+  "required": [
+    "conversation_id",
+    "reporter_email",
+    "reason"
+  ]
+}
