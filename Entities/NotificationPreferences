@@ -1,0 +1,67 @@
+{
+  "name": "NotificationPreferences",
+  "type": "object",
+  "properties": {
+    "new_messages": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notifications pour nouveaux messages"
+    },
+    "new_matches": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notifications pour nouvelles correspondances"
+    },
+    "profile_views": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notifications quand quelqu'un voit mon profil"
+    },
+    "likes": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notifications pour les likes re\u00e7us"
+    },
+    "favorites": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notifications pour les favoris"
+    },
+    "profile_updates": {
+      "type": "boolean",
+      "default": false,
+      "description": "Mises \u00e0 jour de profil des correspondances"
+    },
+    "promotions": {
+      "type": "boolean",
+      "default": false,
+      "description": "Offres et promotions"
+    },
+    "email_notifications": {
+      "type": "boolean",
+      "default": true,
+      "description": "Recevoir aussi par email"
+    },
+    "push_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Notifications push activ\u00e9es"
+    },
+    "quiet_hours_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Mode silencieux activ\u00e9"
+    },
+    "quiet_hours_start": {
+      "type": "string",
+      "default": "22:00",
+      "description": "D\u00e9but du mode silencieux"
+    },
+    "quiet_hours_end": {
+      "type": "string",
+      "default": "08:00",
+      "description": "Fin du mode silencieux"
+    }
+  },
+  "required": []
+}
