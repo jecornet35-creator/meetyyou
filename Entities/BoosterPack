@@ -1,0 +1,23 @@
+{
+  "name": "BoosterPack",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur"
+    },
+    "boosts_remaining": {
+      "type": "number",
+      "default": 0,
+      "description": "Nombre de boosts restants"
+    },
+    "total_purchased": {
+      "type": "number",
+      "default": 0,
+      "description": "Total de boosts achet\u00e9s"
+    }
+  },
+  "required": [
+    "user_email"
+  ]
+}
