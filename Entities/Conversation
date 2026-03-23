@@ -1,0 +1,51 @@
+{
+  "name": "Conversation",
+  "type": "object",
+  "properties": {
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Emails des participants"
+    },
+    "participant_profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Infos des profils participants"
+    },
+    "last_message": {
+      "type": "string",
+      "description": "Dernier message"
+    },
+    "last_message_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date du dernier message"
+    },
+    "last_message_sender": {
+      "type": "string",
+      "description": "Email de l'exp\u00e9diteur du dernier message"
+    },
+    "unread_count": {
+      "type": "object",
+      "description": "Compteur de messages non lus par utilisateur"
+    }
+  },
+  "required": [
+    "participants"
+  ]
+}
