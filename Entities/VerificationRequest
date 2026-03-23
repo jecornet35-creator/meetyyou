@@ -1,0 +1,90 @@
+{
+  "name": "VerificationRequest",
+  "type": "object",
+  "properties": {
+    "profile_id": {
+      "type": "string",
+      "description": "ID du profil concern\u00e9"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Nom affich\u00e9"
+    },
+    "profile_photo": {
+      "type": "string",
+      "description": "Photo principale du profil"
+    },
+    "verification_type": {
+      "type": "string",
+      "enum": [
+        "photo",
+        "document",
+        "both"
+      ],
+      "description": "Type de v\u00e9rification demand\u00e9e"
+    },
+    "selfie_url": {
+      "type": "string",
+      "description": "URL du selfie soumis"
+    },
+    "document_url": {
+      "type": "string",
+      "description": "URL du document soumis"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "passport",
+        "id_card",
+        "driver_license"
+      ],
+      "description": "Type de document"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "ai_processing",
+        "pending_admin",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending",
+      "description": "Statut de la demande"
+    },
+    "ai_similarity_score": {
+      "type": "number",
+      "description": "Score de similarit\u00e9 IA (0-100)"
+    },
+    "ai_analysis": {
+      "type": "string",
+      "description": "Analyse d\u00e9taill\u00e9e de l'IA"
+    },
+    "admin_notes": {
+      "type": "string",
+      "description": "Notes de l'administrateur"
+    },
+    "rejection_reason": {
+      "type": "string",
+      "description": "Raison du rejet"
+    },
+    "verification_level": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "verified",
+        "highly_verified"
+      ],
+      "description": "Niveau de v\u00e9rification accord\u00e9"
+    }
+  },
+  "required": [
+    "profile_id",
+    "user_email",
+    "verification_type"
+  ]
+}
