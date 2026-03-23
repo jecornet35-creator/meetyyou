@@ -1,0 +1,80 @@
+{
+  "name": "SupportTicket",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Sujet du ticket"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "account",
+        "payment",
+        "technical",
+        "report",
+        "feature",
+        "other"
+      ],
+      "description": "Cat\u00e9gorie"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description du probl\u00e8me"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "in_progress",
+        "waiting_user",
+        "resolved",
+        "closed"
+      ],
+      "default": "open",
+      "description": "Statut"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "urgent"
+      ],
+      "default": "medium",
+      "description": "Priorit\u00e9"
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "Email du support assign\u00e9"
+    },
+    "responses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sender": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "R\u00e9ponses"
+    }
+  },
+  "required": [
+    "user_email",
+    "subject",
+    "description"
+  ]
+}
