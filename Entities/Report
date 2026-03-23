@@ -1,0 +1,93 @@
+{
+  "name": "Report",
+  "type": "object",
+  "properties": {
+    "reporter_email": {
+      "type": "string",
+      "description": "Email du signaleur"
+    },
+    "reported_user_email": {
+      "type": "string",
+      "description": "Email de l'utilisateur signal\u00e9"
+    },
+    "reported_profile_id": {
+      "type": "string",
+      "description": "ID du profil signal\u00e9"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "profile",
+        "message",
+        "photo",
+        "spam",
+        "fake",
+        "harassment",
+        "inappropriate",
+        "other"
+      ],
+      "description": "Type de signalement"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Raison du signalement"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description d\u00e9taill\u00e9e"
+    },
+    "evidence_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs des preuves"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewing",
+        "resolved",
+        "dismissed"
+      ],
+      "default": "pending",
+      "description": "Statut du signalement"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "urgent"
+      ],
+      "default": "medium",
+      "description": "Priorit\u00e9"
+    },
+    "assigned_to": {
+      "type": "string",
+      "description": "Email du mod\u00e9rateur assign\u00e9"
+    },
+    "resolution": {
+      "type": "string",
+      "description": "R\u00e9solution du signalement"
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": [
+        "none",
+        "warning",
+        "suspension",
+        "ban",
+        "content_removed"
+      ],
+      "description": "Action prise"
+    }
+  },
+  "required": [
+    "reporter_email",
+    "type",
+    "reason"
+  ]
+}
