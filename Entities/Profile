@@ -1,0 +1,441 @@
+{
+  "name": "Profile",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "description": "Pr\u00e9nom"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Nom affich\u00e9 sur le profil"
+    },
+    "age": {
+      "type": "number",
+      "description": "\u00c2ge de l'utilisateur"
+    },
+    "birth_month": {
+      "type": "string",
+      "description": "Mois de naissance"
+    },
+    "birth_year": {
+      "type": "number",
+      "description": "Ann\u00e9e de naissance"
+    },
+    "city": {
+      "type": "string",
+      "description": "Ville"
+    },
+    "state": {
+      "type": "string",
+      "description": "\u00c9tat/Province"
+    },
+    "country": {
+      "type": "string",
+      "description": "Pays"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Description personnelle"
+    },
+    "looking_for": {
+      "type": "string",
+      "description": "Ce que la personne recherche"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "homme",
+        "femme",
+        "autre"
+      ],
+      "description": "Genre"
+    },
+    "hair_color": {
+      "type": "string",
+      "enum": [
+        "bald_shaved",
+        "black",
+        "blond",
+        "brown",
+        "grey_white",
+        "chestnut",
+        "redhead",
+        "change_often",
+        "other"
+      ],
+      "description": "Couleur de cheveux"
+    },
+    "eye_color": {
+      "type": "string",
+      "enum": [
+        "black",
+        "blue",
+        "brown",
+        "green",
+        "gray",
+        "hazelnut",
+        "other"
+      ],
+      "description": "Couleur des yeux"
+    },
+    "height": {
+      "type": "string",
+      "description": "Taille"
+    },
+    "weight": {
+      "type": "string",
+      "description": "Poids"
+    },
+    "body_type": {
+      "type": "string",
+      "enum": [
+        "little",
+        "thin",
+        "sporty",
+        "average",
+        "few_extra_kilos",
+        "round",
+        "large_magnificent"
+      ],
+      "description": "Type de corps"
+    },
+    "ethnicity": {
+      "type": "string",
+      "enum": [
+        "african",
+        "african_american",
+        "afro_caribbean",
+        "arabic",
+        "asian",
+        "caucasian",
+        "hispanic_latino",
+        "indian",
+        "metis",
+        "pacific_islander",
+        "other",
+        "prefer_not_comment"
+      ],
+      "description": "Ethnicit\u00e9"
+    },
+    "body_art": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "brand",
+          "earrings",
+          "piercing",
+          "tattoo",
+          "other",
+          "none",
+          "prefer_not_comment"
+        ]
+      },
+      "description": "Art corporel"
+    },
+    "appearance": {
+      "type": "string",
+      "enum": [
+        "below_average",
+        "average",
+        "attractive",
+        "very_attractive"
+      ],
+      "description": "Apparence per\u00e7ue"
+    },
+    "drinking": {
+      "type": "string",
+      "enum": [
+        "drink",
+        "dont_drink",
+        "wood_on_occasion"
+      ],
+      "description": "Consommation d'alcool"
+    },
+    "smoking": {
+      "type": "string",
+      "enum": [
+        "smoke",
+        "dont_smoke",
+        "smoke_occasionally"
+      ],
+      "description": "Fumeur"
+    },
+    "family_situation": {
+      "type": "string",
+      "enum": [
+        "bachelor",
+        "separated",
+        "widower",
+        "divorce",
+        "other",
+        "prefer_not_comment"
+      ],
+      "description": "Situation familiale"
+    },
+    "has_children": {
+      "type": "string",
+      "description": "A des enfants"
+    },
+    "number_of_children": {
+      "type": "string",
+      "description": "Nombre d'enfants"
+    },
+    "eldest_child_age": {
+      "type": "string",
+      "description": "\u00c2ge de l'a\u00een\u00e9"
+    },
+    "youngest_child_age": {
+      "type": "string",
+      "description": "\u00c2ge du plus jeune"
+    },
+    "want_children": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "not_sure",
+        "no"
+      ],
+      "description": "Veut des enfants"
+    },
+    "occupation": {
+      "type": "string",
+      "enum": [
+        "entertainment_media",
+        "hairdresser_beauty",
+        "independent",
+        "transportation",
+        "administrative_office",
+        "advertising_media",
+        "artistic_creative",
+        "building_commerce",
+        "home_help",
+        "teaching_university",
+        "executive_management",
+        "livestock_farming",
+        "finance_banking",
+        "firefighters_police",
+        "information_technology",
+        "farm_worker",
+        "legal",
+        "medical_dental",
+        "military",
+        "nanny_babysitter",
+        "unemployed_homemaker",
+        "nonprofit_clergy",
+        "politics_government",
+        "retail_food",
+        "retirement",
+        "sales_marketing",
+        "sports_leisure",
+        "student",
+        "technology_science",
+        "tourism_hospitality",
+        "unemployed",
+        "other"
+      ],
+      "description": "Profession"
+    },
+    "professional_status": {
+      "type": "string",
+      "enum": [
+        "student",
+        "part_time",
+        "full_time",
+        "homemaker",
+        "retirement",
+        "unemployed",
+        "other",
+        "prefer_not_comment"
+      ],
+      "description": "Statut professionnel"
+    },
+    "annual_income": {
+      "type": "string",
+      "description": "Revenu annuel"
+    },
+    "living_situation": {
+      "type": "string",
+      "enum": [
+        "live_alone",
+        "live_with_friends",
+        "live_with_family",
+        "live_with_children",
+        "live_with_partner",
+        "other",
+        "prefer_not_comment"
+      ],
+      "description": "Situation de vie"
+    },
+    "ready_to_move": {
+      "type": "string",
+      "enum": [
+        "only_within_country",
+        "to_another_country",
+        "do_not_wish_to_move",
+        "not_sure"
+      ],
+      "description": "Pr\u00eat \u00e0 d\u00e9m\u00e9nager"
+    },
+    "relationship_looking_for": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "corresponding",
+          "friendship",
+          "love_dating",
+          "long_term_relationship"
+        ]
+      },
+      "description": "Type de relation recherch\u00e9e"
+    },
+    "nationality": {
+      "type": "string",
+      "description": "Nationalit\u00e9"
+    },
+    "education_level": {
+      "type": "string",
+      "enum": [
+        "primary_elementary",
+        "college",
+        "high_school",
+        "vocational_education",
+        "license",
+        "mastery",
+        "doctorate"
+      ],
+      "description": "Niveau d'\u00e9ducation"
+    },
+    "languages_spoken": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Langues parl\u00e9es"
+    },
+    "english_proficiency": {
+      "type": "string",
+      "enum": [
+        "dont_speak",
+        "average",
+        "good",
+        "very_good",
+        "good_command"
+      ],
+      "description": "Niveau d'anglais"
+    },
+    "french_proficiency": {
+      "type": "string",
+      "enum": [
+        "dont_speak",
+        "average",
+        "good",
+        "very_good",
+        "good_command"
+      ],
+      "description": "Niveau de fran\u00e7ais"
+    },
+    "religion": {
+      "type": "string",
+      "description": "Religion"
+    },
+    "religious_values": {
+      "type": "string",
+      "enum": [
+        "not_religious",
+        "average",
+        "very_religious",
+        "prefer_not_comment"
+      ],
+      "description": "Valeurs religieuses"
+    },
+    "polygamy": {
+      "type": "string",
+      "enum": [
+        "accept",
+        "against",
+        "might_accept"
+      ],
+      "description": "Position sur la polygamie"
+    },
+    "astrological_sign": {
+      "type": "string",
+      "enum": [
+        "aquarius",
+        "aries",
+        "cancer",
+        "capricorn",
+        "gemini",
+        "leo",
+        "libra",
+        "pisces",
+        "sagittarius",
+        "scorpio",
+        "taurus",
+        "virgo",
+        "dont_know"
+      ],
+      "description": "Signe astrologique"
+    },
+    "profile_title": {
+      "type": "string",
+      "description": "Titre du profil"
+    },
+    "about_me": {
+      "type": "string",
+      "description": "Aper\u00e7u de soi-m\u00eame"
+    },
+    "looking_for_in_partner": {
+      "type": "string",
+      "description": "Ce que vous recherchez chez un partenaire"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs des photos"
+    },
+    "main_photo": {
+      "type": "string",
+      "description": "Photo principale"
+    },
+    "accepted_photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs des photos approuv\u00e9es par l'admin"
+    },
+    "is_online": {
+      "type": "boolean",
+      "default": false,
+      "description": "Statut en ligne"
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Derni\u00e8re connexion"
+    },
+    "is_verified": {
+      "type": "boolean",
+      "default": false,
+      "description": "Profil v\u00e9rifi\u00e9"
+    },
+    "verification_level": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "verified",
+        "highly_verified"
+      ],
+      "default": "basic",
+      "description": "Niveau de v\u00e9rification du profil"
+    }
+  },
+  "required": [
+    "display_name"
+  ]
+}
