@@ -1,0 +1,24 @@
+[
+  {
+    "id": "69ac01b0056706c15ed54307",
+    "user_email": "jlcornet878@gmail.com",
+    "type": "profile_view",
+    "title": "Jean a consulté votre profil",
+    "message": "A regardé votre profil",
+    "from_profile_name": "Jean",
+    "from_profile_photo": "https://base44.app/api/apps/69824e8fb1708fad26dcdc79/files/public/69824e8fb1708fad26dcdc79/7772f2d7e_photo.jpg",
+    "is_read": false,
+    "created_date": "2026-03-07T10:45:04.095000"
+  },
+  {
+    "id": "6982532d0a1c801f0dc97a3d",
+    "user_email": "user@example.com",
+    "type": "match",
+    "title": "Nouveau match !",
+    "message": "Vous avez un match avec Amara",
+    "from_profile_name": "Amara",
+    "from_profile_photo": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600",
+    "is_read": false,
+    "created_date": "2026-02-03T19:57:33.882000"
+  }
+]

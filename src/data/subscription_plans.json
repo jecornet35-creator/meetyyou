@@ -1,0 +1,76 @@
+[
+  {
+    "id": "booster",
+    "name": "Pack Booster",
+    "subtitle": "10 boosts à utiliser à volonté",
+    "price": "5",
+    "currency": "€",
+    "period": "/ 10 boosts",
+    "badge": "À la carte",
+    "color": "from-orange-400 to-orange-500",
+    "btnColor": "bg-orange-500 hover:bg-orange-600",
+    "type": "booster",
+    "iconName": "Rocket",
+    "features": [
+      { "text": "10 boosts de profil", "included": true },
+      { "text": "Valable sans abonnement", "included": true },
+      { "text": "Visibilité 24h par boost", "included": true },
+      { "text": "Profil \"À la une\"", "included": true },
+      { "text": "Messages illimités", "included": false },
+      { "text": "Voir qui vous a liké", "included": false },
+      { "text": "Filtres avancés", "included": false },
+      { "text": "Badge VIP", "included": false }
+    ],
+    "btnText": "Acheter 10 boosts — 5€"
+  },
+  {
+    "id": "premium",
+    "name": "Premium",
+    "subtitle": "Toutes les fonctionnalités essentielles",
+    "price": "5",
+    "currency": "€",
+    "period": "/ mois",
+    "badge": "Plus populaire",
+    "color": "from-amber-400 to-amber-500",
+    "btnColor": "bg-amber-500 hover:bg-amber-600",
+    "type": "subscription",
+    "iconName": "Zap",
+    "popular": true,
+    "features": [
+      { "text": "Créer un profil", "included": true },
+      { "text": "50 likes par jour", "included": true },
+      { "text": "Envoyer des messages illimités", "included": true },
+      { "text": "Voir qui vous a liké", "included": true },
+      { "text": "Filtres de recherche avancés", "included": true },
+      { "text": "Profil mis en avant", "included": true },
+      { "text": "Boost de profil", "included": false },
+      { "text": "Badge VIP", "included": false }
+    ],
+    "btnText": "Passer à Premium"
+  },
+  {
+    "id": "vip",
+    "name": "VIP",
+    "subtitle": "L'expérience ultime",
+    "price": "50",
+    "currency": "€",
+    "period": "/ an",
+    "badge": "Tout inclus",
+    "economy": "Économie 10€ vs mensuel",
+    "color": "from-purple-500 to-purple-600",
+    "btnColor": "bg-purple-600 hover:bg-purple-700",
+    "type": "subscription",
+    "iconName": "Crown",
+    "features": [
+      { "text": "Créer un profil", "included": true },
+      { "text": "Likes illimités", "included": true },
+      { "text": "Envoyer des messages illimités", "included": true },
+      { "text": "Voir qui vous a liké", "included": true },
+      { "text": "Filtres de recherche avancés", "included": true },
+      { "text": "Profil mis en avant", "included": true },
+      { "text": "2 boosts de profil / mois inclus", "included": true },
+      { "text": "Badge VIP exclusif", "included": true }
+    ],
+    "btnText": "Passer à VIP"
+  }
+]

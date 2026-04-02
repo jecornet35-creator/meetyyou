@@ -1,0 +1,9 @@
+[
+  {
+    "id": "admin-1",
+    "email": "jlcornet878@gmail.com",
+    "password": "admin",
+    "is_verified": true,
+    "created_at": "2024-01-01T00:00:00Z"
+  }
+]
