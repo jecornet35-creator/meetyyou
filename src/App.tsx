@@ -51,7 +51,7 @@ import {
   Home as HomeIcon,
   Users
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -67,7 +67,7 @@ export default function App() {
   const [advancedFilters, setAdvancedFilters] = useState(null);
   const [temporaryFilters, setTemporaryFilters] = useState(null);
   const [blockedUserIds, setBlockedUserIds] = useState([]);
-  const [view, setView] = useState('admin'); // 'discover', 'profile', 'edit-profile', 'photos', 'hobbies', 'personality', 'verify', 'blocked', 'settings', 'help', 'subscription', 'admin', 'advanced-filters', 'chat', 'likes', 'views', 'favorites', 'messages'
+  const [view, setView] = useState('discover'); // 'discover', 'profile', 'edit-profile', 'photos', 'hobbies', 'personality', 'verify', 'blocked', 'settings', 'help', 'subscription', 'admin', 'advanced-filters', 'chat', 'likes', 'views', 'favorites', 'messages'
   const [listType, setListType] = useState(null); // 'likes', 'views', 'favorites'
 
   const [likesCount, setLikesCount] = useState(0);
@@ -81,6 +81,7 @@ export default function App() {
   const handleLogin = (user: any) => {
     setCurrentUser(user);
     setIsLoggedIn(true);
+    setView('discover');
   };
 
   const handleLogout = () => {

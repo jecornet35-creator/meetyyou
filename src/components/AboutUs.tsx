@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ArrowLeft, Heart, ShieldCheck, DollarSign, Shield, TrendingUp, Users, Mail } from 'lucide-react';
 
 interface AboutUsProps {

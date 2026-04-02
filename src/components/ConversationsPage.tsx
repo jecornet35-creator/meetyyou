@@ -7,7 +7,7 @@ import {
   CheckCheck,
   Trash2
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
 import { toast } from 'sonner';

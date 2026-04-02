@@ -1,0 +1,20 @@
+[
+  {
+    "id": "69a5a0088f2f4c391b3a2a73",
+    "conversation_id": "699df3d3caf8b4d795180336",
+    "sender_name": "jecornet35",
+    "sender_email": "jecornet35@gmail.com",
+    "content": "😊",
+    "is_read": false,
+    "created_date": "2026-03-02T14:34:48.506000"
+  },
+  {
+    "id": "699df41f2c02be0a86a8cb87",
+    "conversation_id": "699df3d3caf8b4d795180336",
+    "sender_name": "jcornet65",
+    "sender_email": "jcornet65@proton.me",
+    "content": "Bonjour",
+    "is_read": true,
+    "created_date": "2026-02-24T18:55:27"
+  }
+]

@@ -20,7 +20,7 @@ import {
   UserX,
   Flag
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useState } from 'react';
 
 export default function SettingsPage({ onBack }) {

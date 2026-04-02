@@ -12,7 +12,7 @@ import {
   FileText,
   Inbox
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const StatCard = ({ icon: Icon, label, value, color, bgColor }) => (
   <div className={`${bgColor} p-6 rounded-2xl border border-neutral-100 flex flex-col gap-2 min-w-[200px] flex-1`}>

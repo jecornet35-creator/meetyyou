@@ -9,7 +9,7 @@ import {
   History,
   Plus
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const templates = [
   { id: 1, title: 'Vérification de profil', description: 'Vérifiez votre profil Meetyyou', tag: 'Modération', tagColor: 'text-red-600 bg-red-50' },

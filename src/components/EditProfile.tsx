@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Eye, MapPin, ChevronDown } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Country, State, City } from 'country-state-city';
 
 export default function EditProfile({ onBack, onViewProfile }) {

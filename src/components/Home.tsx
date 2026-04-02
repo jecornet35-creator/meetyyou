@@ -17,7 +17,7 @@ import {
   Diamond,
   Loader2
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { api } from '../lib/api';
 
 export default function Home({ onLogin, onRegister, onAdminClick, onTermsClick, onAboutClick }) {

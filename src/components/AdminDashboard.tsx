@@ -36,7 +36,7 @@ import {
   Cell,
   Legend
 } from 'recharts';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 import UserManagement from './UserManagement';
 import ProfileVerification from './ProfileVerification';

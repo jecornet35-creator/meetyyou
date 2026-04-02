@@ -19,7 +19,7 @@ import {
   Upload,
   Plus
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { useState, Fragment, useEffect } from 'react';
 import { api } from '../lib/api';
 import { toast } from 'sonner';

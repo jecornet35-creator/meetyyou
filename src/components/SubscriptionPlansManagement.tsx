@@ -17,7 +17,7 @@ import {
   Gift,
   Calendar
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
 

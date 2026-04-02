@@ -9,7 +9,7 @@ import {
   XCircle,
   RefreshCw
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const subscriptions = [
   { id: 1, email: 'jecornet35@gmail.com', plan: 'Premium', status: 'Actif', amount: '9.99€', start: '24/02/26', end: '24/03/26', renewal: 'Auto' },

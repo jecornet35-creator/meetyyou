@@ -7,7 +7,7 @@ import {
   Trash2, 
   Camera
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
 

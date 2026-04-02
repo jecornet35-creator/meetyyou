@@ -7,7 +7,7 @@ import {
   MessageCircle,
   Trash2
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { api } from '../lib/api';

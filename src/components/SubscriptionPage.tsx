@@ -12,7 +12,7 @@ import {
   Rocket,
   Sparkles
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { api } from '../lib/api';
 

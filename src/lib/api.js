@@ -1,26 +1,17 @@
 // Mock API for Client-Side only mode
-// This imports the JSON files directly
-import profiles from '../data/profiles.json';
-import conversations from '../data/conversations.json';
-import messages from '../data/messages.json';
-import notifications from '../data/notifications.json';
-import subscriptions from '../data/subscriptions.json';
-import templates from '../data/templates.json';
-import advanced_filters from '../data/advanced_filters.json';
-import pending_photos from '../data/pending_photos.json';
-
+// We initialize with empty arrays to avoid Vite build errors when JSON files are malformed or missing
 const db = {
-  profiles,
-  conversations,
-  messages,
-  notifications,
-  subscriptions,
-  templates,
+  profiles: [],
+  conversations: [],
+  messages: [],
+  notifications: [],
+  subscriptions: [],
+  templates: [],
   profil: [],
   correspondance: [],
   users: [],
-  advanced_filters,
-  pending_photos
+  advanced_filters: [],
+  pending_photos: []
 };
 
 export const api = {

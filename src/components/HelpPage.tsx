@@ -13,7 +13,7 @@ import {
   Send,
   HelpCircle
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
 
 export default function HelpPage({ onBack }) {
